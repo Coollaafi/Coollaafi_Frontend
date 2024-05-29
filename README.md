@@ -1,9 +1,9 @@
 # 20대 여성을 위한 AI 기반 옷 추천 SNS, 왓(wot)🌞
-날씨가 생각보다 더워서, 혹은 추워서 입은 옷을 후회한 적이 있나요?<br />
+날씨가 생각보다 더워서, 혹은 추워서 입은 옷을 후회한 적이 있지 않나요?<br />
 매일 OOTD를 기록하고 싶은데, SNS에 올리기엔 부담스럽지 않나요?<br />
 <br />
 이에, 저희는 개인화된 AI를 통해, 오늘의 날씨에 맞는 여러분의 옷을 추천하고,<br />
-친한 친구 20명과 함께하는 SNS를 제공하는 서비스, 왓(wot)을 기획하였습니다.<br />
+친한 친구 20명과 함께하는 SNS를 제공하는 서비스, <b>왓(wot)</b>을 기획하였습니다.<br />
 ###### 배포사이트: https://coollaafi-frontend.vercel.app/
 ###### 노션: https://www.notion.so/wot-weather-of-today-what-is-your-Outfit-today-women-of-twenties-a88431211b5246558e9b5000dd1bfcaf
 ## 🎯핵심기능
