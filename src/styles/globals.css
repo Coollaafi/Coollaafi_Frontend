@@ -11,8 +11,12 @@ body {
   padding: 0;
   margin: 0;
 
+  background-color: #fff;
+
   display: flex;
   justify-content: center;
+
+  letter-spacing: -0.96px;
 }
 
 button {
@@ -25,7 +29,6 @@ button {
 
 text {
   line-height: 120%;
-  letter-spacing: -0.96px;
   color: #000;
 }
 

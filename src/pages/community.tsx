@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import UploadModal from 'components/community/UploadModal';
+import useModal from 'hooks/community/useModal';
 
 const Container = styled.div`
   width: 360px;
@@ -27,12 +29,15 @@ const PencilIcon = styled.img`
 `;
 
 export default function CommunityPage() {
+  const { isOpen, closeModal, openModal } = useModal();
+
   return (
     <Container>
-      <UploadBtn>
+      <UploadBtn onClick={openModal}>
         글 올리기
         <PencilIcon src="/assets/icons/pencil.svg" />
       </UploadBtn>
+      {isOpen ? <UploadModal closeModal={closeModal} /> : <></>}
     </Container>
   );
 }
