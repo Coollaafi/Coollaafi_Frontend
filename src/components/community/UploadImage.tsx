@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import { Desc_120_med } from 'styles/typography';
 
 const Box = styled.div`
-  width: 140px;
+  width: 100%;
   height: 200px;
   background-color: #fbfbfb;
   border: 1px solid #f4f4f4;
-  cursor: pointer;
   position: relative;
 `;
 
@@ -18,6 +17,7 @@ const ImageBox = styled.img<{ isFile: boolean }>`
   width: 100%;
   height: 100%;
   object-fit: contain;
+  cursor: ${(props) => (props.isFile ? 'pointer' : 'none')};
   visibility: ${(props) => (props.isFile ? 'visible' : 'hidden')};
 `;
 
@@ -29,7 +29,7 @@ const ImageBtn = styled.div<{ isFile: boolean }>`
   align-items: center;
   position: absolute;
   top: 80px;
-  right: 38px;
+  right: 116px;
   cursor: pointer;
   visibility: ${(props) => (props.isFile ? 'hidden' : 'visible')};
 `;
@@ -43,9 +43,12 @@ const Icon = styled.img`
   height: 16px;
 `;
 
-export default function UploadImage() {
-  const [imgFile, setImgFile] = useState<string>('');
+type UploadImageProps = {
+  imgFile: string;
+  setImgFile: React.Dispatch<React.SetStateAction<string>>;
+};
 
+export default function UploadImage({ imgFile, setImgFile }: UploadImageProps) {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {

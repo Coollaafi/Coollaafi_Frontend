@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   CTA_button_med,
@@ -40,14 +40,15 @@ const Box = styled.div<{ name: string }>`
   flex-direction: column;
   gap: 8px;
   margin: ${(props) =>
-    props.name == 'title' ? '16px 0 30px 0' : '84px 0 128px 0'};
+    props.name == 'title' ? '16px 0 0 0' : '84px 0 128px 0'};
 `;
 
 const SecondBox = styled.div<{ name: string }>`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin: ${(props) => (props.name == 'image' ? '0 0 16px 0' : '0 0 42px 0')};
+  margin: ${(props) =>
+    props.name == 'image' ? '30px 0 16px 0' : '0 0 42px 0'};
 `;
 
 const ResultBoxs = styled.div`
@@ -112,7 +113,7 @@ const CheckBoxs = styled.div`
 `;
 
 const CheckBox = styled.button<{ isChecked: boolean }>`
-  padding: 8px 9px;
+  padding: 10px 10px;
   background-color: ${(props) => (props.isChecked ? '#000000' : '#fbfbfb')};
   border: ${(props) =>
     props.isChecked ? '1px solid #000000' : '1px solid #f4f4f4'};
@@ -133,8 +134,27 @@ type UploadModalProps = {
 };
 
 export default function UploadModal({ closeModal }: UploadModalProps) {
-  const [isDone, setIsDone] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [imgFile, setImgFile] = useState<string>('');
+  const [isDone, setIsDone] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean[]>([false, false, false]);
+
+  const handleClick = (num: number) => {
+    if (num == 0) {
+      setIsChecked([true, false, false]);
+    } else if (num == 1) {
+      setIsChecked([false, true, false]);
+    } else if (num == 2) {
+      setIsChecked([false, false, true]);
+    }
+  };
+
+  useEffect(() => {
+    if (imgFile == '') {
+      setIsDone(false);
+    } else {
+      setIsDone(true);
+    }
+  }, [imgFile]);
 
   return (
     <Container>
@@ -148,11 +168,11 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
             업로드한 왓 룩북 이미지는 당신만의 스타일링을 학습해요
           </Desc_120_med>
         </Box>
-        <Box name="image">
+        {/*<Box name="image">
           <Desc_120_med>OOTD 이미지 선택하기</Desc_120_med>
-          <UploadImage />
-        </Box>
-        {/*<SecondBox name="image">
+          <UploadImage imgFile={imgFile} setImgFile={setImgFile} />
+        </Box>*/}
+        <SecondBox name="image">
           <ResultBoxs>
             <ResultBox>
               <Desc_120_med>OOTD</Desc_120_med>
@@ -172,20 +192,24 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
           <Desc_120_med>룩북 게시글을 작성해주세요</Desc_120_med>
           <TextArea placeholder="내용을 작성해주세요." />
           <CheckBoxs>
-            <CheckBox isChecked={isChecked}>
+            <CheckBox isChecked={isChecked[0]} onClick={() => handleClick(0)}>
               <Chip_button_med>더웠어요🥵</Chip_button_med>
             </CheckBox>
-            <CheckBox isChecked={isChecked}>
+            <CheckBox isChecked={isChecked[1]} onClick={() => handleClick(1)}>
               <Chip_button_med>딱 좋았어요😖</Chip_button_med>
             </CheckBox>
-            <CheckBox isChecked={isChecked}>
+            <CheckBox isChecked={isChecked[2]} onClick={() => handleClick(2)}>
               <Chip_button_med>추웠어요🥶</Chip_button_med>
             </CheckBox>
           </CheckBoxs>
-        </SecondBox>*/}
+        </SecondBox>
         <Button isDone={isDone}>
           <CTA_button_med>룩북으로 변경하기</CTA_button_med>
         </Button>
+        {/*
+        <Button isDone={isDone}>
+          <CTA_button_med>룩북 공유하기</CTA_button_med>
+        </Button>*/}
       </ModalBox>
     </Container>
   );
