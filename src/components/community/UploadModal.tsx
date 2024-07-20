@@ -6,6 +6,7 @@ import {
   Desc_120_med,
   Chip_button_med,
 } from '../../styles/typography';
+import UploadImage from './UploadImage';
 
 const Container = styled.div`
   width: 100%;
@@ -47,24 +48,6 @@ const SecondBox = styled.div<{ name: string }>`
   flex-direction: column;
   gap: 8px;
   margin: ${(props) => (props.name == 'image' ? '0 0 16px 0' : '0 0 42px 0')};
-`;
-
-const ImageBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-  width: 294px;
-  height: 198px;
-  background-color: #fbfbfb;
-  border: 1px solid #f4f4f4;
-  cursor: pointer;
-`;
-
-const Icon = styled.img`
-  width: 16px;
-  height: 16px;
 `;
 
 const ResultBoxs = styled.div`
@@ -165,14 +148,11 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
             업로드한 왓 룩북 이미지는 당신만의 스타일링을 학습해요
           </Desc_120_med>
         </Box>
-        {/*<Box name="image">
+        <Box name="image">
           <Desc_120_med>OOTD 이미지 선택하기</Desc_120_med>
-          <ImageBox>
-            <Icon src="/assets/icons/image.svg" />
-            <Desc_120_med>파일 선택하기</Desc_120_med>
-          </ImageBox>
-        </Box>*/}
-        <SecondBox name="image">
+          <UploadImage />
+        </Box>
+        {/*<SecondBox name="image">
           <ResultBoxs>
             <ResultBox>
               <Desc_120_med>OOTD</Desc_120_med>
@@ -202,7 +182,7 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
               <Chip_button_med>추웠어요🥶</Chip_button_med>
             </CheckBox>
           </CheckBoxs>
-        </SecondBox>
+        </SecondBox>*/}
         <Button isDone={isDone}>
           <CTA_button_med>룩북으로 변경하기</CTA_button_med>
         </Button>
