@@ -49,11 +49,7 @@ const SecondBox = styled.div<{ name: string }>`
   flex-direction: column;
   gap: 8px;
   margin: ${(props) =>
-    props.name == 'image' ? '22px 0 0 0' : '10px 0 34px 0'};
-`;
-
-const SubTitle = styled.div`
-  margin-top: 14px;
+    props.name == 'image' ? '30px 0 16px 0' : '0 0 42px 0'};
 `;
 
 const ResultBoxs = styled.div`
@@ -78,12 +74,12 @@ const Result = styled.div`
   border: 1px solid #f4f4f4;
 `;
 
-const StoreBtn = styled.button<{ isFile: boolean }>`
-  display: flex;
-  flex-direction: row;
-  gap: 2px;
-  color: ${(props) => (props.isFile ? '#ffffff' : '#9F9F9F')};
-  background-color: ${(props) => (props.isFile ? '#000000' : '#EDEDED')};
+const StoreBtn = styled.button`
+  color: #fff;
+  width: 126px;
+  height: 32px;
+  text-align: center;
+  background-color: #000000;
   border: none;
   border-radius: 60px;
   position: absolute;
@@ -212,40 +208,15 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
             <ResultBox>
               <Desc_120_med>WOT LOOK BOOK</Desc_120_med>
               <Result>
-                <StoreBtn isFile={imgFile == '' ? false : true}>
-                  <DressIcon stroke={imgFile == '' ? '#9F9F9F' : 'white'} />
-                  <CTA_button_med>룩북 만들기</CTA_button_med>
+                <StoreBtn>
+                  <Chip_button_med>왓룩북 이미지 저장</Chip_button_med>
                 </StoreBtn>
               </Result>
             </ResultBox>
           </ResultBoxs>
         </SecondBox>
         <SecondBox name="content">
-          {/*콜라주 만들어지기 전*/}
-          <TextBox>
-            <Desc_120_med>
-              <Title>
-                <Star>*</Star>사진 업로드 가이드
-              </Title>
-            </Desc_120_med>
-            <Guide>
-              <Desc_150_med>
-                1. 상의, 하의, 아우터 중 하나라도 완전히 나온 사진을 올려주세요.
-                <br />
-                2. 얼굴은 나오지 않아도 됩니다.
-              </Desc_150_med>
-            </Guide>
-            <Desc_120_med>
-              OOTD 이미지 파일을 선택한 후 룩북 만들기 버튼을 눌러주세요!
-            </Desc_120_med>
-          </TextBox>
-          {/*콜라주 만들어진 후*/}
-          {/*
-          <SubTitle>
-            <Desc_120_med>
-              룩북 게시글에 올라갈 오늘의 착장을 설명해주세요
-            </Desc_120_med>
-          </SubTitle>
+          <Desc_120_med>룩북 게시글을 작성해주세요</Desc_120_med>
           <TextArea placeholder="내용을 작성해주세요." />
           <CheckBoxs>
             <CheckBox isChecked={isChecked[0]} onClick={() => handleClick(0)}>
