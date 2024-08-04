@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Desc_150_reg, Chip_button_med } from 'styles/typography';
 import { ReactComponent as Logo } from '../assets/icons/logo.svg';
 import { ReactComponent as KakaoIcon } from '../assets/icons/kakao.svg';
+import BackgroundImage from '../assets/images/login.svg';
 
 /*height를 부모요소에서 61px를 뺀 값으로 해서 Detail에서 margin-top: 61px를 했을 때, 
 상단 마진을 줘서 요소가 부모 요소의 height를 초과해 잘리는 문제를 해결함*/
@@ -11,7 +12,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url('../assets/images/login.svg');
+  background-image: url(${BackgroundImage});
   background-size: cover;
   background-position: center;
   padding: 0 30px;
