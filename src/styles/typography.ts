@@ -62,3 +62,15 @@ export const Receipt = styled.p`
   line-height: 120%;
   letter-spacing: -0.8px;
 `;
+
+export const Date = styled.p`
+  font-family: 'DTL_Light';
+  font-size: 35.652px;
+  letter-spacing: -2.852px;
+`;
+
+export const Day = styled.p`
+  font-family: 'DTL_Light';
+  font-size: 24px;
+  letter-spacing: -1.92px;
+`;
