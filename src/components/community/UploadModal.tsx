@@ -7,10 +7,11 @@ import {
   Chip_button_med,
 } from '../../styles/typography';
 import UploadImage from './UploadImage';
+import { ReactComponent as DressIcon } from '../../assets/icons/dress.svg';
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,8 +40,7 @@ const Box = styled.div<{ name: string }>`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin: ${(props) =>
-    props.name == 'title' ? '16px 0 0 0' : '84px 0 128px 0'};
+  margin-top: 19px;
 `;
 
 const SecondBox = styled.div<{ name: string }>`
@@ -48,7 +48,7 @@ const SecondBox = styled.div<{ name: string }>`
   flex-direction: column;
   gap: 8px;
   margin: ${(props) =>
-    props.name == 'image' ? '30px 0 16px 0' : '0 0 42px 0'};
+    props.name == 'image' ? '22px 0 0 0' : '24px 0 34px 0'};
 `;
 
 const ResultBoxs = styled.div`
@@ -74,16 +74,18 @@ const Result = styled.div`
 `;
 
 const StoreBtn = styled.button`
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
   color: #fff;
-  width: 126px;
-  height: 32px;
-  text-align: center;
   background-color: #000000;
   border: none;
-  border-radius: 40px;
+  border-radius: 60px;
   position: absolute;
-  bottom: 8px;
-  left: 7px;
+  padding: 8px 12px;
+  bottom: 83px;
+  left: 16px;
+  z-index: 10;
 `;
 
 const TextArea = styled.textarea`
@@ -168,28 +170,29 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
             업로드한 왓 룩북 이미지는 당신만의 스타일링을 학습해요
           </Desc_120_med>
         </Box>
-        {/*<Box name="image">
-          <Desc_120_med>OOTD 이미지 선택하기</Desc_120_med>
-          <UploadImage imgFile={imgFile} setImgFile={setImgFile} />
-        </Box>*/}
         <SecondBox name="image">
           <ResultBoxs>
             <ResultBox>
               <Desc_120_med>OOTD</Desc_120_med>
-              <Result></Result>
+              <Result>
+                <UploadImage imgFile={imgFile} setImgFile={setImgFile} />
+              </Result>
             </ResultBox>
             <ResultBox>
               <Desc_120_med>WOT LOOK BOOK</Desc_120_med>
               <Result>
                 <StoreBtn>
-                  <Chip_button_med>왓룩북 이미지 저장</Chip_button_med>
+                  <DressIcon />
+                  <CTA_button_med>룩북 만들기</CTA_button_med>
                 </StoreBtn>
               </Result>
             </ResultBox>
           </ResultBoxs>
         </SecondBox>
         <SecondBox name="content">
-          <Desc_120_med>룩북 게시글을 작성해주세요</Desc_120_med>
+          <Desc_120_med>
+            룩북 게시글에 올라갈 오늘의 착장을 설명해주세요
+          </Desc_120_med>
           <TextArea placeholder="내용을 작성해주세요." />
           <CheckBoxs>
             <CheckBox isChecked={isChecked[0]} onClick={() => handleClick(0)}>
@@ -204,12 +207,8 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
           </CheckBoxs>
         </SecondBox>
         <Button isDone={isDone}>
-          <CTA_button_med>룩북으로 변경하기</CTA_button_med>
+          <CTA_button_med>룩북으로 공유하기</CTA_button_med>
         </Button>
-        {/*
-        <Button isDone={isDone}>
-          <CTA_button_med>룩북 공유하기</CTA_button_med>
-        </Button>*/}
       </ModalBox>
     </Container>
   );
