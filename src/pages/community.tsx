@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import UploadModal from 'components/community/UploadModal';
 import useModal from 'hooks/community/useModal';
 import { CTA_button_med } from 'styles/typography';
+import { ReactComponent as PencilIcon } from '../assets/icons/pencil.svg';
 
 const Container = styled.div`
   width: 360px;
@@ -22,9 +23,7 @@ const UploadBtn = styled.button`
   z-index: 1;
 `;
 
-const PencilIcon = styled.img`
-  width: 16px;
-  height: 16px;
+const Icon = styled.div`
   margin-left: 8px;
 `;
 
@@ -35,7 +34,9 @@ export default function CommunityPage() {
     <Container>
       <UploadBtn onClick={openModal}>
         <CTA_button_med>룩북 올리기</CTA_button_med>
-        <PencilIcon src="/assets/icons/pencil.svg" />
+        <Icon>
+          <PencilIcon />
+        </Icon>
       </UploadBtn>
       {isOpen ? <UploadModal closeModal={closeModal} /> : <></>}
     </Container>
