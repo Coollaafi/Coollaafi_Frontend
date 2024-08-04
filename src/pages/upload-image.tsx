@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import BackgroundImage from '../assets/images/upload.svg';
 import Header from 'components/Header';
+import Footer from 'components/Footer';
+
 import {
   Main_title_med,
   User_id_title_med,
@@ -132,6 +134,7 @@ export default function UploadImagePage() {
           </Desc_150_med>
         </Text>
       </GuideBox>
+      <Footer />
     </Container>
   );
 }

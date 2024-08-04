@@ -55,3 +55,10 @@ export const CTA_button_med = styled.p`
   line-height: 120%;
   letter-spacing: -1.12px;
 `;
+
+export const Receipt = styled.p`
+  font-family: 'Noto_Reg';
+  font-size: 10px;
+  line-height: 120%;
+  letter-spacing: -0.8px;
+`;
