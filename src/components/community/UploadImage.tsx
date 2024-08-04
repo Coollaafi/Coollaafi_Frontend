@@ -5,9 +5,7 @@ import { ReactComponent as ImageIcon } from '../../assets/icons/image.svg';
 
 const Box = styled.div`
   width: 100%;
-  height: 200px;
-  background-color: #fbfbfb;
-  border: 1px solid #f4f4f4;
+  height: 100%;
   position: relative;
 `;
 
@@ -22,14 +20,16 @@ const ImageBox = styled.img<{ isFile: boolean }>`
 `;
 
 const ImageBtn = styled.div<{ isFile: boolean }>`
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 80px;
-  right: 116px;
+  top: 0;
+  color: ${(props) => (props.isFile ? 'white' : 'black')};
   cursor: pointer;
 `;
 
