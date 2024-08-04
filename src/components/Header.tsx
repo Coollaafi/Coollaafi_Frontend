@@ -4,7 +4,7 @@ import { ReactComponent as DressIcon } from '../assets/icons/dress.svg';
 import { Link } from 'react-router-dom';
 
 const Container = styled.div`
-  width: 100%;
+  width: 360px;
   height: 70px;
   background-color: transparent;
   padding: 12px 16px;
@@ -12,9 +12,9 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
   z-index: 100;
   top: 0;
-  left: 0;
 `;
 
 export default function Header() {

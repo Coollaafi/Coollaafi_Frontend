@@ -11,6 +11,7 @@ export const User_id_title_med = styled.p`
   font-family: 'Noto_Med';
   font-size: 20px;
   line-height: 120%;
+  letter-spacing: -1.6px;
 `;
 
 export const Chip_button_med = styled.p`
