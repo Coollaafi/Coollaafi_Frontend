@@ -4,6 +4,7 @@ import {
   CTA_button_med,
   Main_title_med,
   Desc_120_med,
+  Desc_150_med,
   Chip_button_med,
 } from '../../styles/typography';
 import UploadImage from './UploadImage';
@@ -48,7 +49,11 @@ const SecondBox = styled.div<{ name: string }>`
   flex-direction: column;
   gap: 8px;
   margin: ${(props) =>
-    props.name == 'image' ? '22px 0 0 0' : '24px 0 34px 0'};
+    props.name == 'image' ? '22px 0 0 0' : '10px 0 34px 0'};
+`;
+
+const SubTitle = styled.div`
+  margin-top: 14px;
 `;
 
 const ResultBoxs = styled.div`
@@ -70,15 +75,15 @@ const Result = styled.div`
   height: 200px;
   position: relative;
   background-color: #fbfbfb;
-  border: none;
+  border: 1px solid #f4f4f4;
 `;
 
-const StoreBtn = styled.button`
+const StoreBtn = styled.button<{ isFile: boolean }>`
   display: flex;
   flex-direction: row;
   gap: 2px;
-  color: #fff;
-  background-color: #000000;
+  color: ${(props) => (props.isFile ? '#ffffff' : '#9F9F9F')};
+  background-color: ${(props) => (props.isFile ? '#000000' : '#EDEDED')};
   border: none;
   border-radius: 60px;
   position: absolute;
@@ -123,6 +128,28 @@ const CheckBox = styled.button<{ isChecked: boolean }>`
   color: ${(props) => (props.isChecked ? '#ffffff' : '#9f9f9f')};
 `;
 
+const TextBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 46px;
+`;
+
+const Title = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const Guide = styled.div`
+  color: #9f9f9f;
+  margin-bottom: 12px;
+`;
+
+const Star = styled.div`
+  width: 8.5px;
+  color: #ff0000;
+`;
+
 const Button = styled.button<{ isDone: boolean }>`
   width: 296px;
   height: 48px;
@@ -150,13 +177,17 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
     }
   };
 
+  {
+    /*}
   useEffect(() => {
-    if (imgFile == '') {
+    if () {
       setIsDone(false);
     } else {
       setIsDone(true);
     }
   }, [imgFile]);
+*/
+  }
 
   return (
     <Container>
@@ -181,8 +212,8 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
             <ResultBox>
               <Desc_120_med>WOT LOOK BOOK</Desc_120_med>
               <Result>
-                <StoreBtn>
-                  <DressIcon />
+                <StoreBtn isFile={imgFile == '' ? false : true}>
+                  <DressIcon stroke={imgFile == '' ? '#9F9F9F' : 'white'} />
                   <CTA_button_med>룩북 만들기</CTA_button_med>
                 </StoreBtn>
               </Result>
@@ -190,9 +221,31 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
           </ResultBoxs>
         </SecondBox>
         <SecondBox name="content">
-          <Desc_120_med>
-            룩북 게시글에 올라갈 오늘의 착장을 설명해주세요
-          </Desc_120_med>
+          {/*콜라주 만들어지기 전*/}
+          <TextBox>
+            <Desc_120_med>
+              <Title>
+                <Star>*</Star>사진 업로드 가이드
+              </Title>
+            </Desc_120_med>
+            <Guide>
+              <Desc_150_med>
+                1. 상의, 하의, 아우터 중 하나라도 완전히 나온 사진을 올려주세요.
+                <br />
+                2. 얼굴은 나오지 않아도 됩니다.
+              </Desc_150_med>
+            </Guide>
+            <Desc_120_med>
+              OOTD 이미지 파일을 선택한 후 룩북 만들기 버튼을 눌러주세요!
+            </Desc_120_med>
+          </TextBox>
+          {/*콜라주 만들어진 후*/}
+          {/*
+          <SubTitle>
+            <Desc_120_med>
+              룩북 게시글에 올라갈 오늘의 착장을 설명해주세요
+            </Desc_120_med>
+          </SubTitle>
           <TextArea placeholder="내용을 작성해주세요." />
           <CheckBoxs>
             <CheckBox isChecked={isChecked[0]} onClick={() => handleClick(0)}>
@@ -204,7 +257,7 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
             <CheckBox isChecked={isChecked[2]} onClick={() => handleClick(2)}>
               <Chip_button_med>추웠어요🥶</Chip_button_med>
             </CheckBox>
-          </CheckBoxs>
+          </CheckBoxs>*/}
         </SecondBox>
         <Button isDone={isDone}>
           <CTA_button_med>룩북으로 공유하기</CTA_button_med>

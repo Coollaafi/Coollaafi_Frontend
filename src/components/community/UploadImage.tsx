@@ -6,8 +6,6 @@ import { ReactComponent as ImageIcon } from '../../assets/icons/image.svg';
 const Box = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #fbfbfb;
-  border: 1px solid #f4f4f4;
   position: relative;
 `;
 
@@ -18,19 +16,19 @@ const ImageBox = styled.img<{ isFile: boolean }>`
   width: 100%;
   height: 100%;
   object-fit: contain;
-  cursor: ${(props) => (props.isFile ? 'pointer' : 'none')};
   visibility: ${(props) => (props.isFile ? 'visible' : 'hidden')};
 `;
 
 const ImageBtn = styled.div<{ isFile: boolean }>`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 80px;
+  top: 0;
   color: ${(props) => (props.isFile ? 'white' : 'black')};
   cursor: pointer;
 `;
@@ -60,11 +58,7 @@ export default function UploadImage({ imgFile, setImgFile }: UploadImageProps) {
   return (
     <>
       <Box>
-        <ImageBox
-          isFile={imgFile == '' ? false : true}
-          src={imgFile}
-          onClick={handleClick}
-        />
+        <ImageBox isFile={imgFile == '' ? false : true} src={imgFile} />
         <ImageBtn isFile={imgFile == '' ? false : true} onClick={handleClick}>
           <ImageIcon fill={imgFile == '' ? 'black' : 'white'} />
           <CTA_button_med>파일 선택하기</CTA_button_med>
