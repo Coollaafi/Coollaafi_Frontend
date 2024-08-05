@@ -88,8 +88,18 @@ const Star = styled.div`
   color: #ff0000;
 `;
 
-const Text = styled.div`
+const Texts = styled.div`
   color: #9f9f9f;
+`;
+
+const TotalText = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+`;
+
+const Text = styled.div<{ width: number }>`
+  width: ${(props) => props.width}px;
 `;
 
 export default function UploadImagePage() {
@@ -123,16 +133,29 @@ export default function UploadImagePage() {
             <Star>*</Star>사진 업로드 가이드
           </Title>
         </Main_title_med>
-        <Text>
+        <Texts>
           <Desc_150_med>
-            1. 다른 날짜에 찍은 사진들을 올려주세요.
-            <br /> 2. 상의, 하의, 아우터 중 하나라도 완전히
-            <br /> 나온 사진으로 올려주세요.
-            <br /> 3. 얼굴은 나오지 않아도 됩니다.
-            <br /> 4. 누적 50장의 사진을 업로드하면 날씨에 맞는 옷을
-            <br /> 추천받을 수 있습니다.
+            <TotalText>
+              1. <Text width={200}>다른 날짜에 찍은 사진들을 올려주세요.</Text>
+            </TotalText>
+            <TotalText>
+              2.
+              <Text width={170}>
+                상의, 하의, 아우터 중 하나라도 완전히 나온 사진으로 올려주세요.
+              </Text>
+            </TotalText>
+            <TotalText>
+              3. <Text width={200}>얼굴은 나오지 않아도 됩니다.</Text>
+            </TotalText>
+            <TotalText>
+              4.
+              <Text width={220}>
+                누적 50장의 사진을 업로드하면 날씨에 맞는 옷을 추천받을
+                수있습니다.
+              </Text>
+            </TotalText>
           </Desc_150_med>
-        </Text>
+        </Texts>
       </GuideBox>
       <Footer />
     </Container>
