@@ -2,15 +2,12 @@ import styled from 'styled-components';
 import BackgroundImage from '../assets/images/upload.svg';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-
 import {
   Main_title_med,
   User_id_title_med,
-  CTA_button_med,
   Desc_150_med,
 } from 'styles/typography';
-import { ReactComponent as UploadIcon } from '../assets/icons/upload.svg';
-import { ReactComponent as ImageIcon } from '../assets/icons/image.svg';
+import UploadFile from 'components/upload-image/UploadFile';
 
 const Container = styled.div`
   width: 360px;
@@ -38,37 +35,6 @@ const User = styled.div`
   flex-direction: row;
   align-items: end;
   gap: 1px;
-`;
-
-const ImageBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const Drag = styled.div`
-  width: 214px;
-  height: 87px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border: 1px dashed black;
-`;
-
-const Button = styled.div`
-  width: 98px;
-  height: 87px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  color: white;
-  cursor: pointer;
 `;
 
 const GuideBox = styled.div`
@@ -117,16 +83,7 @@ export default function UploadImagePage() {
           <br /> 최근 사진들을 올려주세요
         </Main_title_med>
       </TextBox>
-      <ImageBox>
-        <Drag>
-          <UploadIcon />
-          <CTA_button_med>업로드할 파일을 끌어 놓아주세요</CTA_button_med>
-        </Drag>
-        <Button>
-          <ImageIcon fill="white" />
-          <CTA_button_med>파일 선택하기</CTA_button_med>
-        </Button>
-      </ImageBox>
+      <UploadFile />
       <GuideBox>
         <Main_title_med>
           <Title>
