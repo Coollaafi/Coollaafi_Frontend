@@ -1,15 +1,16 @@
 @font-face {
   font-family: 'Noto_Med';
   src: url('../assets/fonts/NotoSansKR-Medium.otf') format('opentype');
-  font-size: 12px;
-  line-height: 120%;
 }
 
 @font-face {
   font-family: 'Noto_Reg';
   src: url('../assets/fonts/NotoSansKR-Regular.otf') format('opentype');
-  font-size: 12px;
-  line-height: 150%;
+}
+
+@font-face {
+  font-family: 'DTL_Light';
+  src: url('../assets//fonts/DTLProkyonTCapsLight.otf') format('opentype');
 }
 
 /*reset.css*/
