@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Receipt } from 'styles/typography';
+import { Noto_Receipt } from 'styles/typography';
 
 const Container = styled.div`
   width: 360px;
@@ -43,21 +43,21 @@ export default function Footer() {
   return (
     <Container>
       <Box>
-        <Receipt>
+        <Noto_Receipt>
           <Button>로그아웃</Button>
-        </Receipt>
+        </Noto_Receipt>
         <EmailBox>
-          <Receipt>문의</Receipt>
-          <Receipt>
+          <Noto_Receipt>문의</Noto_Receipt>
+          <Noto_Receipt>
             <Email>WOT.ehwa@gmail.com</Email>
-          </Receipt>
+          </Noto_Receipt>
           {/*이메일 변경 필요 */}
         </EmailBox>
       </Box>
       <SecondBox>
-        <Receipt>
+        <Noto_Receipt>
           <Button>회원탈퇴</Button>
-        </Receipt>
+        </Noto_Receipt>
       </SecondBox>
     </Container>
   );
