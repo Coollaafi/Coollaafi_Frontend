@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import BackgroundImage from '../assets/images/upload.svg';
+import { ReactComponent as UploadIcon } from '../assets/icons/upload.svg';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import {
   Main_title_med,
   User_id_title_med,
   Desc_150_med,
+  CTA_button_med,
 } from 'styles/typography';
 import UploadFile from 'components/upload-image/UploadFile';
 
@@ -27,7 +29,7 @@ const TextBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin: 202px 0 32px 0;
+  margin: 202px 0 40px 0;
 `;
 
 const User = styled.div`
@@ -39,7 +41,7 @@ const User = styled.div`
 
 const GuideBox = styled.div`
   width: 100%;
-  margin: 82px 0 190px 0;
+  margin: 16px 0 95px 0;
   color: white;
 `;
 
@@ -66,6 +68,20 @@ const TotalText = styled.div`
 
 const Text = styled.div<{ width: number }>`
   width: ${(props) => props.width}px;
+`;
+
+const Button = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 9.92px;
+  width: 100%;
+  height: 48px;
+  margin-bottom: 106px;
+  color: black;
+  background-color: white;
+  cursor: pointer;
 `;
 
 export default function UploadImagePage() {
@@ -114,6 +130,10 @@ export default function UploadImagePage() {
           </Desc_150_med>
         </Texts>
       </GuideBox>
+      <Button>
+        <UploadIcon />
+        <CTA_button_med>사진 업로드하기</CTA_button_med>
+      </Button>
       <Footer />
     </Container>
   );
