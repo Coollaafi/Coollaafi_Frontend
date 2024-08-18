@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Header from 'components/Header';
 import { DTL_Date, DTL_Day, Main_title_med } from 'styles/typography';
 import { ReactComponent as SunIcon } from '../assets/icons/sun.svg';
-import { getAddress } from 'apis/recommend';
+import { getAddress, getWeather } from 'apis/recommend';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
@@ -85,6 +85,10 @@ const Location = styled.div`
 export default function RecommendPage() {
   const [city, setCity] = useState('');
   const [gu, setGu] = useState('');
+  const [tempMax, setTempMax] = useState<number>();
+  const [tempMin, setTempMin] = useState<number>();
+  const [weatherDes, setWeatherDes] = useState<string>('');
+  const [weatherImg, setWeatherImg] = useState<string>('');
   const dayList = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
   const year = new Date().getFullYear().toString();
   const month = (new Date().getMonth() + 1).toString();
@@ -98,7 +102,6 @@ export default function RecommendPage() {
   //이용자 위치 가져오기
   const addressMutation = useMutation(getAddress, {
     onSuccess: (data) => {
-      console.log(data);
       setCity(data.region_1depth_name);
       setGu(data.region_2depth_name);
     },
@@ -107,12 +110,29 @@ export default function RecommendPage() {
     },
   });
 
-  //이용자의 경도,위도 가져오기
+  //이용자 위치의 날씨 가져오기
+  const weatherMutation = useMutation(getWeather, {
+    onSuccess: (data) => {
+      setTempMax(Math.round(data.main.temp_max));
+      setTempMin(Math.round(data.main.temp_min));
+      setWeatherDes(data.weather[0].description);
+      setWeatherImg(data.weather[0].icon);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  //이용자의 경도,위도 가져오기_주소/날씨가져오는 api에 경도,위도 넣기
   function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
           addressMutation.mutate({
+            lng: position.coords.longitude.toString(),
+            lat: position.coords.latitude.toString(),
+          });
+          weatherMutation.mutate({
             lng: position.coords.longitude.toString(),
             lat: position.coords.latitude.toString(),
           });
@@ -148,7 +168,7 @@ export default function RecommendPage() {
             </CalDay>
           </Cal>
           <Weather>
-            <Main_title_med>날씨 맑음</Main_title_med>
+            <Main_title_med>{weatherDes}</Main_title_med>
             <SunIcon />
           </Weather>
         </FirBox>
@@ -159,9 +179,9 @@ export default function RecommendPage() {
             <Main_title_med>{gu}</Main_title_med>
           </Location>
           <Temp>
-            <Main_title_med>12°</Main_title_med>
+            <Main_title_med>{tempMin}°</Main_title_med>
             <Line />
-            <Main_title_med>23°</Main_title_med>
+            <Main_title_med>{tempMax}°</Main_title_med>
           </Temp>
         </SecBox>
       </Box>
