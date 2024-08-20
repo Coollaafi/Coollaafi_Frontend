@@ -40,6 +40,9 @@ export default function CommunityPage() {
       <Header />
       <Posts>
         <Post />
+        <Post />
+        <Post />
+        <Post />
       </Posts>
       <UploadBtn onClick={openModal}>
         <CTA_button_med>룩북 올리기</CTA_button_med>

@@ -18,7 +18,10 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 `;
 
 const ModalBox = styled.div`
