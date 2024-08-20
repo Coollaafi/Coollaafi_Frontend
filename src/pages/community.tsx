@@ -5,6 +5,7 @@ import { CTA_button_med } from 'styles/typography';
 import { ReactComponent as PencilIcon } from '../assets/icons/pencil.svg';
 import Header from 'components/Header';
 import Post from 'components/community/Post';
+import Footer from 'components/Footer';
 
 const Container = styled.div`
   width: 360px;
@@ -37,13 +38,14 @@ export default function CommunityPage() {
 
   return (
     <Container>
-      <Header />
+      <Header kind={'white'} />
       <Posts>
         <Post />
         <Post />
         <Post />
         <Post />
       </Posts>
+      <Footer kind={'white'} />
       <UploadBtn onClick={openModal}>
         <CTA_button_med>룩북 올리기</CTA_button_med>
         <Icon>

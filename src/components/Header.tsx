@@ -3,10 +3,11 @@ import { ReactComponent as Logo } from '../assets/icons/header-logo.svg';
 import { ReactComponent as DressIcon } from '../assets/icons/dress.svg';
 import { Link } from 'react-router-dom';
 
-const Container = styled.div`
+const Container = styled.div<{ type: string }>`
   width: 360px;
   height: 70px;
-  background-color: transparent;
+  background-color: ${(props) =>
+    props.type == 'trans' ? 'transparent' : 'white'};
   padding: 12px 16px;
   display: flex;
   flex-direction: row;
@@ -17,9 +18,11 @@ const Container = styled.div`
   top: 0;
 `;
 
-export default function Header() {
+type HeaderType = 'white' | 'trans';
+
+export default function Header(type: { kind: HeaderType }) {
   return (
-    <Container>
+    <Container type={type.kind}>
       <Link to="/home">
         <Logo />
       </Link>
