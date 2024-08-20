@@ -74,3 +74,10 @@ export const DTL_Day = styled.p`
   font-size: 24px;
   letter-spacing: -1.92px;
 `;
+
+export const Account_alert_reg = styled.p`
+  font-family: 'Noto_Reg';
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: -1.12px;
+`;
