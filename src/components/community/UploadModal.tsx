@@ -11,7 +11,7 @@ import UploadImage from './UploadImage';
 import { ReactComponent as DressIcon } from '../../assets/icons/dress.svg';
 
 const Container = styled.div`
-  width: 100%;
+  width: 360px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -20,7 +20,6 @@ const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.7);
   position: fixed;
   top: 0;
-  left: 0;
   z-index: 1000;
 `;
 

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { CTA_button_med } from 'styles/typography';
 import { ReactComponent as ImageIcon } from '../../assets/icons/image.svg';

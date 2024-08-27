@@ -43,9 +43,9 @@ export default function Footer(type: { kind: FooterType }) {
   return (
     <Container type={type.kind}>
       <Box>
-        <Noto_Receipt>
-          <Button>로그아웃</Button>
-        </Noto_Receipt>
+        <Button>
+          <Noto_Receipt>로그아웃</Noto_Receipt>
+        </Button>
         <EmailBox>
           <Noto_Receipt>문의</Noto_Receipt>
           <Noto_Receipt>

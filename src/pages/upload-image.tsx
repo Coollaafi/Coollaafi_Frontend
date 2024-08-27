@@ -101,11 +101,12 @@ export default function UploadImagePage() {
       </TextBox>
       <UploadFile />
       <GuideBox>
-        <Main_title_med>
-          <Title>
-            <Star>*</Star>사진 업로드 가이드
-          </Title>
-        </Main_title_med>
+        <Title>
+          <Star>
+            <Main_title_med>* </Main_title_med>
+          </Star>
+          <Main_title_med>사진 업로드 가이드 </Main_title_med>
+        </Title>
         <Texts>
           <Desc_150_med>
             <TotalText>
