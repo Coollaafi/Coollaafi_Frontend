@@ -87,7 +87,7 @@ const Button = styled.div`
 export default function UploadImagePage() {
   return (
     <Container>
-      <Header kind={'trans'} />
+      <Header type={'trans'} />
       <TextBox>
         <User>
           <User_id_title_med>평범한 패피 김이화</User_id_title_med>

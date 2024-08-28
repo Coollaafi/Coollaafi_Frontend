@@ -1,15 +1,13 @@
 import styled from 'styled-components';
-import {
-  Account_alert_reg,
-  Chip_button_med,
-  Main_title_med,
-} from 'styles/typography';
+import { Account_alert_reg, Main_title_med } from 'styles/typography';
 import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
 import { ReactComponent as LocationIcon } from '../../assets/icons/location.svg';
 import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
 import { ReactComponent as LikeIcon } from '../../assets/icons/like.svg';
+import { Link } from 'react-router-dom';
+import NicknameBox from 'components/NicknameBox';
 
-const Container = styled.div`
+const Container = styled(Link)`
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -19,6 +17,8 @@ const Container = styled.div`
   background-color: #fbfbfb;
   border-bottom: 2px solid #f4f4f4;
   cursor: pointer;
+  text-decoration: none;
+  color: black;
 `;
 
 const Box = styled.div`
@@ -49,6 +49,7 @@ const ProfileImg = styled.img`
   border-radius: 100%;
   border: none;
   object-fit: cover;
+  cursor: default;
 `;
 
 const ProfileDes = styled.div`
@@ -57,18 +58,6 @@ const ProfileDes = styled.div`
   flex-direction: column;
   padding: 3px 0;
   gap: 4px;
-`;
-
-const NickName = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 110px;
-  height: 24px;
-  border-radius: 40px;
-  border: 1px solid #ededed;
-  background-color: #f8f8f8;
-  color: #919191;
 `;
 
 const Date = styled.div`
@@ -89,13 +78,13 @@ const PostImgBox = styled.div`
   display: flex;
   flex-direction: row;
   gap: 8px;
-  cursor: default;
 `;
 
 const PostImg = styled.img`
   width: 160px;
   height: 220px;
   object-fit: contain;
+  cursor: default;
 `;
 
 const LocationBox = styled.div`
@@ -134,6 +123,7 @@ type PostProps = {
   location: string;
   like: number;
   comment: number;
+  postId: number;
 };
 
 export default function Post({
@@ -147,18 +137,23 @@ export default function Post({
   location,
   like,
   comment,
+  postId,
 }: PostProps) {
   return (
-    <Container>
+    <Container to={`/community/${postId}`}>
       <Box>
         <ProfileBox>
           <Profile>
-            <ProfileImg src={profileImage} />
+            <ProfileImg
+              src={profileImage}
+              onClick={(e) => {
+                e.stopPropagation(); //e.stopPropagation(): 상위 엘레멘트들로의 이벤트 전파 중단
+                e.preventDefault(); //e.preventDefault(): 고유 동작 멈춤
+              }}
+            />
             <ProfileDes>
               <Main_title_med>{id}</Main_title_med>
-              <NickName>
-                <Chip_button_med>{nickname}</Chip_button_med>
-              </NickName>
+              <NicknameBox nickname={nickname} />
             </ProfileDes>
           </Profile>
           <Date>
@@ -170,8 +165,20 @@ export default function Post({
           <Account_alert_reg>{weather}</Account_alert_reg>
         </WeatherBox>
         <PostImgBox>
-          <PostImg src={ootdImage} />
-          <PostImg src={collageImage} />
+          <PostImg
+            src={ootdImage}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
+          />
+          <PostImg
+            src={collageImage}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
+          />
         </PostImgBox>
         <LocationBox>
           <LocationIcon />

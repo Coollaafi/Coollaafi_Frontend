@@ -20,9 +20,13 @@ const Container = styled.div<{ type: string }>`
 
 type HeaderType = 'white' | 'trans';
 
-export default function Header(type: { kind: HeaderType }) {
+type HeaderProps = {
+  type: HeaderType;
+};
+
+export default function Header({ type }: HeaderProps) {
   return (
-    <Container type={type.kind}>
+    <Container type={type}>
       <Link to="/home">
         <Logo />
       </Link>

@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import UploadModal from 'components/community/UploadModal';
-import useModal from 'hooks/community/useModal';
 import { CTA_button_med, Main_title_med } from 'styles/typography';
 import { ReactComponent as PencilIcon } from '../assets/icons/pencil.svg';
 import { ReactComponent as FriendIcon } from '../assets/icons/friend.svg';
 import { ReactComponent as PlusIcon } from '../assets/icons/friend-plus.svg';
 import { ReactComponent as MenuIcon } from '../assets/icons/menu.svg';
+import UploadModal from 'components/community/UploadModal';
+import useModal from 'hooks/community/useModal';
 import Header from 'components/Header';
 import Post from 'components/community/Post';
 import Footer from 'components/Footer';
@@ -65,7 +65,7 @@ export default function CommunityPage() {
 
   return (
     <Container>
-      <Header kind={'white'} />
+      <Header type={'white'} />
       <TitleBox>
         <Main_title_med>이번주 친구들의 룩북 구경하기</Main_title_med>
         <Icons>
@@ -97,6 +97,7 @@ export default function CommunityPage() {
         location={'서울특별시 성동구'}
         like={33}
         comment={2}
+        postId={0}
       />
       <Post
         profileImage={'https://i.ibb.co/LNpPpWJ/image.jpg'}
@@ -113,6 +114,7 @@ export default function CommunityPage() {
         location={'서울특별시 성동구'}
         like={33}
         comment={2}
+        postId={1}
       />
       <Post
         profileImage={'https://i.ibb.co/LNpPpWJ/image.jpg'}
@@ -129,6 +131,7 @@ export default function CommunityPage() {
         location={'서울특별시 성동구'}
         like={33}
         comment={2}
+        postId={2}
       />
       <Post
         profileImage={'https://i.ibb.co/LNpPpWJ/image.jpg'}
@@ -145,6 +148,7 @@ export default function CommunityPage() {
         location={'서울특별시 성동구'}
         like={33}
         comment={2}
+        postId={3}
       />
       <Footer kind={'white'} />
       <UploadBtn onClick={openModal}>
