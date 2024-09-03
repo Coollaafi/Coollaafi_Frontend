@@ -3,12 +3,13 @@ import { CTA_button_med, Main_title_med } from 'styles/typography';
 import { ReactComponent as PencilIcon } from '../assets/icons/pencil.svg';
 import { ReactComponent as FriendIcon } from '../assets/icons/friend.svg';
 import { ReactComponent as PlusIcon } from '../assets/icons/friend-plus.svg';
-import { ReactComponent as MenuIcon } from '../assets/icons/menu.svg';
+import { Desc_120_med } from 'styles/typography';
 import UploadModal from 'components/community/UploadModal';
 import useModal from 'hooks/community/useModal';
 import Header from 'components/Header';
 import Post from 'components/community/Post';
 import Footer from 'components/Footer';
+import { useState } from 'react';
 
 const Container = styled.div`
   width: 360px;
@@ -20,32 +21,75 @@ const Container = styled.div`
 
 const TitleBox = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 16px;
   width: 100%;
-  height: 47px;
-  padding: 0 16px;
+  height: 91px;
+  padding: 8px 16px 16px 16px;
   color: black;
   margin-top: 70px;
 `;
 
-const Icons = styled.div`
+const BarBox = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const BtnTitle = styled.div`
+  display: flex;
+  height: 24px;
+  align-items: center;
 `;
 
 const PlusFriendIcon = styled.div`
   display: flex;
   flex-direction: row;
+  cursor: pointer;
+  align-items: center;
 `;
 
 const MarginBox = styled.div`
   margin-right: -10px;
+  height: 24px;
 `;
 
 const IconBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const CheckBoxs = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 4px;
+  width: 108px;
+  height: 32px;
+  border-radius: 80px;
+  background-color: #efefef;
+`;
+
+const CheckBox = styled.div<{ isClicked: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 24px;
+  border-radius: 40px;
+  background-color: ${(props) => (props.isClicked ? '#000000' : '#ffffff')};
+  color: ${(props) => (props.isClicked ? '#ffffff' : '#919191')};
   cursor: pointer;
+  &:hover {
+    background-color: #000;
+    color: #ffffff;
+  }
 `;
 
 const UploadBtn = styled.button`
@@ -62,14 +106,26 @@ const UploadBtn = styled.button`
 
 export default function CommunityPage() {
   const { isOpen, closeModal, openModal } = useModal();
+  const [isAll, setIsAll] = useState<boolean>(true);
 
   return (
     <Container>
       <Header type={'white'} />
       <TitleBox>
         <Main_title_med>이번주 친구들의 룩북 구경하기</Main_title_med>
-        <Icons>
+        <BarBox>
+          <CheckBoxs>
+            <CheckBox isClicked={!isAll} onClick={() => setIsAll(false)}>
+              <Desc_120_med>내 위치</Desc_120_med>
+            </CheckBox>
+            <CheckBox isClicked={isAll} onClick={() => setIsAll(true)}>
+              <Desc_120_med>전체위치</Desc_120_med>
+            </CheckBox>
+          </CheckBoxs>
           <IconBox>
+            <BtnTitle>
+              <Main_title_med>친구추가하기</Main_title_med>
+            </BtnTitle>
             <PlusFriendIcon>
               <MarginBox>
                 <PlusIcon />
@@ -77,10 +133,7 @@ export default function CommunityPage() {
               <FriendIcon />
             </PlusFriendIcon>
           </IconBox>
-          <IconBox>
-            <MenuIcon />
-          </IconBox>
-        </Icons>
+        </BarBox>
       </TitleBox>
       <Post
         profileImage={'https://i.ibb.co/LNpPpWJ/image.jpg'}
