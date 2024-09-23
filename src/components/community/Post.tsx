@@ -191,7 +191,7 @@ export default function Post({
           <Account_alert_reg>{like}</Account_alert_reg>
         </DetailBox>
         <DetailBox>
-          <CommentIcon />
+          <CommentIcon fill="black" />
           <Account_alert_reg>{comment}</Account_alert_reg>
         </DetailBox>
       </SubBox>

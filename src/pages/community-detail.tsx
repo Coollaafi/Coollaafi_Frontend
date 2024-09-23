@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 import Header from 'components/Header';
 import Post from 'components/community/Post';
+import CommentBox from 'components/community/CommentBox';
+import { ReactComponent as UploadIcon } from '../assets/icons/comment-upload.svg';
 import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 
 const Container = styled.div`
   width: 360px;
@@ -9,6 +12,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 56px;
 `;
 
 const PostBox = styled.div`
@@ -16,8 +20,85 @@ const PostBox = styled.div`
   margin-top: 70px;
 `;
 
+const InputBox = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  width: 360px;
+  min-height: 56px;
+  position: fixed;
+  bottom: 0;
+  background-color: #f4f4f4;
+`;
+
+const Input = styled.textarea<{ row: number }>`
+  display: flex;
+  align-items: center;
+  width: ${(props) => (props.row == 1 ? '336px' : '400px')};
+  height: ${(props) => (props.row == 1 ? '40px' : '104px')};
+  border-radius: 64px;
+  background-color: #fff;
+  border: none;
+  outline: none;
+  caret-color: #000000;
+  padding: ${(props) =>
+    props.row == 1 ? '10px 35px 0 51px' : '8px 35px 8px 51px'};
+  font-family: 'Noto_Reg';
+  font-size: 12px;
+  line-height: 18px;
+  resize: none;
+  word-break: break-all;
+  overflow: scroll;
+`;
+
+const ProfileImage = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  position: absolute;
+  left: 16px;
+  object-fit: cover;
+`;
+
+const Icon = styled.div`
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 16px;
+  cursor: pointer;
+`;
+
 export default function CommunityDetailPage() {
   const params = useParams();
+  const [row, setRow] = useState(1);
+
+  const mainComment = {
+    commentId: 0,
+    parentId: null,
+    profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
+    nickname: '예사롭지 않은 패피',
+    id: 'Ewha06',
+    content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
+  };
+
+  const subComment = [
+    {
+      commentId: 0,
+      parentId: 0,
+      profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
+      nickname: '예사롭지 않은 패피',
+      id: 'Ewha06',
+      content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
+    },
+    {
+      commentId: 1,
+      parentId: 0,
+      profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
+      nickname: '예사롭지 않은 패피',
+      id: 'Ewha06',
+      content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
+    },
+  ];
 
   return (
     <Container>
@@ -41,6 +122,14 @@ export default function CommunityDetailPage() {
           postId={3}
         />
       </PostBox>
+      <CommentBox mainComment={undefined} subComment={undefined} />
+      <InputBox>
+        <ProfileImage src="https://i.ibb.co/LNpPpWJ/image.jpg" />
+        <Input row={row} />
+        <Icon>
+          <UploadIcon />
+        </Icon>
+      </InputBox>
     </Container>
   );
 }
