@@ -4,7 +4,7 @@ import Post from 'components/community/Post';
 import CommentBox from 'components/community/CommentBox';
 import { ReactComponent as UploadIcon } from '../assets/icons/comment-upload.svg';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 const Container = styled.div`
   width: 360px;
@@ -69,8 +69,19 @@ const Icon = styled.div`
 `;
 
 export default function CommunityDetailPage() {
-  const params = useParams();
   const [row, setRow] = useState(1);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [isInput, setIsInput] = useState<boolean>(false);
+
+  const onClickComment = () => {
+    setIsInput(!isInput);
+  };
+
+  const onClickUpload = () => {
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  };
 
   const mainComment = {
     commentId: 0,
@@ -122,11 +133,17 @@ export default function CommunityDetailPage() {
           postId={3}
         />
       </PostBox>
-      <CommentBox mainComment={undefined} subComment={undefined} />
+      <CommentBox
+        mainComment={mainComment}
+        subComment={subComment}
+        onClickComment={onClickComment}
+        isInput={isInput}
+        inputRef={inputRef}
+      />
       <InputBox>
         <ProfileImage src="https://i.ibb.co/LNpPpWJ/image.jpg" />
-        <Input row={row} />
-        <Icon>
+        <Input ref={inputRef} row={row} />
+        <Icon onClick={onClickUpload}>
           <UploadIcon />
         </Icon>
       </InputBox>

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Comment from './Comment';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Desc_150_reg, Account_alert_reg } from 'styles/typography';
 import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
 
@@ -74,13 +74,24 @@ type CommentBoxProps = {
         content: string;
       }[]
     | undefined;
+
+  onClickComment(): void;
+  isInput: boolean;
+  inputRef: React.RefObject<HTMLTextAreaElement>;
 };
+
 export default function CommentBox({
   mainComment,
   subComment,
+  onClickComment,
+  isInput,
+  inputRef,
 }: CommentBoxProps) {
   const [isClicked, setIsClicked] = useState(false);
-  const [isInput, setIsInput] = useState(false);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [isInput]);
 
   return (
     <Container isBlank={mainComment == undefined ? true : false}>
@@ -108,13 +119,13 @@ export default function CommentBox({
                   />
                 </div>
               ))}
-              <CommentBtn onClick={() => setIsInput(true)}>
+              <CommentBtn onClick={onClickComment}>
                 <Desc_150_reg>답글 달기</Desc_150_reg>
               </CommentBtn>
             </ReCommentBox>
           ) : (
             <BarBox>
-              <CommentBtn onClick={() => setIsInput(true)}>
+              <CommentBtn onClick={onClickComment}>
                 <Desc_150_reg>답글 달기</Desc_150_reg>
               </CommentBtn>
               {subComment && (
