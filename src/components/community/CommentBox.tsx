@@ -90,8 +90,10 @@ export default function CommentBox({
   const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
-    inputRef.current?.focus();
-  }, [isInput]);
+    if (isInput) {
+      inputRef.current?.focus();
+    }
+  });
 
   return (
     <Container isBlank={mainComment == undefined ? true : false}>

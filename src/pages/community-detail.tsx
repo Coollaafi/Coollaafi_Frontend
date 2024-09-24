@@ -72,9 +72,11 @@ export default function CommunityDetailPage() {
   const [row, setRow] = useState(1);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [isInput, setIsInput] = useState<boolean>(false);
+  const [isClicked, setIsClicked] = useState<boolean>(false);
 
   const onClickComment = () => {
-    setIsInput(!isInput);
+    setIsInput(true);
+    setIsClicked(!isClicked);
   };
 
   const onClickUpload = () => {
