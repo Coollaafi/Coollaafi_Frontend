@@ -87,7 +87,7 @@ const Button = styled.div`
 export default function UploadImagePage() {
   return (
     <Container>
-      <Header />
+      <Header type={'trans'} />
       <TextBox>
         <User>
           <User_id_title_med>평범한 패피 김이화</User_id_title_med>
@@ -101,11 +101,12 @@ export default function UploadImagePage() {
       </TextBox>
       <UploadFile />
       <GuideBox>
-        <Main_title_med>
-          <Title>
-            <Star>*</Star>사진 업로드 가이드
-          </Title>
-        </Main_title_med>
+        <Title>
+          <Star>
+            <Main_title_med>* </Main_title_med>
+          </Star>
+          <Main_title_med>사진 업로드 가이드 </Main_title_med>
+        </Title>
         <Texts>
           <Desc_150_med>
             <TotalText>
@@ -134,7 +135,7 @@ export default function UploadImagePage() {
         <UploadIcon />
         <CTA_button_med>사진 업로드하기</CTA_button_med>
       </Button>
-      <Footer />
+      <Footer kind={'black'} />
     </Container>
   );
 }

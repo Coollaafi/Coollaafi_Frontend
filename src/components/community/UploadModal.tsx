@@ -11,14 +11,16 @@ import UploadImage from './UploadImage';
 import { ReactComponent as DressIcon } from '../../assets/icons/dress.svg';
 
 const Container = styled.div`
-  width: 100%;
+  width: 360px;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 10;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
 `;
 
 const ModalBox = styled.div`

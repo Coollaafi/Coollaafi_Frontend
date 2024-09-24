@@ -154,7 +154,7 @@ export default function RecommendPage() {
 
   return (
     <Container>
-      <Header />
+      <Header type={'white'} />
       <Box>
         {/*api 연결 시, 날짜에 맞게 변화하도록*/}
         <FirBox>

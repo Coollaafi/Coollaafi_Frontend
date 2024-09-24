@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { Noto_Receipt } from 'styles/typography';
 
-const Container = styled.div`
+const Container = styled.div<{ type: string }>`
   width: 360px;
   height: 64px;
   padding: 18px 16px 0 16px;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 100;
+  background-color: ${(props) =>
+    props.type == 'black' ? 'rgba(0, 0, 0, 0.6)' : '#FBFBFB'};
   color: #9f9f9f;
 `;
 
@@ -37,13 +37,15 @@ const Button = styled.div`
   cursor: pointer;
 `;
 
-export default function Footer() {
+type FooterType = 'black' | 'white';
+
+export default function Footer(type: { kind: FooterType }) {
   return (
-    <Container>
+    <Container type={type.kind}>
       <Box>
-        <Noto_Receipt>
-          <Button>로그아웃</Button>
-        </Noto_Receipt>
+        <Button>
+          <Noto_Receipt>로그아웃</Noto_Receipt>
+        </Button>
         <EmailBox>
           <Noto_Receipt>문의</Noto_Receipt>
           <Noto_Receipt>
