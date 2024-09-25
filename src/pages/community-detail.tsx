@@ -85,19 +85,10 @@ export default function CommunityDetailPage() {
     }
   };
 
-  const mainComment = {
-    commentId: 0,
-    parentId: null,
-    profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
-    nickname: '예사롭지 않은 패피',
-    id: 'Ewha06',
-    content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
-  };
-
-  const subComment = [
+  const mainComment = [
     {
       commentId: 0,
-      parentId: 0,
+      parentId: null,
       profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
       nickname: '예사롭지 않은 패피',
       id: 'Ewha06',
@@ -105,7 +96,34 @@ export default function CommunityDetailPage() {
     },
     {
       commentId: 1,
+      parentId: null,
+      profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
+      nickname: '평범한 패피',
+      id: 'Ewha03',
+      content: '짱이다잉..',
+    },
+  ];
+
+  const subComment = [
+    {
+      commentId: 0,
       parentId: 0,
+      profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
+      nickname: '평범한 패피',
+      id: 'Ewha03',
+      content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
+    },
+    {
+      commentId: 1,
+      parentId: 0,
+      profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
+      nickname: '평범한 패피',
+      id: 'Ewha03',
+      content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
+    },
+    {
+      commentId: 1,
+      parentId: 1,
       profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
       nickname: '예사롭지 않은 패피',
       id: 'Ewha06',

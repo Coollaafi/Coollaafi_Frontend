@@ -8,28 +8,26 @@ const Container = styled.div<{ isBlank: boolean }>`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 16px;
   background-color: #fff;
   border-bottom: ${(props) => (props.isBlank ? 'none' : '2px solid #f4f4f4')};
-  padding: 16px;
+  padding-bottom: 16px;
 `;
 
 const ReCommentBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 24px;
   padding-left: 48px;
   width: 100%;
-  margin-top: 8px;
 `;
 
 const BarBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-left: 48px;
+  padding: 0 16px 0 64px;
   width: 100%;
   color: #9f9f9f;
+  margin-top: 8px;
 `;
 
 const CommentIconBox = styled.div`
@@ -44,6 +42,8 @@ const CommentIconBox = styled.div`
 const CommentBtn = styled.div`
   cursor: pointer;
   color: #9f9f9f;
+  margin-top: 16px;
+  padding-left: 16px;
 `;
 
 const BlankBox = styled.div`
@@ -61,7 +61,7 @@ type CommentBoxProps = {
         nickname: string;
         id: string;
         content: string;
-      }
+      }[]
     | undefined;
 
   subComment:
@@ -88,6 +88,7 @@ export default function CommentBox({
   inputRef,
 }: CommentBoxProps) {
   const [isClicked, setIsClicked] = useState(false);
+  const [comLength, setComLength] = useState<number[]>([]);
 
   useEffect(() => {
     if (isInput) {
@@ -95,49 +96,69 @@ export default function CommentBox({
     }
   });
 
+  useEffect(() => {
+    const updatedLength = [...comLength];
+
+    mainComment?.map((comment) => {
+      updatedLength[comment.commentId] =
+        subComment?.filter((item) => item.parentId == comment.commentId)
+          .length ?? 0;
+
+      setComLength(updatedLength);
+    });
+  }, subComment);
+
   return (
     <Container isBlank={mainComment == undefined ? true : false}>
       {mainComment ? (
         <>
-          <Comment
-            commentId={mainComment.commentId}
-            parentId={mainComment.parentId}
-            profileImg={mainComment.profileImg}
-            nickname={mainComment.nickname}
-            id={mainComment.id}
-            content={mainComment.content}
-          />
-          {isClicked ? (
-            <ReCommentBox>
-              {subComment?.map((comment, idx) => (
-                <div key={idx}>
-                  <Comment
-                    commentId={comment.commentId}
-                    parentId={comment.parentId}
-                    profileImg={comment.profileImg}
-                    nickname={comment.nickname}
-                    id={comment.id}
-                    content={comment.content}
-                  />
-                </div>
-              ))}
-              <CommentBtn onClick={onClickComment}>
-                <Desc_150_reg>답글 달기</Desc_150_reg>
-              </CommentBtn>
-            </ReCommentBox>
-          ) : (
-            <BarBox>
-              <CommentBtn onClick={onClickComment}>
-                <Desc_150_reg>답글 달기</Desc_150_reg>
-              </CommentBtn>
-              {subComment && (
-                <CommentIconBox onClick={() => setIsClicked(true)}>
-                  <CommentIcon fill="#9F9F9F" />
-                  <Account_alert_reg>{subComment.length}</Account_alert_reg>
-                </CommentIconBox>
+          {mainComment.map((comment, idx) => (
+            <div key={idx}>
+              <Comment
+                commentId={comment.commentId}
+                parentId={comment.parentId}
+                profileImg={comment.profileImg}
+                nickname={comment.nickname}
+                id={comment.id}
+                content={comment.content}
+              />
+              {isClicked ? (
+                <ReCommentBox>
+                  {subComment
+                    ?.filter((item) => item.parentId == comment.commentId)
+                    ?.map((subComment, idx) => (
+                      <div key={idx}>
+                        <Comment
+                          commentId={subComment.commentId}
+                          parentId={subComment.parentId}
+                          profileImg={subComment.profileImg}
+                          nickname={subComment.nickname}
+                          id={subComment.id}
+                          content={subComment.content}
+                        />
+                      </div>
+                    ))}
+                  <CommentBtn onClick={onClickComment}>
+                    <Desc_150_reg>답글 달기</Desc_150_reg>
+                  </CommentBtn>
+                </ReCommentBox>
+              ) : (
+                <BarBox>
+                  <CommentBtn onClick={onClickComment}>
+                    <Desc_150_reg>답글 달기</Desc_150_reg>
+                  </CommentBtn>
+                  {subComment && (
+                    <CommentIconBox onClick={() => setIsClicked(true)}>
+                      <CommentIcon fill="#9F9F9F" />
+                      <Account_alert_reg>
+                        {comLength[comment.commentId]}
+                      </Account_alert_reg>
+                    </CommentIconBox>
+                  )}
+                </BarBox>
               )}
-            </BarBox>
-          )}
+            </div>
+          ))}
         </>
       ) : (
         <BlankBox>
