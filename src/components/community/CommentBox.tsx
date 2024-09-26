@@ -42,6 +42,11 @@ const CommentIconBox = styled.div`
 const CommentBtn = styled.div`
   cursor: pointer;
   color: #9f9f9f;
+`;
+
+const ClickedCommentBtn = styled.div`
+  cursor: pointer;
+  color: #9f9f9f;
   margin-top: 16px;
   padding-left: 16px;
 `;
@@ -87,8 +92,15 @@ export default function CommentBox({
   isInput,
   inputRef,
 }: CommentBoxProps) {
-  const [isClicked, setIsClicked] = useState(false);
-  const [comLength, setComLength] = useState<number[]>([]);
+  const [isClicked, setIsClicked] = useState<boolean[]>([]); //댓글 더 보기 버튼
+  const [isClickedWr, setIsClickedWr] = useState<boolean[]>([]); //댓글쓰기 버튼
+  const [comLength, setComLength] = useState<number[]>([]); //subComment 갯수
+
+  const onClickMoreComment = (id: number) => {
+    const updatedClicked = [...isClicked];
+    updatedClicked[id] = true;
+    setIsClicked(updatedClicked);
+  };
 
   useEffect(() => {
     if (isInput) {
@@ -122,7 +134,7 @@ export default function CommentBox({
                 id={comment.id}
                 content={comment.content}
               />
-              {isClicked ? (
+              {isClicked[comment.commentId] ? (
                 <ReCommentBox>
                   {subComment
                     ?.filter((item) => item.parentId == comment.commentId)
@@ -138,9 +150,9 @@ export default function CommentBox({
                         />
                       </div>
                     ))}
-                  <CommentBtn onClick={onClickComment}>
+                  <ClickedCommentBtn onClick={onClickComment}>
                     <Desc_150_reg>답글 달기</Desc_150_reg>
-                  </CommentBtn>
+                  </ClickedCommentBtn>
                 </ReCommentBox>
               ) : (
                 <BarBox>
@@ -148,7 +160,9 @@ export default function CommentBox({
                     <Desc_150_reg>답글 달기</Desc_150_reg>
                   </CommentBtn>
                   {subComment && (
-                    <CommentIconBox onClick={() => setIsClicked(true)}>
+                    <CommentIconBox
+                      onClick={() => onClickMoreComment(comment.commentId)}
+                    >
                       <CommentIcon fill="#9F9F9F" />
                       <Account_alert_reg>
                         {comLength[comment.commentId]}
