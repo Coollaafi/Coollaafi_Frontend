@@ -49,6 +49,9 @@ const Input = styled.textarea<{ row: number }>`
   resize: none;
   word-break: break-all;
   overflow: scroll;
+  &::placeholder {
+    color: #9f9f9f;
+  }
 `;
 
 const ProfileImage = styled.img`
@@ -72,10 +75,7 @@ export default function CommunityDetailPage() {
   const [row, setRow] = useState(1);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [isInput, setIsInput] = useState<boolean>(false);
-
-  const onClickComment = () => {
-    setIsInput(!isInput);
-  };
+  const [ClickedLa, setClickedLa] = useState<string | undefined>(); //input placeholder
 
   const onClickUpload = () => {
     if (inputRef.current) {
@@ -83,19 +83,10 @@ export default function CommunityDetailPage() {
     }
   };
 
-  const mainComment = {
-    commentId: 0,
-    parentId: null,
-    profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
-    nickname: '예사롭지 않은 패피',
-    id: 'Ewha06',
-    content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
-  };
-
-  const subComment = [
+  const mainComment = [
     {
       commentId: 0,
-      parentId: 0,
+      parentId: null,
       profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
       nickname: '예사롭지 않은 패피',
       id: 'Ewha06',
@@ -103,7 +94,34 @@ export default function CommunityDetailPage() {
     },
     {
       commentId: 1,
+      parentId: null,
+      profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
+      nickname: '평범한 패피',
+      id: 'Ewha03',
+      content: '짱이다잉..',
+    },
+  ];
+
+  const subComment = [
+    {
+      commentId: 0,
       parentId: 0,
+      profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
+      nickname: '평범한 패피',
+      id: 'Ewha03',
+      content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
+    },
+    {
+      commentId: 1,
+      parentId: 0,
+      profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
+      nickname: '평범한 패피',
+      id: 'Ewha03',
+      content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
+    },
+    {
+      commentId: 1,
+      parentId: 1,
       profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
       nickname: '예사롭지 않은 패피',
       id: 'Ewha06',
@@ -136,13 +154,20 @@ export default function CommunityDetailPage() {
       <CommentBox
         mainComment={mainComment}
         subComment={subComment}
-        onClickComment={onClickComment}
         isInput={isInput}
+        setIsInput={setIsInput}
+        setClickedLa={setClickedLa}
         inputRef={inputRef}
       />
       <InputBox>
         <ProfileImage src="https://i.ibb.co/LNpPpWJ/image.jpg" />
-        <Input ref={inputRef} row={row} />
+        <Input
+          ref={inputRef}
+          row={row}
+          placeholder={
+            ClickedLa == undefined ? '' : `${ClickedLa}에게 남긴 댓글`
+          }
+        />
         <Icon onClick={onClickUpload}>
           <UploadIcon />
         </Icon>

@@ -5,8 +5,7 @@ const NickName = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 110px;
-  height: 24px;
+  padding: 5px 12px;
   border-radius: 40px;
   border: 1px solid #ededed;
   background-color: #f8f8f8;

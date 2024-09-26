@@ -3,11 +3,13 @@ import NicknameBox from 'components/NicknameBox';
 import { Main_title_med } from 'styles/typography';
 import { Desc_150_reg } from 'styles/typography';
 
-const Container = styled.div`
+const Container = styled.div<{ isClicked: boolean }>`
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 16px;
+  padding: 16px 16px 8px 16px;
+  background-color: ${(props) => (props.isClicked ? '#fbfbfb' : '#fff')};
 `;
 
 const Header = styled.div`
@@ -42,6 +44,7 @@ type CommentProps = {
   nickname: string;
   id: string;
   content: string;
+  isClicked: boolean | undefined;
 };
 
 export default function Comment({
@@ -51,9 +54,10 @@ export default function Comment({
   nickname,
   id,
   content,
+  isClicked,
 }: CommentProps) {
   return (
-    <Container>
+    <Container isClicked={isClicked ? isClicked : false}>
       <Header>
         <ProfileImg src={profileImg} />
         <NameBox>
