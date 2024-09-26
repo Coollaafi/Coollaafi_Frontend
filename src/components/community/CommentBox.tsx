@@ -1,33 +1,37 @@
 import styled from 'styled-components';
 import Comment from './Comment';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Desc_150_reg, Account_alert_reg } from 'styles/typography';
 import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
 
-const Container = styled.div<{ isBlank: boolean }>`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   background-color: #fff;
-  border-bottom: ${(props) => (props.isBlank ? 'none' : '2px solid #f4f4f4')};
-  padding-bottom: 16px;
 `;
 
-const ReCommentBox = styled.div`
+const ReCommentBox = styled.div<{ isBlank: boolean }>`
+  width: 100;
+  border-bottom: ${(props) => (props.isBlank ? 'none' : '2px solid #f4f4f4')};
+`;
+
+const ReComments = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 48px;
   width: 100%;
 `;
 
-const BarBox = styled.div`
+const BarBox = styled.div<{ isClicked: boolean; isBlank: boolean }>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0 16px 0 64px;
+  padding: 8px 16px 16px 64px;
   width: 100%;
   color: #9f9f9f;
-  margin-top: 8px;
+  background-color: ${(props) => (props.isClicked ? '#fbfbfb' : '#fff')};
+  border-bottom: ${(props) => (props.isBlank ? 'none' : '2px solid #f4f4f4')};
 `;
 
 const CommentIconBox = styled.div`
@@ -47,8 +51,7 @@ const CommentBtn = styled.div`
 const ClickedCommentBtn = styled.div`
   cursor: pointer;
   color: #9f9f9f;
-  margin-top: 16px;
-  padding-left: 16px;
+  padding: 16px 0 16px 16px;
 `;
 
 const BlankBox = styled.div`
@@ -80,26 +83,57 @@ type CommentBoxProps = {
       }[]
     | undefined;
 
-  onClickComment(): void;
   isInput: boolean;
+  setIsInput: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedLa: React.Dispatch<React.SetStateAction<string | undefined>>;
   inputRef: React.RefObject<HTMLTextAreaElement>;
 };
 
 export default function CommentBox({
   mainComment,
   subComment,
-  onClickComment,
   isInput,
+  setIsInput,
+  setClickedLa,
   inputRef,
 }: CommentBoxProps) {
-  const [isClicked, setIsClicked] = useState<boolean[]>([]); //댓글 더 보기 버튼
+  const [isClicked, setIsClicked] = useState<boolean>(false); //isInput 활성화
+  const [isClickedMo, setIsClickedMo] = useState<boolean[]>([]); //댓글 더 보기 버튼 클릭시, 메인 댓글 색상 변경
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [isClickedWr, setIsClickedWr] = useState<boolean[]>([]); //댓글쓰기 버튼
   const [comLength, setComLength] = useState<number[]>([]); //subComment 갯수
 
-  const onClickMoreComment = (id: number) => {
-    const updatedClicked = [...isClicked];
+  //timeout
+  const timeoutComment = (id: number) => {
+    const updatedClickedWr = [];
+    updatedClickedWr[id] = false;
+    setIsClickedWr(updatedClickedWr);
+    console.log(isClicked);
+  };
+
+  //댓글쓰기 버튼 이벤트
+  const onClickComment = (id: number) => {
+    setIsInput(true);
+    setIsClicked(!isClicked);
+    const updatedClicked = [];
     updatedClicked[id] = true;
-    setIsClicked(updatedClicked);
+    setIsClickedWr(updatedClicked);
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    setTimeout(() => {
+      timeoutComment(id);
+    }, 3000);
+    setClickedLa(mainComment == undefined ? undefined : mainComment[id]?.id);
+  };
+
+  //댓글 더보기 버튼 이벤트
+  const onClickMoreComment = (id: number) => {
+    const updatedClickedMo = [...isClickedMo];
+    updatedClickedMo[id] = true;
+    setIsClickedMo(updatedClickedMo);
   };
 
   useEffect(() => {
@@ -121,7 +155,7 @@ export default function CommentBox({
   }, subComment);
 
   return (
-    <Container isBlank={mainComment == undefined ? true : false}>
+    <Container>
       {mainComment ? (
         <>
           {mainComment.map((comment, idx) => (
@@ -133,30 +167,39 @@ export default function CommentBox({
                 nickname={comment.nickname}
                 id={comment.id}
                 content={comment.content}
+                isClicked={isClickedWr[comment.commentId]}
               />
-              {isClicked[comment.commentId] ? (
-                <ReCommentBox>
-                  {subComment
-                    ?.filter((item) => item.parentId == comment.commentId)
-                    ?.map((subComment, idx) => (
-                      <div key={idx}>
-                        <Comment
-                          commentId={subComment.commentId}
-                          parentId={subComment.parentId}
-                          profileImg={subComment.profileImg}
-                          nickname={subComment.nickname}
-                          id={subComment.id}
-                          content={subComment.content}
-                        />
-                      </div>
-                    ))}
-                  <ClickedCommentBtn onClick={onClickComment}>
-                    <Desc_150_reg>답글 달기</Desc_150_reg>
-                  </ClickedCommentBtn>
+              {isClickedMo[comment.commentId] ? (
+                <ReCommentBox isBlank={mainComment ? false : true}>
+                  <ReComments>
+                    {subComment
+                      ?.filter((item) => item.parentId == comment.commentId)
+                      ?.map((subComment, idx) => (
+                        <div key={idx}>
+                          <Comment
+                            commentId={subComment.commentId}
+                            parentId={subComment.parentId}
+                            profileImg={subComment.profileImg}
+                            nickname={subComment.nickname}
+                            id={subComment.id}
+                            content={subComment.content}
+                            isClicked={undefined}
+                          />
+                        </div>
+                      ))}
+                    <ClickedCommentBtn
+                      onClick={() => onClickComment(comment.commentId)}
+                    >
+                      <Desc_150_reg>답글 달기</Desc_150_reg>
+                    </ClickedCommentBtn>
+                  </ReComments>
                 </ReCommentBox>
               ) : (
-                <BarBox>
-                  <CommentBtn onClick={onClickComment}>
+                <BarBox
+                  isClicked={isClickedWr[comment.commentId]}
+                  isBlank={mainComment ? false : true}
+                >
+                  <CommentBtn onClick={() => onClickComment(comment.commentId)}>
                     <Desc_150_reg>답글 달기</Desc_150_reg>
                   </CommentBtn>
                   {subComment && (
