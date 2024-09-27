@@ -13,6 +13,8 @@ import { ReactComponent as UploadIcon } from '../assets/icons/upload.svg';
 import { ReactComponent as DressIcon } from '../assets/icons/dress.svg';
 import useModal from 'hooks/useModal';
 import InfoModal from 'components/home/InfoModal';
+import CalendarBox from 'components/home/CalendarBox';
+import Footer from 'components/Footer';
 
 const Container = styled.div`
   width: 360px;
@@ -23,8 +25,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 16px;
-  margin-top: 70px;
+  padding: 70px 16px 0 16px;
 `;
 
 const ProfileBox = styled.div`
@@ -94,7 +95,7 @@ const BtnBox = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 29px;
+  margin: 29px 0 32px 0;
   gap: 8px;
 `;
 
@@ -189,8 +190,10 @@ export default function HomePage() {
             </Btn>
           </Btns>
         </BtnBox>
+        <CalendarBox />
       </Content>
       {isOpen && <InfoModal closeModal={closeModal} />}
+      <Footer kind="white" />
     </Container>
   );
 }
