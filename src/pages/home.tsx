@@ -11,6 +11,8 @@ import { ReactComponent as SettingIcon } from '../assets/icons/setting.svg';
 import { ReactComponent as InfoIcon } from '../assets/icons/info.svg';
 import { ReactComponent as UploadIcon } from '../assets/icons/upload.svg';
 import { ReactComponent as DressIcon } from '../assets/icons/dress.svg';
+import useModal from 'hooks/useModal';
+import InfoModal from 'components/home/InfoModal';
 
 const Container = styled.div`
   width: 360px;
@@ -138,6 +140,8 @@ const Btn = styled(Link)`
 `;
 
 export default function HomePage() {
+  const { isOpen, closeModal, openModal } = useModal();
+
   return (
     <Container>
       <Header type={'white'} />
@@ -150,7 +154,7 @@ export default function HomePage() {
             </Name>
             <Nickname>
               <NicknameBox nickname="평범한 패피" />
-              <Icon>
+              <Icon onClick={openModal}>
                 <InfoIcon />
               </Icon>
             </Nickname>
@@ -186,6 +190,7 @@ export default function HomePage() {
           </Btns>
         </BtnBox>
       </Content>
+      {isOpen && <InfoModal closeModal={closeModal} />}
     </Container>
   );
 }

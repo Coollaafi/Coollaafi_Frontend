@@ -208,7 +208,7 @@ export default function CommunityPage() {
         <CTA_button_med>룩북 올리기</CTA_button_med>
         <PencilIcon />
       </UploadBtn>
-      {isOpen ? <UploadModal closeModal={closeModal} /> : <></>}
+      {isOpen && <UploadModal closeModal={closeModal} />}
     </Container>
   );
 }
