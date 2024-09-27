@@ -5,7 +5,7 @@ import { ReactComponent as FriendIcon } from '../assets/icons/friend.svg';
 import { ReactComponent as PlusIcon } from '../assets/icons/friend-plus.svg';
 import { Desc_120_med } from 'styles/typography';
 import UploadModal from 'components/community/UploadModal';
-import useModal from 'hooks/community/useModal';
+import useModal from 'hooks/useModal';
 import Header from 'components/Header';
 import Post from 'components/community/Post';
 import Footer from 'components/Footer';
