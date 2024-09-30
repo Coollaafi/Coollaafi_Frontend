@@ -132,7 +132,7 @@ export default function UploadImagePage() {
         </Texts>
       </GuideBox>
       <Button>
-        <UploadIcon />
+        <UploadIcon stroke="black" />
         <CTA_button_med>사진 업로드하기</CTA_button_med>
       </Button>
       <Footer kind={'black'} />

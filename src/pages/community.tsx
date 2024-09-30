@@ -5,7 +5,7 @@ import { ReactComponent as FriendIcon } from '../assets/icons/friend.svg';
 import { ReactComponent as PlusIcon } from '../assets/icons/friend-plus.svg';
 import { Desc_120_med } from 'styles/typography';
 import UploadModal from 'components/community/UploadModal';
-import useModal from 'hooks/community/useModal';
+import useModal from 'hooks/useModal';
 import Header from 'components/Header';
 import Post from 'components/community/Post';
 import Footer from 'components/Footer';
@@ -96,7 +96,8 @@ const UploadBtn = styled.button`
   gap: 8px;
   background-color: #000;
   color: #fff;
-  padding: 12px 16px;
+  box-sizing: content-box;
+  padding: 11px 15px;
   border: 1px solid #000;
   border-radius: 40px;
   position: fixed;
@@ -208,7 +209,7 @@ export default function CommunityPage() {
         <CTA_button_med>룩북 올리기</CTA_button_med>
         <PencilIcon />
       </UploadBtn>
-      {isOpen ? <UploadModal closeModal={closeModal} /> : <></>}
+      {isOpen && <UploadModal closeModal={closeModal} />}
     </Container>
   );
 }

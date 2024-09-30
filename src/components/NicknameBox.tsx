@@ -5,11 +5,12 @@ const NickName = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px 12px;
+  padding: 4px 11px;
   border-radius: 40px;
   border: 1px solid #ededed;
   background-color: #f8f8f8;
   color: #919191;
+  box-sizing: content-box;
 `;
 
 type NicknameBoxProps = {
