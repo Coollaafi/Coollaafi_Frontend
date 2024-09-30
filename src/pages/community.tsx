@@ -10,6 +10,7 @@ import Header from 'components/Header';
 import Post from 'components/community/Post';
 import Footer from 'components/Footer';
 import { useState } from 'react';
+import AddFriendModal from 'components/community/AddFriendModal';
 
 const Container = styled.div`
   width: 360px;
@@ -49,7 +50,6 @@ const BtnTitle = styled.div`
 const PlusFriendIcon = styled.div`
   display: flex;
   flex-direction: row;
-  cursor: pointer;
   align-items: center;
 `;
 
@@ -62,6 +62,7 @@ const IconBox = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
 `;
 
 const CheckBoxs = styled.div`
@@ -106,7 +107,16 @@ const UploadBtn = styled.button`
 `;
 
 export default function CommunityPage() {
-  const { isOpen, closeModal, openModal } = useModal();
+  const {
+    isOpen: isUploadOpen,
+    closeModal: closeUploadModal,
+    openModal: openUploadModal,
+  } = useModal();
+  const {
+    isOpen: isAddFriendOpen,
+    closeModal: closeAddFriendModal,
+    openModal: openAddFriendModal,
+  } = useModal();
   const [isAll, setIsAll] = useState<boolean>(true);
 
   return (
@@ -123,7 +133,7 @@ export default function CommunityPage() {
               <Desc_120_med>전체위치</Desc_120_med>
             </CheckBox>
           </CheckBoxs>
-          <IconBox>
+          <IconBox onClick={openAddFriendModal}>
             <BtnTitle>
               <Main_title_med>친구추가하기</Main_title_med>
             </BtnTitle>
@@ -205,11 +215,12 @@ export default function CommunityPage() {
         postId={3}
       />
       <Footer kind={'white'} />
-      <UploadBtn onClick={openModal}>
+      <UploadBtn onClick={openUploadModal}>
         <CTA_button_med>룩북 올리기</CTA_button_med>
         <PencilIcon />
       </UploadBtn>
-      {isOpen && <UploadModal closeModal={closeModal} />}
+      {isUploadOpen && <UploadModal closeModal={closeUploadModal} />}
+      {isAddFriendOpen && <AddFriendModal closeModal={closeAddFriendModal} />}
     </Container>
   );
 }
