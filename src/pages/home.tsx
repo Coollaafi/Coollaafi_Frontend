@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Header from 'components/Header';
@@ -10,11 +11,11 @@ import {
 import { ReactComponent as SettingIcon } from '../assets/icons/setting.svg';
 import { ReactComponent as InfoIcon } from '../assets/icons/info.svg';
 import { ReactComponent as UploadIcon } from '../assets/icons/upload.svg';
-import { ReactComponent as DressIcon } from '../assets/icons/dress.svg';
 import useModal from 'hooks/useModal';
 import InfoModal from 'components/home/InfoModal';
 import CalendarBox from 'components/home/CalendarBox';
 import Footer from 'components/Footer';
+import EditModal from 'components/home/EditModal';
 
 const Container = styled.div`
   width: 360px;
@@ -141,7 +142,16 @@ const Btn = styled(Link)`
 `;
 
 export default function HomePage() {
-  const { isOpen, closeModal, openModal } = useModal();
+  const {
+    isOpen: isInfoOpen,
+    closeModal: closeInfoModal,
+    openModal: openInfoModal,
+  } = useModal();
+  const {
+    isOpen: isEditOpen,
+    closeModal: closeEditModal,
+    openModal: openEditModal,
+  } = useModal();
 
   return (
     <Container>
@@ -155,14 +165,14 @@ export default function HomePage() {
             </Name>
             <Nickname>
               <NicknameBox nickname="평범한 패피" />
-              <Icon onClick={openModal}>
+              <Icon onClick={openInfoModal}>
                 <InfoIcon />
               </Icon>
             </Nickname>
           </NameBox>
           <ImageBox>
             <ProfileImg src="https://i.ibb.co/LNpPpWJ/image.jpg" />
-            <SettingBtn>
+            <SettingBtn onClick={openEditModal}>
               <Desc_120_med>프로필설정</Desc_120_med>
               <SettingIcon />
             </SettingBtn>
@@ -191,7 +201,8 @@ export default function HomePage() {
         </BtnBox>
         <CalendarBox />
       </Content>
-      {isOpen && <InfoModal closeModal={closeModal} />}
+      {isInfoOpen && <InfoModal closeModal={closeInfoModal} />}
+      {isEditOpen && <EditModal closeModal={closeEditModal} />}
       <Footer kind="white" />
     </Container>
   );
