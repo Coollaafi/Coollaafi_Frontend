@@ -120,7 +120,8 @@ const Btns = styled.div`
 
 const Btn = styled(Link)`
   display: flex;
-  padding: 8px 16px;
+  box-sizing: content-box;
+  padding: 7px 15px;
   justify-content: center;
   align-items: center;
   gap: 8px;

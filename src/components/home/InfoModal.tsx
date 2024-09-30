@@ -22,16 +22,17 @@ const Container = styled.div`
 
 const ModalBox = styled.div`
   width: 328px;
-  height: 589px;
+  height: 489px;
   background-color: #fff;
   border: none;
   border-radius: 16px;
-  padding: 24px 32px;
+  padding: 24px 16px;
 `;
 
 const CloseBtn = styled.text`
   display: flex;
   justify-content: end;
+  margin: 0 8px 15px 0;
   cursor: pointer;
 `;
 
@@ -40,14 +41,20 @@ const TitleBox = styled.div`
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  margin: 15px 0 32px 0;
+  margin-bottom: 32px;
+`;
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 39px;
 `;
 
 const DataBox = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 28px;
-  margin-bottom: 15px;
+  gap: 24px;
 `;
 
 const LevelBox = styled.div`
@@ -64,9 +71,8 @@ type InfoModalProps = {
 
 export default function InfoModal({ closeModal }: InfoModalProps) {
   return (
-    <Container onClick={closeModal}>
-      <ModalBox onClick={(e) => e.stopPropagation()}>
-        {/**부모 요소의 이벤트 막음 */}
+    <Container>
+      <ModalBox>
         <CloseBtn onClick={closeModal}>
           <CTA_button_med>닫기</CTA_button_med>
         </CloseBtn>
@@ -76,19 +82,21 @@ export default function InfoModal({ closeModal }: InfoModalProps) {
             업로드한 왓 룩북 이미지를 통해 패피로 성장해보세요!
           </Desc_120_med>
         </TitleBox>
-        {data.level.map((item, idx) => (
-          <DataBox key={idx}>
-            <LevelBox>
-              <CTA_button_med>{`Lv ${item.id}`}</CTA_button_med>
-              <Desc_120_med>
-                {item.max == -1
-                  ? `${item.min}장 -`
-                  : `${item.min} - ${item.max}장`}
-              </Desc_120_med>
-            </LevelBox>
-            <NicknameBox nickname={item.nickname} />
-          </DataBox>
-        ))}
+        <Box>
+          {data.level.map((item, idx) => (
+            <DataBox key={idx}>
+              <LevelBox>
+                <CTA_button_med>{`Lv ${item.id}`}</CTA_button_med>
+                <Desc_120_med>
+                  {item.max == -1
+                    ? `${item.min}장 -`
+                    : `${item.min} - ${item.max}장`}
+                </Desc_120_med>
+              </LevelBox>
+              <NicknameBox nickname={item.nickname} />
+            </DataBox>
+          ))}
+        </Box>
       </ModalBox>
     </Container>
   );

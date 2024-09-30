@@ -96,7 +96,8 @@ const UploadBtn = styled.button`
   gap: 8px;
   background-color: #000;
   color: #fff;
-  padding: 12px 16px;
+  box-sizing: content-box;
+  padding: 11px 15px;
   border: 1px solid #000;
   border-radius: 40px;
   position: fixed;

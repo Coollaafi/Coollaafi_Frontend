@@ -35,7 +35,7 @@ const ModalBox = styled.div`
 const CloseBtn = styled.text`
   display: flex;
   justify-content: end;
-  margin-top: 8px;
+  margin: 8px 8px 0 0;
   cursor: pointer;
 `;
 
@@ -122,7 +122,8 @@ const CheckBoxs = styled.div`
 `;
 
 const CheckBox = styled.button<{ isChecked: boolean }>`
-  padding: 10px 10px;
+  box-sizing: content-box;
+  padding: 9px 9px;
   background-color: ${(props) => (props.isChecked ? '#000000' : '#fbfbfb')};
   border: ${(props) =>
     props.isChecked ? '1px solid #000000' : '1px solid #f4f4f4'};
