@@ -61,7 +61,6 @@ const StyledCalendar = styled.div`
       width: 32px;
       height: 32px;
       border-radius: 100%;
-      border: none;
       background-color: black;
       color: white;
     }
@@ -95,6 +94,11 @@ const StyledCalendar = styled.div`
       height: 18px;
       text-decoration: none;
     }
+  }
+
+  .react-calendar__month-view__weekdays {
+    /*요일 소문자로 변경*/
+    text-transform: none;
   }
 
   .react-calendar__navigation {
@@ -161,7 +165,7 @@ type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export default function CalendarBox() {
-  const [value, setValue] = useState<Value>(new Date());
+  const [value, setValue] = useState<Value>();
 
   const tileClassName = ({ date }: { date: Date }) => {
     if (date > new Date()) {
@@ -178,6 +182,9 @@ export default function CalendarBox() {
           onChange={setValue}
           value={value}
           defaultView="month"
+          formatShortWeekday={(locale, date) =>
+            ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()]
+          }
           formatDay={(locale, date) => format(date, 'd')}
           formatMonthYear={(locale, date) => format(date, 'M')}
           minDate={new Date('2024-05-10')} //사람마다 회원가입 달 넣기
