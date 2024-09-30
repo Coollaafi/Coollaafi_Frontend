@@ -184,9 +184,8 @@ export default function HomePage() {
               <CTA_button_med>사진업로드</CTA_button_med>
               <UploadIcon stroke="black" />
             </Btn>
-            <Btn to={'/community'}>
-              <CTA_button_med>룩북 커뮤니티</CTA_button_med>
-              <DressIcon stroke="black" />
+            <Btn to={'/ai'}>
+              <CTA_button_med> {`AI의 today's 옷추천`}</CTA_button_med>
             </Btn>
           </Btns>
         </BtnBox>
