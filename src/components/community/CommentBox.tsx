@@ -64,22 +64,19 @@ type CommentBoxProps = {
   mainComment:
     | {
         commentId: number;
-        parentId: null;
         profileImg: string;
         nickname: string;
         id: string;
         content: string;
-      }[]
-    | undefined;
-
-  subComment:
-    | {
-        commentId: number;
-        parentId: number;
-        profileImg: string;
-        nickname: string;
-        id: string;
-        content: string;
+        subComment:
+          | {
+              commentId: number;
+              profileImg: string;
+              nickname: string;
+              id: string;
+              content: string;
+            }[]
+          | undefined;
       }[]
     | undefined;
 
@@ -91,7 +88,6 @@ type CommentBoxProps = {
 
 export default function CommentBox({
   mainComment,
-  subComment,
   isInput,
   setIsInput,
   setClickedLa,
@@ -101,7 +97,6 @@ export default function CommentBox({
   const [isClickedMo, setIsClickedMo] = useState<boolean[]>([]); //댓글 더 보기 버튼 클릭시, 메인 댓글 색상 변경
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [isClickedWr, setIsClickedWr] = useState<boolean[]>([]); //댓글쓰기 버튼
-  const [comLength, setComLength] = useState<number[]>([]); //subComment 갯수
 
   //timeout
   const timeoutComment = (id: number) => {
@@ -142,18 +137,6 @@ export default function CommentBox({
     }
   });
 
-  useEffect(() => {
-    const updatedLength = [...comLength];
-
-    mainComment?.map((comment) => {
-      updatedLength[comment.commentId] =
-        subComment?.filter((item) => item.parentId == comment.commentId)
-          .length ?? 0;
-
-      setComLength(updatedLength);
-    });
-  }, subComment);
-
   return (
     <Container>
       {mainComment ? (
@@ -162,7 +145,6 @@ export default function CommentBox({
             <div key={idx}>
               <Comment
                 commentId={comment.commentId}
-                parentId={comment.parentId}
                 profileImg={comment.profileImg}
                 nickname={comment.nickname}
                 id={comment.id}
@@ -172,21 +154,18 @@ export default function CommentBox({
               {isClickedMo[comment.commentId] ? (
                 <ReCommentBox isBlank={mainComment ? false : true}>
                   <ReComments>
-                    {subComment
-                      ?.filter((item) => item.parentId == comment.commentId)
-                      ?.map((subComment, idx) => (
-                        <div key={idx}>
-                          <Comment
-                            commentId={subComment.commentId}
-                            parentId={subComment.parentId}
-                            profileImg={subComment.profileImg}
-                            nickname={subComment.nickname}
-                            id={subComment.id}
-                            content={subComment.content}
-                            isClicked={undefined}
-                          />
-                        </div>
-                      ))}
+                    {comment.subComment?.map((subComment, idx) => (
+                      <div key={idx}>
+                        <Comment
+                          commentId={subComment.commentId}
+                          profileImg={subComment.profileImg}
+                          nickname={subComment.nickname}
+                          id={subComment.id}
+                          content={subComment.content}
+                          isClicked={undefined}
+                        />
+                      </div>
+                    ))}
                     <ClickedCommentBtn
                       onClick={() => onClickComment(comment.commentId)}
                     >
@@ -202,13 +181,13 @@ export default function CommentBox({
                   <CommentBtn onClick={() => onClickComment(comment.commentId)}>
                     <Desc_150_reg>답글 달기</Desc_150_reg>
                   </CommentBtn>
-                  {subComment && (
+                  {comment.subComment && (
                     <CommentIconBox
                       onClick={() => onClickMoreComment(comment.commentId)}
                     >
                       <CommentIcon fill="#9F9F9F" />
                       <Account_alert_reg>
-                        {comLength[comment.commentId]}
+                        {comment.subComment.length}
                       </Account_alert_reg>
                     </CommentIconBox>
                   )}

@@ -147,7 +147,7 @@ export default function CommunityPage() {
         </BarBox>
       </TitleBox>
       <Post
-        profileImage={'https://i.ibb.co/LNpPpWJ/image.jpg'}
+        profileImage={''}
         id={'Ewha03'}
         nickname={'예사롭지 않은 패피'}
         date={'2024년 06월 27일'}
