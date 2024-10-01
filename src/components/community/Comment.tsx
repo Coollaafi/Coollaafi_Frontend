@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import NicknameBox from 'components/NicknameBox';
 import { Main_title_med } from 'styles/typography';
 import { Desc_150_reg } from 'styles/typography';
+import default_profile from '../../assets/images/default-profile.svg';
 
 const Container = styled.div<{ isClicked: boolean }>`
   display: flex;
@@ -39,7 +40,6 @@ const TextBox = styled.div`
 
 type CommentProps = {
   commentId: number;
-  parentId: number | null;
   profileImg: string;
   nickname: string;
   id: string;
@@ -49,7 +49,6 @@ type CommentProps = {
 
 export default function Comment({
   commentId,
-  parentId,
   profileImg,
   nickname,
   id,
@@ -59,7 +58,7 @@ export default function Comment({
   return (
     <Container isClicked={isClicked ? isClicked : false}>
       <Header>
-        <ProfileImg src={profileImg} />
+        <ProfileImg src={profileImg == '' ? default_profile : profileImg} />
         <NameBox>
           <Main_title_med>{id}</Main_title_med>
           <NicknameBox nickname={nickname} />
