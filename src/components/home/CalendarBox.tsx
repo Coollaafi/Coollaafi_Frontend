@@ -45,7 +45,10 @@ const StyledCalendar = styled.div`
   .react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--neighboringMonth {
     /*전 달, 다음 달의 날짜가 보이는 것*/
     abbr {
-      color: white;
+      display: none;
+    }
+    img {
+      display: none;
     }
   }
 
