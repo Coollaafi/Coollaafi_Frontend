@@ -5,15 +5,10 @@ import { format } from 'date-fns';
 import { useState } from 'react';
 import { ReactComponent as LeftIcon } from '../../assets/icons/left-polygon.svg';
 import { ReactComponent as RightIcon } from '../../assets/icons/right-polygon.svg';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   margin-bottom: 112px;
-`;
-
-const ImageBox = styled.img`
-  width: 100%;
-  height: 100%;
-  object: fit;
 `;
 
 const StyledCalendar = styled.div`
@@ -36,6 +31,7 @@ const StyledCalendar = styled.div`
     text-align: center;
     border-bottom: 1px solid #000;
     border-left: 1px solid #000;
+    cursor: auto;
   }
 
   /*hover, focus, 선택됐을 시 */
@@ -49,7 +45,10 @@ const StyledCalendar = styled.div`
   .react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--neighboringMonth {
     /*전 달, 다음 달의 날짜가 보이는 것*/
     abbr {
-      color: white;
+      display: none;
+    }
+    img {
+      display: none;
     }
   }
 
@@ -104,6 +103,7 @@ const StyledCalendar = styled.div`
   .react-calendar__navigation {
     /*Month 바꾸는 헤더 부분*/
     margin-bottom: 16px;
+    background-color: white;
     display: inline-flex; /*flex는 가로전체를 차지하려고 함. inline-flex는 콘텐츠에 맞춰짐.*/
   }
 
@@ -159,6 +159,26 @@ const StyledCalendar = styled.div`
   .future_date {
     color: #919191;
   }
+
+  .has_content {
+    abbr {
+      display: none;
+    }
+  }
+`;
+
+const Box = styled(Link)`
+  cursor: pointer;
+  pointer-events: auto;
+`;
+
+const ImageBox = styled.img`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 76px;
+  width: 46.85px;
+  object-fit: cover;
 `;
 
 type ValuePiece = Date | null;
@@ -167,10 +187,45 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 export default function CalendarBox() {
   const [value, setValue] = useState<Value>();
 
+  const dayList = [
+    { date: '2024-08-17', img: 'https://i.ibb.co/LNpPpWJ/image.jpg', id: 0 },
+    { date: '2024-09-30', img: 'https://i.ibb.co/LNpPpWJ/image.jpg', id: 1 },
+    { date: '2024-10-01', img: 'https://i.ibb.co/LNpPpWJ/image.jpg', id: 2 },
+  ];
+
+  //image 컨텐츠 넣기 위해_
+  const addImage = ({ date }: any) => {
+    const matchedDay = dayList.find(
+      (day) => day.date === format(date, 'yyyy-MM-dd'),
+    );
+    const contents = [];
+
+    if (matchedDay) {
+      contents.push(
+        <Box to={`/community/${matchedDay.id}`}>
+          <ImageBox src={matchedDay.img} />
+        </Box>,
+      );
+    }
+
+    return <div>{contents}</div>;
+  };
+
+  //오늘 이후의 날짜 css 변경을 위해: future_date
+  //image 컨텐츠 넣을 때, 날짜 abbr 안 보이게 css 주기 위해: has_content
   const tileClassName = ({ date }: { date: Date }) => {
+    const matchedDay = dayList.find(
+      (day) => day.date === format(date, 'yyyy-MM-dd'),
+    );
+
     if (date > new Date()) {
       return 'future_date'; //css 클래스
     }
+
+    if (matchedDay) {
+      return 'has_content';
+    }
+
     return null;
   };
 
@@ -194,15 +249,7 @@ export default function CalendarBox() {
           next2Label={null}
           prev2Label={null}
           tileClassName={tileClassName}
-          /*tileContent={() => {
-          return (
-            <ImageBox
-              src={
-                'https://s3-alpha-sig.figma.com/img/2dee/9c18/4a18c7ef0557219335a6bede8d1d0c3f?Expires=1725235200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=nBC3-pwz9uTv1qpostuzHMQ6526x3W7eq~Gnc9nZIJWSLjcYcYrncrkKOPy~lgjLWaVGriDoTgRtmPizKCw~j9~aFUQMdEONAJA8PTYvOMTsgjKmj3pOSXXvnjyJ8Bx~4rqx9po-ZIAyPye7FXlc9e9vyAjLS9sH~HNALJNqlVksiVeV7Wvckt6-E4YOoP2tbU8dx8Yj-F2YyQ5fu-entXiJUUTtzAm7oDCdwGtWNdpJXR4AjeTgtTObSvPuy4iZJaEC9-h8WkcvoGujqxoQ0YRX1nb6J0FSrUzH7VERD8-qJ17hIZNvxJZ-tofozWVHa3Kb68N5cUYVQh4RfPpC1g__'
-              }
-            />
-          );
-        }}*/
+          tileContent={addImage}
         />
       </StyledCalendar>
     </Container>
