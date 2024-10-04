@@ -167,6 +167,11 @@ const StyledCalendar = styled.div`
   }
 `;
 
+const Box = styled(Link)`
+  cursor: pointer;
+  pointer-events: auto;
+`;
+
 const ImageBox = styled.img`
   display: flex;
   align-items: center;
@@ -174,7 +179,6 @@ const ImageBox = styled.img`
   height: 76px;
   width: 46.85px;
   object-fit: cover;
-  cursor: pointer;
 `;
 
 type ValuePiece = Date | null;
@@ -182,7 +186,6 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export default function CalendarBox() {
   const [value, setValue] = useState<Value>();
-  const [isImg, setIsImg] = useState<boolean[]>([]);
 
   const dayList = [
     { date: '2024-08-17', img: 'https://i.ibb.co/LNpPpWJ/image.jpg', id: 0 },
@@ -190,7 +193,7 @@ export default function CalendarBox() {
     { date: '2024-10-01', img: 'https://i.ibb.co/LNpPpWJ/image.jpg', id: 2 },
   ];
 
-  //image 컨텐츠 넣기 위해
+  //image 컨텐츠 넣기 위해_
   const addImage = ({ date }: any) => {
     const matchedDay = dayList.find(
       (day) => day.date === format(date, 'yyyy-MM-dd'),
@@ -198,7 +201,11 @@ export default function CalendarBox() {
     const contents = [];
 
     if (matchedDay) {
-      contents.push(<ImageBox src={matchedDay.img} />);
+      contents.push(
+        <Box to={`/community/${matchedDay.id}`}>
+          <ImageBox src={matchedDay.img} />
+        </Box>,
+      );
     }
 
     return <div>{contents}</div>;
