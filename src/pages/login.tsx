@@ -19,7 +19,7 @@ const Container = styled.div`
 `;
 
 const Detail = styled.div`
-  margin: 61px 0 -14px 0;
+  margin: 61px 0 18.1px 0;
   text-align: center;
 `;
 
@@ -64,7 +64,7 @@ export default function LoginPage() {
           <br /> 도와주는 AI 기반 옷 추천 SNS, 왓
         </Desc_150_reg>
       </Detail>
-      <Logo height="167px" />
+      <Logo />
       <Explains>
         <Explain>
           <Desc_150_reg>

@@ -7,7 +7,11 @@ const Container = styled.div<{ type: string }>`
   width: 360px;
   height: 70px;
   background-color: ${(props) =>
-    props.type == 'trans' ? 'transparent' : 'white'};
+    props.type == 'white'
+      ? 'white'
+      : props.type == 'black'
+        ? 'black'
+        : 'transparent'};
   padding: 12px 16px;
   display: flex;
   flex-direction: row;
@@ -18,7 +22,7 @@ const Container = styled.div<{ type: string }>`
   top: 0;
 `;
 
-type HeaderType = 'white' | 'trans';
+type HeaderType = 'white' | 'trans' | 'black';
 
 type HeaderProps = {
   type: HeaderType;
@@ -27,12 +31,18 @@ type HeaderProps = {
 export default function Header({ type }: HeaderProps) {
   return (
     <Container type={type}>
-      <Link to="/home">
-        <Logo />
-      </Link>
-      <Link to="/community">
-        <DressIcon width="24px" height="24px" stroke="black" />
-      </Link>
+      {type == 'black' ? (
+        <Logo width="85" height="30" viewBox="0 0 85 30" fill="white" />
+      ) : (
+        <Link to="/home">
+          <Logo width="85" height="30" viewBox="0 0 85 30" fill="black" />
+        </Link>
+      )}
+      {type != 'black' && (
+        <Link to="/community">
+          <DressIcon width="24px" height="24px" stroke="black" />
+        </Link>
+      )}
     </Container>
   );
 }
