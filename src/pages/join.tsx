@@ -9,6 +9,7 @@ import {
 } from 'styles/typography';
 import { useRef, useState } from 'react';
 import default_profile from '../assets/images/default-profile.svg';
+import { ReactComponent as CheckIcon } from '../assets/icons/circle-check.svg';
 
 const Container = styled.div`
   width: 360px;
@@ -65,6 +66,32 @@ const Input = styled.input`
   }
 `;
 
+const CheckBox = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  gap: 8px;
+  margin: 8px 0 21px 0;
+`;
+
+const Check = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  color: #3b3b3b;
+  .check {
+    stroke: #3b3b3b;
+  }
+`;
+
+const DuplicateCheck = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+`;
+
 const ProfileBox = styled.div`
   width: 100%;
   margin-bottom: 68px;
@@ -97,7 +124,7 @@ const BtnBox = styled.div`
   gap: 10px;
 `;
 
-const ImageBtn = styled.div`
+const TextBtn = styled.div`
   text-decoration: underline;
   text-underline-offset: 2px;
   cursor: pointer;
@@ -146,18 +173,41 @@ export default function JoinPage() {
             </Account_alert_reg>
           </InputTitleBox>
           <Input placeholder="아이디를 입력해주세요" />
+          <CheckBox>
+            <Check>
+              <CheckIcon />
+              <Account_alert_reg>영문</Account_alert_reg>
+            </Check>
+            <Check>
+              <CheckIcon />
+              <Account_alert_reg>숫자</Account_alert_reg>
+            </Check>
+            <Check>
+              <CheckIcon />
+              <Account_alert_reg>특수문자</Account_alert_reg>
+            </Check>
+            <Check>
+              <CheckIcon />
+              <Account_alert_reg>6~12자</Account_alert_reg>
+            </Check>
+          </CheckBox>
+          <DuplicateCheck>
+            <TextBtn>
+              <CTA_button_med>중복확인</CTA_button_med>
+            </TextBtn>
+          </DuplicateCheck>
         </IdInputBox>
         <ProfileBox>
           <Main_title_med>프로필 사진</Main_title_med>
           <ImageBox>
             <ShowImageBox src={imgFile ? imgFile : default_profile} />
             <BtnBox>
-              <ImageBtn onClick={handleClick}>
+              <TextBtn onClick={handleClick}>
                 <CTA_button_med>사진 선택하기</CTA_button_med>
-              </ImageBtn>
-              <ImageBtn onClick={() => setImgFile('')}>
+              </TextBtn>
+              <TextBtn onClick={() => setImgFile('')}>
                 <CTA_button_med>기본이미지</CTA_button_med>
-              </ImageBtn>
+              </TextBtn>
             </BtnBox>
             <HiddenBtn
               type="file"
