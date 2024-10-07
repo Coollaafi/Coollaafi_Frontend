@@ -124,10 +124,9 @@ const BtnBox = styled.div`
   gap: 10px;
 `;
 
-const TextBtn = styled.div<{ isChecked: boolean }>`
+const TextBtn = styled.div`
   text-decoration: underline;
   text-underline-offset: 2px;
-  color: ${(props) => (props.isChecked ? 'white' : '#3b3b3b')};
   cursor: pointer;
 `;
 
@@ -251,7 +250,7 @@ export default function JoinPage() {
             </Check>
           </CheckBox>
           <DuplicateCheck>
-            <TextBtn isChecked={isEng && isNum && isSpe && isLong}>
+            <TextBtn>
               <CTA_button_med>중복확인</CTA_button_med>
             </TextBtn>
           </DuplicateCheck>
@@ -261,10 +260,10 @@ export default function JoinPage() {
           <ImageBox>
             <ShowImageBox src={imgFile ? imgFile : default_profile} />
             <BtnBox>
-              <TextBtn isChecked={true} onClick={handleClick}>
+              <TextBtn onClick={handleClick}>
                 <CTA_button_med>사진 선택하기</CTA_button_med>
               </TextBtn>
-              <TextBtn isChecked={true} onClick={() => setImgFile('')}>
+              <TextBtn onClick={() => setImgFile('')}>
                 <CTA_button_med>기본이미지</CTA_button_med>
               </TextBtn>
             </BtnBox>
