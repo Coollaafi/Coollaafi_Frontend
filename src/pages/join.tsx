@@ -10,6 +10,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import default_profile from '../assets/images/default-profile.svg';
 import { ReactComponent as CheckIcon } from '../assets/icons/circle-check.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   width: 360px;
@@ -160,6 +161,7 @@ export default function JoinPage() {
   const [isSpe, setIsSpe] = useState<boolean>(false);
   const [isLong, setIsLong] = useState<boolean>(false);
   const [isOnly, setIsOnly] = useState<boolean>(false);
+  const navigation = useNavigate();
 
   //닉네임 20이내로
   useEffect(() => {
@@ -275,7 +277,12 @@ export default function JoinPage() {
             />
           </ImageBox>
         </ProfileBox>
-        <Button isChecked={isNickname && isOnly}>
+        <Button
+          isChecked={isNickname && isOnly}
+          onClick={(e) =>
+            !(isNickname && isOnly) ? e.preventDefault() : navigation('/home')
+          }
+        >
           <CTA_button_med>회원가입하기</CTA_button_med>
         </Button>
       </Content>
