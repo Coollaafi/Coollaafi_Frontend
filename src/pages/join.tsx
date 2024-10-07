@@ -55,6 +55,7 @@ const Input = styled.input`
   border: none;
   outline: none;
   color: white;
+  caret-color: white;
   font-family: 'Noto_Med';
   font-size: 14px;
   line-height: 120%;
