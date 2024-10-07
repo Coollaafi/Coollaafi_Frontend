@@ -147,6 +147,7 @@ const StyledCalendar = styled.div`
 
   .react-calendar__navigation__label {
     /*Month label*/
+    color: black;
     font-family: 'DTL';
     font-size: 35.652px;
     font-weight: 500;
