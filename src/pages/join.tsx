@@ -7,7 +7,7 @@ import {
   Main_title_med,
   User_id_title_med,
 } from 'styles/typography';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import default_profile from '../assets/images/default-profile.svg';
 import { ReactComponent as CheckIcon } from '../assets/icons/circle-check.svg';
 
@@ -76,13 +76,13 @@ const CheckBox = styled.div`
   margin: 8px 0 21px 0;
 `;
 
-const Check = styled.div`
+const Check = styled.div<{ isChecked: boolean }>`
   display: flex;
   flex-direction: row;
   gap: 4px;
-  color: #3b3b3b;
+  color: ${(props) => (props.isChecked ? 'white' : '#3b3b3b')};
   .check {
-    stroke: #3b3b3b;
+    stroke: ${(props) => (props.isChecked ? 'white' : '#3b3b3b')};
   }
 `;
 
@@ -124,9 +124,10 @@ const BtnBox = styled.div`
   gap: 10px;
 `;
 
-const TextBtn = styled.div`
+const TextBtn = styled.div<{ isChecked: boolean }>`
   text-decoration: underline;
   text-underline-offset: 2px;
+  color: ${(props) => (props.isChecked ? 'white' : '#3b3b3b')};
   cursor: pointer;
 `;
 
@@ -134,20 +135,68 @@ const HiddenBtn = styled.input`
   display: none;
 `;
 
-const Button = styled.div`
+const Button = styled.div<{ isChecked: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 48px;
-  background-color: #1d1d1d;
-  color: #3b3b3b;
+  background-color: ${(props) => (props.isChecked ? 'white' : '#1d1d1d')};
+  color: ${(props) => (props.isChecked ? 'black' : '#3b3b3b')};
 `;
 
 export default function JoinPage() {
   const [imgFile, setImgFile] = useState<string>('');
   const fileRef = useRef<HTMLInputElement>(null);
   const { handleClick, changeFile } = useImage({ setImgFile, fileRef });
+  //유효성 검사
+  const [nickname, setNickname] = useState<string>('');
+  const [isNickname, setIsNickname] = useState<boolean>(false);
+  const [id, setId] = useState<string>('');
+  const regEng = /[a-zA-Z]/;
+  const regNum = /[0-9]/;
+  const regSpe = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/;
+  const [isEng, setIsEng] = useState<boolean>(false);
+  const [isNum, setIsNum] = useState<boolean>(false);
+  const [isSpe, setIsSpe] = useState<boolean>(false);
+  const [isLong, setIsLong] = useState<boolean>(false);
+  const [isOnly, setIsOnly] = useState<boolean>(false);
+
+  //닉네임 20이내로
+  useEffect(() => {
+    if (nickname.length > 0 && nickname.length <= 20) {
+      setIsNickname(true);
+    } else {
+      setIsNickname(false);
+    }
+  }, [nickname]);
+
+  //영문, 숫자, 특수문자 포함. 6-12자
+  useEffect(() => {
+    if (id.length >= 6 && id.length <= 12) {
+      setIsLong(true);
+    } else {
+      setIsLong(false);
+    }
+
+    if (regEng.test(id)) {
+      setIsEng(true);
+    } else {
+      setIsEng(false);
+    }
+
+    if (regNum.test(id)) {
+      setIsNum(true);
+    } else {
+      setIsNum(false);
+    }
+
+    if (regSpe.test(id)) {
+      setIsSpe(true);
+    } else {
+      setIsSpe(false);
+    }
+  }, [id]);
 
   return (
     <Container>
@@ -163,7 +212,12 @@ export default function JoinPage() {
               다른 유저에게 보여질 닉네임을 20자 이내로 작성해주세요.
             </Account_alert_reg>
           </InputTitleBox>
-          <Input placeholder="닉네임을 입력해주세요" />
+          <Input
+            type="text"
+            placeholder="닉네임을 입력해주세요"
+            onChange={(e) => setNickname(e.target.value)}
+            value={nickname}
+          />
         </NicknameInputBox>
         <IdInputBox>
           <InputTitleBox>
@@ -172,27 +226,32 @@ export default function JoinPage() {
               룩북 커뮤니티에서 사용할 아이디를 입력해주세요.
             </Account_alert_reg>
           </InputTitleBox>
-          <Input placeholder="아이디를 입력해주세요" />
+          <Input
+            type="text"
+            placeholder="아이디를 입력해주세요"
+            onChange={(e) => setId(e.target.value)}
+            value={id}
+          />
           <CheckBox>
-            <Check>
+            <Check isChecked={isEng}>
               <CheckIcon />
               <Account_alert_reg>영문</Account_alert_reg>
             </Check>
-            <Check>
+            <Check isChecked={isNum}>
               <CheckIcon />
               <Account_alert_reg>숫자</Account_alert_reg>
             </Check>
-            <Check>
+            <Check isChecked={isSpe}>
               <CheckIcon />
               <Account_alert_reg>특수문자</Account_alert_reg>
             </Check>
-            <Check>
+            <Check isChecked={isLong}>
               <CheckIcon />
               <Account_alert_reg>6~12자</Account_alert_reg>
             </Check>
           </CheckBox>
           <DuplicateCheck>
-            <TextBtn>
+            <TextBtn isChecked={isEng && isNum && isSpe && isLong}>
               <CTA_button_med>중복확인</CTA_button_med>
             </TextBtn>
           </DuplicateCheck>
@@ -202,10 +261,10 @@ export default function JoinPage() {
           <ImageBox>
             <ShowImageBox src={imgFile ? imgFile : default_profile} />
             <BtnBox>
-              <TextBtn onClick={handleClick}>
+              <TextBtn isChecked={true} onClick={handleClick}>
                 <CTA_button_med>사진 선택하기</CTA_button_med>
               </TextBtn>
-              <TextBtn onClick={() => setImgFile('')}>
+              <TextBtn isChecked={true} onClick={() => setImgFile('')}>
                 <CTA_button_med>기본이미지</CTA_button_med>
               </TextBtn>
             </BtnBox>
@@ -217,7 +276,7 @@ export default function JoinPage() {
             />
           </ImageBox>
         </ProfileBox>
-        <Button>
+        <Button isChecked={isNickname && isOnly}>
           <CTA_button_med>회원가입하기</CTA_button_med>
         </Button>
       </Content>
