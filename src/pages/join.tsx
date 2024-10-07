@@ -5,6 +5,7 @@ import {
   Account_alert_reg,
   CTA_button_med,
   Main_title_med,
+  Noto_Receipt,
   User_id_title_med,
 } from 'styles/typography';
 import { useEffect, useRef, useState } from 'react';
@@ -93,6 +94,11 @@ const DuplicateCheck = styled.div`
   justify-content: end;
 `;
 
+const ErrorBox = styled.div<{ isSeen: boolean }>`
+  color: #ff6347;
+  display: ${(props) => (props.isSeen ? 'block' : 'none')};
+`;
+
 const ProfileBox = styled.div`
   width: 100%;
   margin-bottom: 68px;
@@ -125,9 +131,10 @@ const BtnBox = styled.div`
   gap: 10px;
 `;
 
-const TextBtn = styled.div`
+const TextBtn = styled.div<{ isChecked: boolean }>`
   text-decoration: underline;
   text-underline-offset: 2px;
+  color: ${(props) => (props.isChecked ? 'white' : '#3b3b3b')};
   cursor: pointer;
 `;
 
@@ -156,11 +163,14 @@ export default function JoinPage() {
   const regEng = /[a-zA-Z]/;
   const regNum = /[0-9]/;
   const regSpe = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/;
+  const resExc = /[^a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~ ]/g;
   const [isEng, setIsEng] = useState<boolean>(false);
   const [isNum, setIsNum] = useState<boolean>(false);
   const [isSpe, setIsSpe] = useState<boolean>(false);
   const [isLong, setIsLong] = useState<boolean>(false);
+  const [isExc, setIsExc] = useState<boolean>(false);
   const [isOnly, setIsOnly] = useState<boolean>(false);
+  const [isErrorSeen, setIsErrorSeen] = useState<boolean>(false);
   const navigation = useNavigate();
 
   //닉네임 20이내로
@@ -197,6 +207,12 @@ export default function JoinPage() {
     } else {
       setIsSpe(false);
     }
+
+    if (id.match(resExc) == undefined) {
+      setIsExc(true);
+    } else {
+      setIsExc(false);
+    }
   }, [id]);
 
   return (
@@ -226,6 +242,17 @@ export default function JoinPage() {
             <Account_alert_reg>
               룩북 커뮤니티에서 사용할 아이디를 입력해주세요.
             </Account_alert_reg>
+            <ErrorBox isSeen={isErrorSeen}>
+              {!isExc ? (
+                <Noto_Receipt>
+                  영어, 숫자, 특수문자만 입력할 수 있습니다. (6-12)
+                </Noto_Receipt>
+              ) : !isOnly ? (
+                <Noto_Receipt>중복된 아이디입니다.</Noto_Receipt>
+              ) : (
+                <></>
+              )}
+            </ErrorBox>
           </InputTitleBox>
           <Input
             type="text"
@@ -252,7 +279,15 @@ export default function JoinPage() {
             </Check>
           </CheckBox>
           <DuplicateCheck>
-            <TextBtn>
+            <TextBtn
+              isChecked={isOnly}
+              onClick={(e) => {
+                !(isEng && isNum && isSpe && isLong)
+                  ? e.preventDefault
+                  : //api연결시 조건 충족하면 data 넘기기
+                    setIsErrorSeen(true);
+              }}
+            >
               <CTA_button_med>중복확인</CTA_button_med>
             </TextBtn>
           </DuplicateCheck>
@@ -262,10 +297,10 @@ export default function JoinPage() {
           <ImageBox>
             <ShowImageBox src={imgFile ? imgFile : default_profile} />
             <BtnBox>
-              <TextBtn onClick={handleClick}>
+              <TextBtn onClick={handleClick} isChecked={true}>
                 <CTA_button_med>사진 선택하기</CTA_button_med>
               </TextBtn>
-              <TextBtn onClick={() => setImgFile('')}>
+              <TextBtn onClick={() => setImgFile('')} isChecked={true}>
                 <CTA_button_med>기본이미지</CTA_button_med>
               </TextBtn>
             </BtnBox>
