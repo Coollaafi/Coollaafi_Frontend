@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import {
   CTA_button_med,
   Main_title_med,
   Desc_120_med,
   Desc_150_med,
-  Chip_button_med,
 } from '../../styles/typography';
-import UploadImage from './UploadImage';
+import UploadImage from '../UploadImage';
 import { ReactComponent as DressIcon } from '../../assets/icons/dress.svg';
 
 const Container = styled.div`
@@ -206,7 +205,11 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
             <ResultBox>
               <Desc_120_med>OOTD</Desc_120_med>
               <Result>
-                <UploadImage imgFile={imgFile} setImgFile={setImgFile} />
+                <UploadImage
+                  imgFile={imgFile}
+                  setImgFile={setImgFile}
+                  type="white"
+                />
               </Result>
             </ResultBox>
             <ResultBox>
