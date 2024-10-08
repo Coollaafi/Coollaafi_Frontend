@@ -9,10 +9,12 @@ import useModal from 'hooks/useModal';
 import Header from 'components/Header';
 import Post from 'components/community/Post';
 import Footer from 'components/Footer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddFriendModal from 'components/community/AddFriendModal';
 import data from '../data/post.json';
 import { format } from 'date-fns';
+import { useMutation } from 'react-query';
+import { getAddress } from 'apis/recommend';
 
 const Container = styled.div`
   width: 360px;
@@ -121,7 +123,66 @@ export default function CommunityPage() {
   } = useModal();
   const [isAll, setIsAll] = useState<boolean>(true);
 
-  const postList = data.result;
+  const [postList, setPostList] = useState(data.result);
+  const [city, setCity] = useState('');
+
+  //이용자 위치 가져오기
+  const addressMutation = useMutation(getAddress, {
+    onSuccess: (data) => {
+      setCity(data.region_2depth_name);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  //이용자의 경도,위도 가져오기_주소/날씨가져오는 api에 경도,위도 넣기
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          addressMutation.mutate({
+            lng: position.coords.longitude.toString(),
+            lat: position.coords.latitude.toString(),
+          });
+        },
+        function (error) {
+          console.log(error);
+        },
+        {
+          enableHighAccuracy: false, //배터리를 더 소모해서 더 정확한 위치를 찾을 것인지_true로 하면 더 정확하지만 더 오래걸림
+          maximumAge: 0, //캐시된 위치 정보의 유효시간 지정_0으로 지정시, 캐시 사용없이 실시간으로
+          timeout: Infinity, //주어진 초 안에 찾지 못하면 에러 발생_위치 반환 시 소모할 수 있는 최대 시간
+        },
+      );
+    } else {
+      alert('현재 브라우저에서는 geolocation을 지원하지 않습니다');
+    }
+    return;
+  }
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  useEffect(() => {
+    setPostList(
+      isAll
+        ? data.result
+        : data.result.filter(
+            (item) =>
+              item.post.location.substring(
+                item.post.location.indexOf('도') + 1,
+                item.post.location.indexOf('시'),
+              ) ==
+              city.substring(
+                item.post.location.indexOf('도') + 1,
+                item.post.location.indexOf('시'),
+              ),
+          ),
+    );
+    console.log(city);
+  }, [isAll]);
 
   return (
     <Container>
