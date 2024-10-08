@@ -9,7 +9,8 @@ import {
   Desc_150_med,
   CTA_button_med,
 } from 'styles/typography';
-import UploadFile from 'components/upload-image/UploadFile';
+import UploadImage from 'components/UploadImage';
+import { useState } from 'react';
 
 const Container = styled.div`
   width: 360px;
@@ -37,6 +38,13 @@ const User = styled.div`
   flex-direction: row;
   align-items: end;
   gap: 1px;
+`;
+
+const ImageBox = styled.div`
+  width: 140px;
+  height: 200px;
+  background-color: #121212;
+  border: 1px dashed #4d4d4d;
 `;
 
 const GuideBox = styled.div`
@@ -85,6 +93,8 @@ const Button = styled.div`
 `;
 
 export default function UploadImagePage() {
+  const [imgFile, setImgFile] = useState<string>('');
+
   return (
     <Container>
       <Header type={'trans'} />
@@ -99,7 +109,9 @@ export default function UploadImagePage() {
           <br /> 최근 사진들을 올려주세요
         </Main_title_med>
       </TextBox>
-      <UploadFile />
+      <ImageBox>
+        <UploadImage imgFile={imgFile} setImgFile={setImgFile} type="trans" />
+      </ImageBox>
       <GuideBox>
         <Title>
           <Star>
@@ -110,19 +122,16 @@ export default function UploadImagePage() {
         <Texts>
           <Desc_150_med>
             <TotalText>
-              1. <Text width={200}>다른 날짜에 찍은 사진들을 올려주세요.</Text>
-            </TotalText>
-            <TotalText>
-              2.
+              1.
               <Text width={170}>
                 상의, 하의, 아우터 중 하나라도 완전히 나온 사진으로 올려주세요.
               </Text>
             </TotalText>
             <TotalText>
-              3. <Text width={200}>얼굴은 나오지 않아도 됩니다.</Text>
+              2. <Text width={200}>얼굴은 나오지 않아도 됩니다.</Text>
             </TotalText>
             <TotalText>
-              4.
+              3.
               <Text width={220}>
                 누적 50장의 사진을 업로드하면 날씨에 맞는 옷을 추천받을
                 수있습니다.
