@@ -11,7 +11,7 @@ import Post from 'components/community/Post';
 import Footer from 'components/Footer';
 import { useState } from 'react';
 import AddFriendModal from 'components/community/AddFriendModal';
-import data from '../data/posts.json';
+import data from '../data/post.json';
 import { format } from 'date-fns';
 
 const Container = styled.div`
@@ -159,7 +159,7 @@ export default function CommunityPage() {
             key={post.postId}
             profileImage={member.memberImage}
             id={member.memberServiceId}
-            nickname={member.memberNickName}
+            nickname={member.alias}
             date={format(new Date(post.createdAt), 'yyyy년 MM월 dd일')}
             weather={post.postCondition}
             ootdImage={post.ootdImage}
