@@ -161,7 +161,7 @@ export default function HomePage() {
         <ProfileBox>
           <NameBox>
             <Name>
-              <Main_title_med>{'Ewha03'}</Main_title_med>
+              <Main_title_med>{'Ewha03!'}</Main_title_med>
               <Desc_120_med>{'김이화'}</Desc_120_med>
             </Name>
             <Nickname>

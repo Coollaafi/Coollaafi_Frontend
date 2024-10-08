@@ -189,9 +189,11 @@ export default function CalendarBox() {
   const [value, setValue] = useState<Value>();
 
   const dayList = [
-    { date: '2024-08-17', img: 'https://i.ibb.co/LNpPpWJ/image.jpg', id: 0 },
-    { date: '2024-09-30', img: 'https://i.ibb.co/LNpPpWJ/image.jpg', id: 1 },
-    { date: '2024-10-01', img: 'https://i.ibb.co/LNpPpWJ/image.jpg', id: 2 },
+    {
+      date: '2024-10-08',
+      img: 'https://i.ibb.co/M9dnqXJ/3dcec87b5205df174147c9c606b77700.jpg',
+      id: 0,
+    },
   ];
 
   //image 컨텐츠 넣기 위해_
@@ -243,7 +245,7 @@ export default function CalendarBox() {
           }
           formatDay={(locale, date) => format(date, 'd')}
           formatMonthYear={(locale, date) => format(date, 'M')}
-          minDate={new Date('2024-05-10')} //사람마다 회원가입 달 넣기
+          minDate={new Date('2024-10-08')} //사람마다 회원가입 달 넣기
           maxDate={new Date()}
           nextLabel={<RightIcon />}
           prevLabel={<LeftIcon />}

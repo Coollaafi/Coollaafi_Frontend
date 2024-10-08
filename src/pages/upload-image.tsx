@@ -11,7 +11,7 @@ import {
 } from 'styles/typography';
 import UploadImage from 'components/UploadImage';
 import { useState } from 'react';
-import ButtonBox from 'components/upload-image/ButtonBox';
+import ButtonBox from 'components/ButtonBox';
 
 const Container = styled.div`
   width: 360px;
@@ -104,6 +104,7 @@ const Button = styled.div`
 
 export default function UploadImagePage() {
   const [imgFile, setImgFile] = useState<string>('');
+  const [isClicked, setIsClicked] = useState<boolean[]>([]);
 
   return (
     <Container>
@@ -123,7 +124,11 @@ export default function UploadImagePage() {
         <ImageBox isFile={imgFile == '' ? false : true}>
           <UploadImage imgFile={imgFile} setImgFile={setImgFile} type="trans" />
         </ImageBox>
-        <ButtonBox />
+        <ButtonBox
+          type="black"
+          isClicked={isClicked}
+          setIsClicked={setIsClicked}
+        />
       </SelectBox>
       <GuideBox>
         <Title>

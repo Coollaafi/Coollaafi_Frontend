@@ -8,6 +8,7 @@ import {
 } from '../../styles/typography';
 import UploadImage from '../UploadImage';
 import { ReactComponent as DressIcon } from '../../assets/icons/dress.svg';
+import ButtonBox from 'components/ButtonBox';
 
 const Container = styled.div`
   width: 360px;
@@ -60,6 +61,7 @@ const SubTitle = styled.div`
 const ResultBoxs = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: end;
   gap: 16px;
 `;
 
@@ -165,6 +167,7 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
   const [imgFile, setImgFile] = useState<string>('');
   const [isDone, setIsDone] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean[]>([false, false, false]);
+  const [isClicked, setIsClicked] = useState<boolean[]>([]);
 
   const handleClick = (num: number) => {
     if (num == 0) {
@@ -212,15 +215,23 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
                 />
               </Result>
             </ResultBox>
+            {/*콜라주 만들어지기 전*/}
+            <ButtonBox
+              type="white"
+              isClicked={isClicked}
+              setIsClicked={setIsClicked}
+            />
+            {/*콜라주 만들어진 후*/}
+            {/*
             <ResultBox>
               <Desc_120_med>WOT LOOK BOOK</Desc_120_med>
               <Result>
                 <StoreBtn isFile={imgFile == '' ? false : true}>
                   <DressIcon stroke={imgFile == '' ? '#9F9F9F' : 'white'} />
-                  <CTA_button_med>룩북 만들기</CTA_button_med>
+                  <CTA_button_med>룩북 저장하기</CTA_button_med>
                 </StoreBtn>
               </Result>
-            </ResultBox>
+            </ResultBox>*/}
           </ResultBoxs>
         </SecondBox>
         <SecondBox name="content">
