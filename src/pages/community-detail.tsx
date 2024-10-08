@@ -100,48 +100,7 @@ export default function CommunityDetailPage() {
   );
   const post = item[0].post;
   const member = item[0].member;
-
-  const mainComment = [
-    {
-      commentId: 0,
-      profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
-      nickname: '예사롭지 않은 패피',
-      id: 'Ewha06',
-      content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
-      subComment: [
-        {
-          commentId: 0,
-          profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
-          nickname: '평범한 패피',
-          id: 'Ewha03',
-          content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
-        },
-      ],
-    },
-    {
-      commentId: 1,
-      profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
-      nickname: '평범한 패피',
-      id: 'Ewha03',
-      content: '짱이다잉..',
-      subComment: [
-        {
-          commentId: 1,
-          profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
-          nickname: '평범한 패피',
-          id: 'Ewha03',
-          content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
-        },
-        {
-          commentId: 1,
-          profileImg: 'https://i.ibb.co/LNpPpWJ/image.jpg',
-          nickname: '예사롭지 않은 패피',
-          id: 'Ewha06',
-          content: '우와 너 오늘 이 착장 진짜 잘 어울린다..',
-        },
-      ],
-    },
-  ];
+  const comment = item[0].comment;
 
   return (
     <Container>
@@ -164,7 +123,7 @@ export default function CommunityDetailPage() {
         />
       </PostBox>
       <CommentBox
-        mainComment={mainComment}
+        comment={comment}
         isInput={isInput}
         setIsInput={setIsInput}
         setClickedLa={setClickedLa}

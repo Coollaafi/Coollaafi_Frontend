@@ -19,7 +19,70 @@
         "preferCount": 40,
         "commentCount": 5,
         "isLikedByMember": true
-      }
+      },
+      "comment": [
+        {
+          "member": {
+            "memberServiceId": "suxjin!",
+            "memberNickName": "수진",
+            "memberImage": "https://i.ibb.co/bBCLSNB/75c0c0a086bbf4a0eefd70a891404dfd.jpg",
+            "alias": "평범한 패피"
+          },
+          "commentId": 0,
+          "content": "우와 너 오늘 이 착장 진짜 잘 어울린다..",
+          "replyCount": 1,
+          "createdAt": "2024-10-08T16:00:00.458Z",
+          "replies": [
+            {
+              "member": {
+                "memberServiceId": "Ewha03!",
+                "memberNickName": "김이화",
+                "memberImage": "https://i.ibb.co/LNpPpWJ/image.jpg",
+                "alias": "평범한 패피"
+              },
+              "replyId": 0,
+              "content": "다음에 너 만날때 입고 갈게 ㅋㅎㅋ",
+              "createdAt": "2024-10-08T16:20:00.458Z"
+            }
+          ]
+        },
+        {
+          "member": {
+            "memberServiceId": "Ewha01_",
+            "memberNickName": "이화",
+            "memberImage": "",
+            "alias": "주목받는 패피"
+          },
+          "commentId": 1,
+          "content": "짱이다잉",
+          "replyCount": 2,
+          "createdAt": "2024-10-08T17:00:00.458Z",
+          "replies": [
+            {
+              "member": {
+                "memberServiceId": "Ewha03!",
+                "memberNickName": "김이화",
+                "memberImage": "https://i.ibb.co/LNpPpWJ/image.jpg",
+                "alias": "평범한 패피"
+              },
+              "replyId": 0,
+              "content": "별말씀을-!",
+              "createdAt": "2024-10-08T17:20:00.458Z"
+            },
+            {
+              "member": {
+                "memberServiceId": "Ewha01_",
+                "memberNickName": "이화",
+                "memberImage": "",
+                "alias": "주목받는 패피"
+              },
+              "replyId": 1,
+              "content": "ㅋㅋㅋㅋㅋㅋㅋㅋ",
+              "createdAt": "2024-10-08T17:40:00.458Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "member": {
@@ -38,9 +101,36 @@
         "createdAt": "2024-10-08T13:54:21.521Z",
         "location": "서울특별시 성동구",
         "preferCount": 20,
-        "commentCount": 10,
+        "commentCount": 2,
         "isLikedByMember": true
-      }
+      },
+      "comment": [
+        {
+          "member": {
+            "memberServiceId": "yujinny@",
+            "memberNickName": "변유진",
+            "memberImage": "",
+            "alias": "예사롭지 않은 패피"
+          },
+          "commentId": 0,
+          "content": "오늘 옷 대박인디..",
+          "replyCount": 1,
+          "createdAt": "2024-10-08T19:00:00.458Z",
+          "replies": [
+            {
+              "member": {
+                "memberServiceId": "suxjin!",
+                "memberNickName": "수진",
+                "memberImage": "https://i.ibb.co/bBCLSNB/75c0c0a086bbf4a0eefd70a891404dfd.jpg",
+                "alias": "평범한 패피"
+              },
+              "replyId": 0,
+              "content": "떙큥",
+              "createdAt": "2024-10-08T19:20:00.458Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "member": {
@@ -61,7 +151,34 @@
         "preferCount": 30,
         "commentCount": 2,
         "isLikedByMember": true
-      }
+      },
+      "comment": [
+        {
+          "member": {
+            "memberServiceId": "Ewha03!",
+            "memberNickName": "김이화",
+            "memberImage": "https://i.ibb.co/LNpPpWJ/image.jpg",
+            "alias": "평범한 패피"
+          },
+          "commentId": 0,
+          "content": "오 거의 핀터레스트~",
+          "replyCount": 1,
+          "createdAt": "2024-10-08T20:00:00.458Z",
+          "replies": [
+            {
+              "member": {
+                "memberServiceId": "yujinny@",
+                "memberNickName": "변유진",
+                "memberImage": "",
+                "alias": "예사롭지 않은 패피"
+              },
+              "replyId": 0,
+              "content": "ㅋㅋㅋㅋ개웃기네~",
+              "createdAt": "2024-10-08T20:20:00.458Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "member": {
@@ -82,7 +199,8 @@
         "preferCount": 25,
         "commentCount": 0,
         "isLikedByMember": true
-      }
+      },
+      "comment": []
     },
     {
       "member": {
@@ -103,7 +221,56 @@
         "preferCount": 15,
         "commentCount": 4,
         "isLikedByMember": true
-      }
+      },
+      "comment": [
+        {
+          "member": {
+            "memberServiceId": "yujinny@",
+            "memberNickName": "변유진",
+            "memberImage": "",
+            "alias": "예사롭지 않은 패피"
+          },
+          "commentId": 0,
+          "content": "내일 만날때도 똑같이 입고와 ㅋ",
+          "replyCount": 3,
+          "createdAt": "2024-10-08T21:00:00.458Z",
+          "replies": [
+            {
+              "member": {
+                "memberServiceId": "chhn_!",
+                "memberNickName": "하늬",
+                "memberImage": "https://i.ibb.co/42qPzvQ/44a33fde626af3309dd29670336311a1.jpg",
+                "alias": "예사롭지 않은 패피"
+              },
+              "replyId": 0,
+              "content": "생각해볼게ㅋ",
+              "createdAt": "2024-10-08T21:20:00.458Z"
+            },
+            {
+              "member": {
+                "memberServiceId": "yujinny@",
+                "memberNickName": "변유진",
+                "memberImage": "",
+                "alias": "예사롭지 않은 패피"
+              },
+              "replyId": 1,
+              "content": "몬데!",
+              "createdAt": "2024-10-08T21:21:00.458Z"
+            },
+            {
+              "member": {
+                "memberServiceId": "chhn_!",
+                "memberNickName": "하늬",
+                "memberImage": "https://i.ibb.co/42qPzvQ/44a33fde626af3309dd29670336311a1.jpg",
+                "alias": "예사롭지 않은 패피"
+              },
+              "replyId": 2,
+              "content": "ㅋㅋ 내일봐",
+              "createdAt": "2024-10-08T21:22:00.458Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
