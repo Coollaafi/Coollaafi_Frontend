@@ -11,6 +11,7 @@ import {
 } from 'styles/typography';
 import UploadImage from 'components/UploadImage';
 import { useState } from 'react';
+import ButtonBox from 'components/upload-image/ButtonBox';
 
 const Container = styled.div`
   width: 360px;
@@ -30,7 +31,7 @@ const TextBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin: 202px 0 40px 0;
+  margin: 202px 0 32px 0;
 `;
 
 const User = styled.div`
@@ -40,16 +41,25 @@ const User = styled.div`
   gap: 1px;
 `;
 
-const ImageBox = styled.div`
+const SelectBox = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const ImageBox = styled.div<{ isFile: boolean }>`
   width: 140px;
   height: 200px;
   background-color: #121212;
-  border: 1px dashed #4d4d4d;
+  border: ${(props) =>
+    props.isFile ? '1px dashed #ffffff' : '1px dashed #4d4d4d'};
 `;
 
 const GuideBox = styled.div`
   width: 100%;
-  margin: 16px 0 95px 0;
+  margin: 32px 0 31px 0;
   color: white;
 `;
 
@@ -86,7 +96,7 @@ const Button = styled.div`
   gap: 9.92px;
   width: 100%;
   height: 48px;
-  margin-bottom: 106px;
+  margin-bottom: 42px;
   color: black;
   background-color: white;
   cursor: pointer;
@@ -109,9 +119,12 @@ export default function UploadImagePage() {
           <br /> 최근 사진들을 올려주세요
         </Main_title_med>
       </TextBox>
-      <ImageBox>
-        <UploadImage imgFile={imgFile} setImgFile={setImgFile} type="trans" />
-      </ImageBox>
+      <SelectBox>
+        <ImageBox isFile={imgFile == '' ? false : true}>
+          <UploadImage imgFile={imgFile} setImgFile={setImgFile} type="trans" />
+        </ImageBox>
+        <ButtonBox />
+      </SelectBox>
       <GuideBox>
         <Title>
           <Star>

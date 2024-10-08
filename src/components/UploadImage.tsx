@@ -31,11 +31,23 @@ const ImageBtn = styled.div<{ isFile: boolean; type: ColorType }>`
   position: absolute;
   top: 0;
   color: ${(props) =>
-    props.type == 'trans' ? '#9F9F9F' : props.isFile ? 'white' : 'black'};
+    props.type == 'trans'
+      ? props.isFile
+        ? 'white'
+        : '#9F9F9F'
+      : props.isFile
+        ? 'white'
+        : 'black'};
   cursor: pointer;
   .image {
     fill: ${(props) =>
-      props.type == 'trans' ? '#9F9F9F' : props.isFile ? 'white' : 'black'};
+      props.type == 'trans'
+        ? props.isFile
+          ? 'white'
+          : '#9F9F9F'
+        : props.isFile
+          ? 'white'
+          : 'black'};
   }
 `;
 
