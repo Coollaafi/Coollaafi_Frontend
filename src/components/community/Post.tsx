@@ -189,7 +189,7 @@ export default function Post({
         </ProfileBox>
         <WeatherBox>
           <WeatherTextBox>
-            <SunIcon />
+            {/*<SunIcon />*/}
             <Account_alert_reg>{weather}</Account_alert_reg>
           </WeatherTextBox>
           <Temp>
