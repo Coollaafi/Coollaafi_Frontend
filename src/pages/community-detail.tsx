@@ -84,6 +84,13 @@ export default function CommunityDetailPage() {
     }
   };
 
+  const onClickEnter = (e: any) => {
+    if (e.key == 'Enter') {
+      e.preventDefault();
+      onClickUpload();
+    }
+  };
+
   const mainComment = [
     {
       commentId: 0,
@@ -165,6 +172,7 @@ export default function CommunityDetailPage() {
           placeholder={
             ClickedLa == undefined ? '' : `${ClickedLa}에게 남긴 댓글`
           }
+          onKeyDown={(e) => onClickEnter(e)}
         />
         <Icon onClick={onClickUpload}>
           <UploadIcon />
