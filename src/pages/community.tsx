@@ -162,6 +162,8 @@ export default function CommunityPage() {
         like={33}
         comment={2}
         postId={0}
+        tempMin={12}
+        tempMax={23}
       />
       <Post
         profileImage={'https://i.ibb.co/LNpPpWJ/image.jpg'}
@@ -179,6 +181,8 @@ export default function CommunityPage() {
         like={33}
         comment={2}
         postId={1}
+        tempMin={12}
+        tempMax={23}
       />
       <Post
         profileImage={'https://i.ibb.co/LNpPpWJ/image.jpg'}
@@ -196,6 +200,8 @@ export default function CommunityPage() {
         like={33}
         comment={2}
         postId={2}
+        tempMin={12}
+        tempMax={23}
       />
       <Post
         profileImage={'https://i.ibb.co/LNpPpWJ/image.jpg'}
@@ -213,6 +219,8 @@ export default function CommunityPage() {
         like={33}
         comment={2}
         postId={3}
+        tempMin={12}
+        tempMax={23}
       />
       <Footer kind={'white'} />
       <UploadBtn onClick={openUploadModal}>

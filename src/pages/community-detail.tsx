@@ -146,6 +146,8 @@ export default function CommunityDetailPage() {
           like={33}
           comment={2}
           postId={3}
+          tempMin={12}
+          tempMax={23}
         />
       </PostBox>
       <CommentBox

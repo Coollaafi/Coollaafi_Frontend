@@ -71,6 +71,28 @@ const Date = styled.div`
 const WeatherBox = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 16px;
+`;
+
+const Temp = styled.div`
+  height: 19px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+`;
+
+const Line = styled.div`
+  width: 25px;
+  height: 2px;
+  border-radius: 8px;
+  border: none;
+  background-image: linear-gradient(to right, #547bc7, #a82e2e);
+`;
+
+const WeatherTextBox = styled.div`
+  display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 4px;
 `;
@@ -125,6 +147,8 @@ type PostProps = {
   like: number;
   comment: number;
   postId: number;
+  tempMin: number;
+  tempMax: number;
 };
 
 export default function Post({
@@ -139,6 +163,8 @@ export default function Post({
   like,
   comment,
   postId,
+  tempMin,
+  tempMax,
 }: PostProps) {
   return (
     <Container to={`/community/${postId}`}>
@@ -162,8 +188,15 @@ export default function Post({
           </Date>
         </ProfileBox>
         <WeatherBox>
-          <SunIcon />
-          <Account_alert_reg>{weather}</Account_alert_reg>
+          <WeatherTextBox>
+            <SunIcon />
+            <Account_alert_reg>{weather}</Account_alert_reg>
+          </WeatherTextBox>
+          <Temp>
+            <Main_title_med>{tempMin}°</Main_title_med>
+            <Line />
+            <Main_title_med>{tempMax}°</Main_title_med>
+          </Temp>
         </WeatherBox>
         <PostImgBox>
           <PostImg
