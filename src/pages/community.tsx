@@ -1,5 +1,9 @@
 import styled from 'styled-components';
-import { CTA_button_med, Main_title_med } from 'styles/typography';
+import {
+  Account_alert_reg,
+  CTA_button_med,
+  Main_title_med,
+} from 'styles/typography';
 import { ReactComponent as PencilIcon } from '../assets/icons/pencil.svg';
 import { ReactComponent as FriendIcon } from '../assets/icons/friend.svg';
 import { ReactComponent as PlusIcon } from '../assets/icons/friend-plus.svg';
@@ -110,6 +114,16 @@ const UploadBtn = styled.button`
   z-index: 1;
 `;
 
+const BlankBox = styled.div`
+  width: 100%;
+  height: calc(100vh - 225px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9f9f9f;
+  text-align: center;
+`;
+
 export default function CommunityPage() {
   const {
     isOpen: isUploadOpen,
@@ -174,11 +188,7 @@ export default function CommunityPage() {
               item.post.location.substring(
                 item.post.location.indexOf('도') + 1,
                 item.post.location.indexOf('시'),
-              ) ==
-              city.substring(
-                item.post.location.indexOf('도') + 1,
-                item.post.location.indexOf('시'),
-              ),
+              ) == city.substring(city.indexOf('도') + 1, city.indexOf('시')),
           ),
     );
     console.log(city);
@@ -211,29 +221,39 @@ export default function CommunityPage() {
           </IconBox>
         </BarBox>
       </TitleBox>
-      {postList.map((item) => {
-        const member = item.member;
-        const post = item.post;
+      {postList.length != 0 && postList ? (
+        postList.map((item) => {
+          const member = item.member;
+          const post = item.post;
 
-        return (
-          <Post
-            key={post.postId}
-            profileImage={member.memberImage}
-            id={member.memberServiceId}
-            nickname={member.alias}
-            date={format(new Date(post.createdAt), 'yyyy년 MM월 dd일')}
-            weather={post.postCondition}
-            ootdImage={post.ootdImage}
-            collageImage={post.lookbookImage}
-            location={post.location}
-            like={post.preferCount}
-            comment={post.commentCount}
-            postId={post.postId}
-            tempMin={post.MinTemp}
-            tempMax={post.MaxTemp}
-          />
-        );
-      })}
+          return (
+            <Post
+              key={post.postId}
+              profileImage={member.memberImage}
+              id={member.memberServiceId}
+              nickname={member.alias}
+              date={format(new Date(post.createdAt), 'yyyy년 MM월 dd일')}
+              weather={post.postCondition}
+              ootdImage={post.ootdImage}
+              collageImage={post.lookbookImage}
+              location={post.location}
+              like={post.preferCount}
+              comment={post.commentCount}
+              postId={post.postId}
+              tempMin={post.MinTemp}
+              tempMax={post.MaxTemp}
+            />
+          );
+        })
+      ) : (
+        <BlankBox>
+          <Account_alert_reg>
+            게시글을 올린 친구가 없습니다.
+            <br />
+            가장 먼저 올려보세요.
+          </Account_alert_reg>
+        </BlankBox>
+      )}
       <Footer kind={'white'} />
       <UploadBtn onClick={openUploadModal}>
         <CTA_button_med>룩북 올리기</CTA_button_med>

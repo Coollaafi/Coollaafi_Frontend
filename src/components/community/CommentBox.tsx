@@ -58,6 +58,7 @@ const BlankBox = styled.div`
   width: 100%;
   text-align: center;
   color: #9f9f9f;
+  margin-top: 35px;
 `;
 
 type CommentBoxProps = {
@@ -150,7 +151,7 @@ export default function CommentBox({
 
   return (
     <Container>
-      {comment ? (
+      {comment?.length != 0 && comment ? (
         <>
           {comment.map((comment) => (
             <div key={comment.commentId}>
