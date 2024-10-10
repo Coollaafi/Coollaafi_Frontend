@@ -190,7 +190,7 @@ export default function CalendarBox() {
 
   const dayList = [
     {
-      date: '2024-10-08',
+      date: '2024-10-20',
       img: 'https://i.ibb.co/M9dnqXJ/3dcec87b5205df174147c9c606b77700.jpg',
       id: 0,
     },

@@ -6,6 +6,10 @@ import {
   Main_title_med,
 } from 'styles/typography';
 import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
+import { ReactComponent as WindIcon } from '../../assets/icons/wind.svg';
+import { ReactComponent as RainIcon } from '../../assets/icons/rain.svg';
+import { ReactComponent as CloudyIcon } from '../../assets/icons/cloudy.svg';
+import { ReactComponent as CloudsIcon } from '../../assets/icons/clouds.svg';
 import { ReactComponent as LocationIcon } from '../../assets/icons/location.svg';
 import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
 import { ReactComponent as LikeIcon } from '../../assets/icons/like.svg';
@@ -221,7 +225,7 @@ export default function Post({
         <BarBox>
           <WeatherBox>
             <WeatherTextBox>
-              {/*<SunIcon />*/}
+              <CloudsIcon />
               <Account_alert_reg>{weather}</Account_alert_reg>
             </WeatherTextBox>
             <Temp>
