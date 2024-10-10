@@ -233,7 +233,7 @@ export default function CommunityPage() {
               id={member.memberServiceId}
               nickname={member.alias}
               date={format(new Date(post.createdAt), 'yyyy년 MM월 dd일')}
-              weather={post.postCondition}
+              weather={post.weather}
               ootdImage={post.ootdImage}
               collageImage={post.lookbookImage}
               location={post.location}
@@ -242,6 +242,8 @@ export default function CommunityPage() {
               postId={post.postId}
               tempMin={post.MinTemp}
               tempMax={post.MaxTemp}
+              content={''}
+              postCondition={post.postCondition}
             />
           );
         })

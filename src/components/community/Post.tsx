@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { Account_alert_reg, Main_title_med } from 'styles/typography';
+import {
+  Account_alert_reg,
+  Chip_button_med,
+  Desc_150_reg,
+  Main_title_med,
+} from 'styles/typography';
 import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
 import { ReactComponent as LocationIcon } from '../../assets/icons/location.svg';
 import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
@@ -13,7 +18,6 @@ const Container = styled(Link)`
   flex-direction: column;
   gap: 24px;
   width: 100%;
-  height: 447px;
   padding: 24px 16px;
   background-color: #fbfbfb;
   border-bottom: 2px solid #f4f4f4;
@@ -65,6 +69,22 @@ const Date = styled.div`
   height: 100%;
   display: flex;
   align-items: end;
+  color: #919191;
+`;
+
+const BarBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ConditionBox = styled.div`
+  box-sizing: content-box;
+  padding: 9px 9px;
+  border-radius: 40px;
+  border: 1px solid #ededed;
+  background-color: #f8f8f8;
   color: #919191;
 `;
 
@@ -135,6 +155,13 @@ const DetailBox = styled.div`
   gap: 4px;
 `;
 
+const ContentBox = styled.div<{ isContent: boolean }>`
+  display: ${(props) => (props.isContent ? 'flex' : 'none')};
+  width: 100%;
+  align-items: center;
+  word-break: break-all;
+`;
+
 type PostProps = {
   profileImage: string;
   id: string;
@@ -149,6 +176,8 @@ type PostProps = {
   postId: number;
   tempMin: number;
   tempMax: number;
+  content: string;
+  postCondition: string;
 };
 
 export default function Post({
@@ -165,6 +194,8 @@ export default function Post({
   postId,
   tempMin,
   tempMax,
+  content,
+  postCondition,
 }: PostProps) {
   return (
     <Container to={`/community/${postId}`}>
@@ -187,17 +218,22 @@ export default function Post({
             <Account_alert_reg>{date}</Account_alert_reg>
           </Date>
         </ProfileBox>
-        <WeatherBox>
-          <WeatherTextBox>
-            {/*<SunIcon />*/}
-            <Account_alert_reg>{weather}</Account_alert_reg>
-          </WeatherTextBox>
-          <Temp>
-            <Main_title_med>{tempMin}°</Main_title_med>
-            <Line />
-            <Main_title_med>{tempMax}°</Main_title_med>
-          </Temp>
-        </WeatherBox>
+        <BarBox>
+          <WeatherBox>
+            <WeatherTextBox>
+              {/*<SunIcon />*/}
+              <Account_alert_reg>{weather}</Account_alert_reg>
+            </WeatherTextBox>
+            <Temp>
+              <Main_title_med>{tempMin}°</Main_title_med>
+              <Line />
+              <Main_title_med>{tempMax}°</Main_title_med>
+            </Temp>
+          </WeatherBox>
+          <ConditionBox>
+            <Chip_button_med>{postCondition}</Chip_button_med>
+          </ConditionBox>
+        </BarBox>
         <PostImgBox>
           <PostImg
             src={ootdImage}
@@ -229,6 +265,9 @@ export default function Post({
           <Account_alert_reg>{comment}</Account_alert_reg>
         </DetailBox>
       </SubBox>
+      <ContentBox isContent={content == '' ? false : true}>
+        <Desc_150_reg>{content}</Desc_150_reg>
+      </ContentBox>
     </Container>
   );
 }

@@ -11,14 +11,16 @@
         "postId": 0,
         "ootdImage": "https://i.ibb.co/s6tzBR9/3261821c4e24ea18742837608b95ac01.jpg",
         "lookbookImage": "https://i.ibb.co/M9dnqXJ/3dcec87b5205df174147c9c606b77700.jpg",
-        "postCondition": "흐림",
+        "weather": "흐림",
         "MinTemp": 13,
         "MaxTemp": 20,
         "createdAt": "2024-10-08T11:54:21.521Z",
         "location": "서울특별시 성동구",
         "preferCount": 40,
         "commentCount": 5,
-        "isLikedByMember": true
+        "isLikedByMember": true,
+        "content": "완전 가을이다!",
+        "postCondition": "딱 좋았어요😖"
       },
       "comment": [
         {
@@ -95,14 +97,16 @@
         "postId": 1,
         "ootdImage": "https://i.ibb.co/fFx03kz/387522ddd11a2825a5f90cb2a65d71ec.jpg",
         "lookbookImage": "https://i.ibb.co/VLkpPYX/c97eedb6315d752f4c8544b2fdecae5a.jpg",
-        "postCondition": "흐림",
+        "weather": "흐림",
         "MinTemp": 13,
         "MaxTemp": 20,
         "createdAt": "2024-10-08T13:54:21.521Z",
         "location": "서울특별시 성동구",
         "preferCount": 20,
         "commentCount": 2,
-        "isLikedByMember": true
+        "isLikedByMember": true,
+        "content": "",
+        "postCondition": "딱 좋았어요😖"
       },
       "comment": [
         {
@@ -143,14 +147,16 @@
         "postId": 2,
         "ootdImage": "https://i.ibb.co/Jp301xB/7a8b1fca36890bf827a2960f1cb55357.jpg",
         "lookbookImage": "https://i.ibb.co/fHwpZ72/16e3d55797b62c6fb2ade89032426692.jpg",
-        "postCondition": "흐림",
+        "weather": "흐림",
         "MinTemp": 13,
         "MaxTemp": 20,
         "createdAt": "2024-10-08T15:54:21.521Z",
         "location": "서울특별시 서대문구",
         "preferCount": 30,
         "commentCount": 2,
-        "isLikedByMember": true
+        "isLikedByMember": true,
+        "content": "내 옷 어떤디",
+        "postCondition": "추웠어요🥶"
       },
       "comment": [
         {
@@ -191,14 +197,16 @@
         "postId": 3,
         "ootdImage": "https://i.ibb.co/mbBt2CR/8e69695d4dcc5e0fb6b0708bb31b0ea5.jpg",
         "lookbookImage": "https://i.ibb.co/D5dyx3d/f539b40984472674fbd2b0bdf361aabe.jpg",
-        "postCondition": "흐림",
+        "weather": "흐림",
         "MinTemp": 13,
         "MaxTemp": 20,
         "createdAt": "2024-10-08T18:54:21.521Z",
         "location": "서울특별시 서대문구",
         "preferCount": 25,
         "commentCount": 0,
-        "isLikedByMember": true
+        "isLikedByMember": true,
+        "content": "오늘 날씨 좋당!",
+        "postCondition": "딱 좋았어요😖"
       },
       "comment": []
     },
@@ -213,14 +221,16 @@
         "postId": 4,
         "ootdImage": "https://i.ibb.co/4JtkZvJ/cdd5d30e81915412391186831ee664cb.jpg",
         "lookbookImage": "https://i.ibb.co/9HsjMjk/7502c13db1fe4eec0c9638b40a7c0855.jpg",
-        "postCondition": "흐림",
+        "weather": "흐림",
         "MinTemp": 13,
         "MaxTemp": 20,
         "createdAt": "2024-10-08T19:54:21.521Z",
         "location": "고양시 덕양구",
         "preferCount": 15,
         "commentCount": 4,
-        "isLikedByMember": true
+        "isLikedByMember": true,
+        "content": "오늘 생각보다 덥다...",
+        "postCondition": "더웠어요🥵"
       },
       "comment": [
         {
