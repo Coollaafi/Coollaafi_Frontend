@@ -143,7 +143,7 @@ export default function CommunityPage() {
   //이용자 위치 가져오기
   const addressMutation = useMutation(getAddress, {
     onSuccess: (data) => {
-      setCity(data.region_2depth_name);
+      setCity(data.region_1depth_name);
     },
     onError: (error) => {
       console.log(error);
@@ -186,12 +186,11 @@ export default function CommunityPage() {
         : data.result.filter(
             (item) =>
               item.post.location.substring(
-                item.post.location.indexOf('도') + 1,
+                0,
                 item.post.location.indexOf('시'),
-              ) == city.substring(city.indexOf('도') + 1, city.indexOf('시')),
+              ) == city.substring(0, city.indexOf('시')),
           ),
     );
-    console.log(city);
   }, [isAll]);
 
   return (
@@ -233,7 +232,7 @@ export default function CommunityPage() {
               id={member.memberServiceId}
               nickname={member.alias}
               date={format(new Date(post.createdAt), 'yyyy년 MM월 dd일')}
-              weather={post.postCondition}
+              weather={post.weather}
               ootdImage={post.ootdImage}
               collageImage={post.lookbookImage}
               location={post.location}
@@ -242,6 +241,8 @@ export default function CommunityPage() {
               postId={post.postId}
               tempMin={post.MinTemp}
               tempMax={post.MaxTemp}
+              content={''}
+              postCondition={post.postCondition}
             />
           );
         })
