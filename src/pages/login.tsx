@@ -54,7 +54,7 @@ const Icon = styled.div`
 `;
 
 export default function LoginPage() {
-  const KAKAO_AUTH_URL = 'localhost:8080/kakao';
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}/login/oauth2/code/kakao&response_type=code`;
 
   return (
     <Container>
