@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Header from 'components/Header';
 import { DTL_Date, DTL_Day, Main_title_med } from 'styles/typography';
 import { ReactComponent as SunIcon } from '../assets/icons/sun.svg';
+import { ReactComponent as RainIcon } from '../assets/icons/rain.svg';
 import { getAddress, getWeather } from 'apis/recommend';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
@@ -71,9 +72,10 @@ const Line = styled.div`
   background-image: linear-gradient(to right, #547bc7, #a82e2e);
 `;
 
-const Image = styled.div`
+const Image = styled.img`
   width: 100%;
   height: 597.046px;
+  object-fit: contain;
 `;
 
 const Location = styled.div`
@@ -169,7 +171,7 @@ export default function RecommendPage() {
           </Cal>
           <Weather>
             <Main_title_med>{weatherDes}</Main_title_med>
-            <SunIcon />
+            <RainIcon />
           </Weather>
         </FirBox>
         {/*api 연결 시, 날씨에 맞게 변화하도록*/}
@@ -186,7 +188,7 @@ export default function RecommendPage() {
         </SecBox>
       </Box>
       {/*api 연결 시, 콜라쥬 이미지 넣도록*/}
-      <Image />
+      <Image src="https://i.ibb.co/mNYhkd5/085c5cffe3ad165f05c3bc4cb56679cb.jpg" />
     </Container>
   );
 }
