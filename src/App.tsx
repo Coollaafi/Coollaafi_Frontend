@@ -8,12 +8,14 @@ import CommunityPage from 'pages/community';
 import CommunityDetailPage from 'pages/community-detail';
 import UploadImagePage from 'pages/upload-image';
 import RecommendPage from 'pages/recommend';
+import ScrollToTop from 'ScrollToTop';
 
 function App() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/join" element={<JoinPage />} />
