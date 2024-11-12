@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { Desc_150_reg, Chip_button_med } from 'styles/typography';
-import { ReactComponent as Logo } from '../assets/icons/logo.svg';
-import { ReactComponent as KakaoIcon } from '../assets/icons/kakao.svg';
-import BackgroundImage from '../assets/images/login.svg';
+import { ReactComponent as Logo } from '../../assets/icons/logo.svg';
+import { ReactComponent as KakaoIcon } from '../../assets/icons/kakao.svg';
+import BackgroundImage from '../../assets/images/login.svg';
 
 /*height를 부모요소에서 61px를 뺀 값으로 해서 Detail에서 margin-top: 61px를 했을 때, 
 상단 마진을 줘서 요소가 부모 요소의 height를 초과해 잘리는 문제를 해결함*/
@@ -54,7 +54,7 @@ const Icon = styled.div`
 `;
 
 export default function LoginPage() {
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}/login/oauth2/code/kakao&response_type=code`;
+  const KAKAO_AUTH_URL = `http://ec2-13-125-157-219.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/kakao`;
 
   return (
     <Container>
