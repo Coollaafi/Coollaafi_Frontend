@@ -54,7 +54,7 @@ const Icon = styled.div`
 `;
 
 export default function LoginPage() {
-  const KAKAO_AUTH_URL = `http://ec2-13-125-157-219.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/kakao`;
+  const KAKAO_AUTH_URL = `${process.env.REACT_APP_API_URL}/oauth2/authorization/kakao`;
 
   return (
     <Container>

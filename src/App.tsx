@@ -18,7 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/join" element={<JoinPage />} />
-          <Route path="/success" element={<LoginSuccessPage />} />
+          <Route path="/login/success" element={<LoginSuccessPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/community/:postId" element={<CommunityDetailPage />} />
