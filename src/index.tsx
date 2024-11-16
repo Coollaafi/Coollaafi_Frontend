@@ -2,14 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { CookiesProvider } from 'react-cookie';
 import '../src/styles/globals.css';
+import Layout from 'components/Layout';
 
+const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <CookiesProvider>
+        <Layout>
+          <App />
+        </Layout>
+      </CookiesProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
 );
 

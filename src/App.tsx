@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import LoginPage from 'pages/login';
+import LoginPage from 'pages/login/login';
+import LoginSuccessPage from 'pages/login/loginSuccess';
 import JoinPage from 'pages/join';
 import HomePage from 'pages/home';
 import CommunityPage from 'pages/community';
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/join" element={<JoinPage />} />
+          <Route path="/login/success" element={<LoginSuccessPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/community/:postId" element={<CommunityDetailPage />} />
