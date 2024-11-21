@@ -12,6 +12,10 @@ import { useEffect, useRef, useState } from 'react';
 import default_profile from '../assets/images/default-profile.svg';
 import { ReactComponent as CheckIcon } from '../assets/icons/circle-check.svg';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { checkServiceId, join } from 'apis/auth';
+import { useLocation } from 'react-router-dom';
+import { useUserStore } from 'store/user';
 
 const Container = styled.div`
   width: 360px;
@@ -151,6 +155,7 @@ const Button = styled.div<{ isChecked: boolean }>`
   height: 48px;
   background-color: ${(props) => (props.isChecked ? 'white' : '#1d1d1d')};
   color: ${(props) => (props.isChecked ? 'black' : '#3b3b3b')};
+  cursor: pointer;
 `;
 
 export default function JoinPage() {
@@ -172,7 +177,59 @@ export default function JoinPage() {
   const [isExc, setIsExc] = useState<boolean>(false);
   const [isOnly, setIsOnly] = useState<boolean>(false);
   const [isErrorSeen, setIsErrorSeen] = useState<boolean>(false);
+
   const navigation = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const accessToken = queryParams.get('accessToken');
+  const refreshToken = queryParams.get('refreshToken');
+  const memberId = queryParams.get('memberId');
+  const setAccessToken = useUserStore((state) => state.setAccessToken);
+  const setRefreshToken = useUserStore((state) => state.setRefreshToken);
+
+  const formData = new FormData();
+  const joinMemberDTO = {
+    memberId: memberId,
+    serviceId: id,
+    nickname: nickname,
+  };
+
+  const checkServiceIdMutation = useMutation(checkServiceId, {
+    onSuccess: (data) => {
+      setIsOnly(!data.result);
+      if (data.result) {
+        setIsErrorSeen(true);
+      }
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const joinMutation = useMutation(join, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const onCheckServiceId = () => {
+    checkServiceIdMutation.mutate({ serviceId: id, accessToken: accessToken });
+  };
+
+  const onClickBtn = () => {
+    formData.append('joinMemberDTO', JSON.stringify(joinMemberDTO));
+    formData.append('profileImage', imgFile);
+    joinMutation.mutate({ formdata: formData, accessToken: accessToken });
+
+    if (accessToken && refreshToken) {
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+    }
+    navigation('/home');
+  };
 
   //닉네임 20이내로
   useEffect(() => {
@@ -216,6 +273,12 @@ export default function JoinPage() {
     }
   }, [id]);
 
+  //id 변경 시, isOnly, 에러 메시지 리셋
+  useEffect(() => {
+    setIsOnly(false);
+    setIsErrorSeen(false);
+  }, [id]);
+
   return (
     <Container>
       <Header type="black" />
@@ -244,15 +307,7 @@ export default function JoinPage() {
               룩북 커뮤니티에서 사용할 아이디를 입력해주세요.
             </Account_alert_reg>
             <ErrorBox isSeen={isErrorSeen}>
-              {!isExc ? (
-                <Noto_Receipt>
-                  영어, 숫자, 특수문자만 입력할 수 있습니다. (6-12)
-                </Noto_Receipt>
-              ) : !isOnly ? (
-                <Noto_Receipt>중복된 아이디입니다.</Noto_Receipt>
-              ) : (
-                <></>
-              )}
+              {!isOnly && <Noto_Receipt>중복된 아이디입니다.</Noto_Receipt>}
             </ErrorBox>
           </InputTitleBox>
           <Input
@@ -285,8 +340,7 @@ export default function JoinPage() {
               onClick={(e) => {
                 !(isEng && isNum && isSpe && isLong)
                   ? e.preventDefault
-                  : //api연결시 조건 충족하면 data 넘기기
-                    setIsErrorSeen(true);
+                  : onCheckServiceId();
               }}
             >
               <CTA_button_med>중복확인</CTA_button_med>
@@ -316,7 +370,7 @@ export default function JoinPage() {
         <Button
           isChecked={isNickname && isOnly}
           onClick={(e) =>
-            !(isNickname && isOnly) ? e.preventDefault() : navigation('/home')
+            !(isNickname && isOnly) ? e.preventDefault() : onClickBtn()
           }
         >
           <CTA_button_med>회원가입하기</CTA_button_med>

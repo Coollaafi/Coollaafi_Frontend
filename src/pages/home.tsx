@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Header from 'components/Header';
@@ -16,6 +16,7 @@ import InfoModal from 'components/home/InfoModal';
 import CalendarBox from 'components/home/CalendarBox';
 import Footer from 'components/Footer';
 import EditModal from 'components/home/EditModal';
+import { useUserStore } from 'store/user';
 
 const Container = styled.div`
   width: 360px;
@@ -153,6 +154,12 @@ export default function HomePage() {
     closeModal: closeEditModal,
     openModal: openEditModal,
   } = useModal();
+
+  const accessToken = useUserStore((state) => state.accessToken);
+
+  useEffect(() => {
+    console.log(accessToken);
+  }, []);
 
   return (
     <Container>
