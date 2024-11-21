@@ -15,7 +15,9 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <CookiesProvider>
-        <App />
+        <Layout>
+          <App />
+        </Layout>
       </CookiesProvider>
     </QueryClientProvider>
   </React.StrictMode>,

@@ -22,7 +22,10 @@ export const checkServiceId = async (info: any) => {
 };
 
 export const join = async (info: any) => {
-  const response = await client.post('/member/join', info);
-
+  const response = await client.post('/member/join', info.formdata, {
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
   return response.data;
 };

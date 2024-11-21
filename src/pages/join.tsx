@@ -178,6 +178,13 @@ export default function JoinPage() {
   const navigation = useNavigate();
   const accessToken = useUserStore((state) => state.accessToken);
 
+  const formdata = {
+    memberId: 0,
+    serviceId: id,
+    nickname: nickname,
+    profileImage: imgFile,
+  };
+
   const checkServiceIdMutation = useMutation(checkServiceId, {
     onSuccess: (data) => {
       setIsOnly(data);
@@ -201,6 +208,12 @@ export default function JoinPage() {
 
   const onCheckServiceId = () => {
     checkServiceIdMutation.mutate({ serviceId: id, accessToken: accessToken });
+  };
+
+  const onClickBtn = () => {
+    joinMutation.mutate({ formdata: formdata, accessToken: accessToken });
+    console.log(accessToken);
+    /*navigation('/home');*/
   };
 
   //닉네임 20이내로
@@ -342,7 +355,7 @@ export default function JoinPage() {
         <Button
           isChecked={isNickname && isOnly}
           onClick={(e) =>
-            !(isNickname && isOnly) ? e.preventDefault() : navigation('/home')
+            !(isNickname && isOnly) ? e.preventDefault() : onClickBtn()
           }
         >
           <CTA_button_med>회원가입하기</CTA_button_med>
