@@ -17,13 +17,15 @@ export default function loginSuccess() {
   useEffect(() => {
     if (refreshToken !== null && accessToken !== null && isNewMember !== null) {
       if (isNewMember == 'true') {
-        navigate('/join');
+        navigate(
+          `/join?accessToken=${accessToken}&refreshToken=${refreshToken}`,
+        );
       } else {
         navigate('/home');
+        //전역 상태 관리
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
       }
-      //전역 상태 관리
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
     }
   }, []);
 

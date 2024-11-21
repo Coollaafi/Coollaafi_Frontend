@@ -14,6 +14,7 @@ import { ReactComponent as CheckIcon } from '../assets/icons/circle-check.svg';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { checkServiceId, join } from 'apis/auth';
+import { useLocation } from 'react-router-dom';
 import { useUserStore } from 'store/user';
 
 const Container = styled.div`
@@ -154,6 +155,7 @@ const Button = styled.div<{ isChecked: boolean }>`
   height: 48px;
   background-color: ${(props) => (props.isChecked ? 'white' : '#1d1d1d')};
   color: ${(props) => (props.isChecked ? 'black' : '#3b3b3b')};
+  cursor: pointer;
 `;
 
 export default function JoinPage() {
@@ -175,8 +177,15 @@ export default function JoinPage() {
   const [isExc, setIsExc] = useState<boolean>(false);
   const [isOnly, setIsOnly] = useState<boolean>(false);
   const [isErrorSeen, setIsErrorSeen] = useState<boolean>(false);
+
   const navigation = useNavigate();
-  const accessToken = useUserStore((state) => state.accessToken);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const accessToken = queryParams.get('accessToken');
+  const refreshToken = queryParams.get('refreshToken');
+
+  const setAccessToken = useUserStore((state) => state.setAccessToken);
+  const setRefreshToken = useUserStore((state) => state.setRefreshToken);
 
   const formdata = {
     memberId: 0,
@@ -212,6 +221,10 @@ export default function JoinPage() {
 
   const onClickBtn = () => {
     joinMutation.mutate({ formdata: formdata, accessToken: accessToken });
+    if (accessToken && refreshToken) {
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+    }
     console.log(accessToken);
     /*navigation('/home');*/
   };
