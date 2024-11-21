@@ -9,12 +9,16 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const [cookies] = useCookies(['refreshToken']);
+  const [cookies, setCookies] = useCookies();
   const setAccessToken = useUserStore((state) => state.setAccessToken);
 
   const refreshTokenMutation = useMutation(refreshToken, {
     onSuccess: (data) => {
       setAccessToken(data.accessToken);
+      setCookies('accessToken', data.accessToken, {
+        sameSite: 'strict',
+        path: '/',
+      });
     },
     onError: (e) => {
       console.log(e);

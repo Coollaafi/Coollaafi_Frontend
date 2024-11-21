@@ -12,6 +12,9 @@ import { useEffect, useRef, useState } from 'react';
 import default_profile from '../assets/images/default-profile.svg';
 import { ReactComponent as CheckIcon } from '../assets/icons/circle-check.svg';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { checkServiceId, join } from 'apis/auth';
+import { useUserStore } from 'store/user';
 
 const Container = styled.div`
   width: 360px;
@@ -174,6 +177,30 @@ export default function JoinPage() {
   const [isErrorSeen, setIsErrorSeen] = useState<boolean>(false);
   const navigation = useNavigate();
 
+  const accessToken = useUserStore((state) => state.accessToken);
+
+  const checkServiceIdMutation = useMutation(checkServiceId, {
+    onSuccess: (data) => {
+      setIsOnly(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const joinMutation = useMutation(join, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const onCheckServiceId = () => {
+    checkServiceIdMutation.mutate({ serviceId: id, accessToken: accessToken });
+  };
+
   //닉네임 20이내로
   useEffect(() => {
     if (nickname.length > 0 && nickname.length <= 20) {
@@ -289,7 +316,9 @@ export default function JoinPage() {
                     setIsErrorSeen(true);
               }}
             >
-              <CTA_button_med>중복확인</CTA_button_med>
+              <div onClick={onCheckServiceId}>
+                <CTA_button_med>중복확인</CTA_button_med>
+              </div>
             </TextBtn>
           </DuplicateCheck>
         </IdInputBox>

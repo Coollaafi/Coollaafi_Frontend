@@ -7,3 +7,22 @@ export const refreshToken = async (refreshToken: string) => {
 
   return response.data;
 };
+
+export const checkServiceId = async (info: any) => {
+  const response = await client.get('/member/check-service-id', {
+    params: {
+      serviceId: info.serviceId,
+    },
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
+
+  return response.data;
+};
+
+export const join = async (info: any) => {
+  const response = await client.post('/member/join', info);
+
+  return response.data;
+};

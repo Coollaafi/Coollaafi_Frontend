@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import { cookieStorage } from 'zustand-cookie-storage';
 
 interface UserStoreProps {
   accessToken: string;
@@ -7,9 +9,18 @@ interface UserStoreProps {
   setRefreshToken: (refreshToken: string) => void;
 }
 
-export const useUserStore = create<UserStoreProps>((set) => ({
-  accessToken: '',
-  refreshToken: '',
-  setAccessToken: (newAccessToken) => set({ accessToken: newAccessToken }),
-  setRefreshToken: (newRefreshToken) => set({ refreshToken: newRefreshToken }),
-}));
+export const useUserStore = create(
+  persist<UserStoreProps>(
+    (set) => ({
+      accessToken: '',
+      refreshToken: '',
+      setAccessToken: (newAccessToken) => set({ accessToken: newAccessToken }),
+      setRefreshToken: (newRefreshToken) =>
+        set({ refreshToken: newRefreshToken }),
+    }),
+    {
+      name: 'user-storage',
+      storage: createJSONStorage(() => cookieStorage),
+    },
+  ),
+);

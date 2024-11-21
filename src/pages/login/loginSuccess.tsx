@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
 import { useUserStore } from 'store/user';
 
 export default function loginSuccess() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [cookies, setCookies] = useCookies();
 
   const queryParams = new URLSearchParams(location.search);
   const refreshToken = queryParams.get('refreshToken');
@@ -21,15 +19,11 @@ export default function loginSuccess() {
       if (isNewMember == 'true') {
         navigate('/join');
       } else {
-        //쿠키로 설정
-        setAccessToken(accessToken);
-        setRefreshToken(refreshToken);
-        setCookies('refreshToken', refreshToken, {
-          sameSite: 'strict',
-          path: '/',
-        });
         navigate('/home');
       }
+      //전역 상태 관리
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
     }
   }, []);
 
