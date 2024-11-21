@@ -176,12 +176,14 @@ export default function JoinPage() {
   const [isOnly, setIsOnly] = useState<boolean>(false);
   const [isErrorSeen, setIsErrorSeen] = useState<boolean>(false);
   const navigation = useNavigate();
-
   const accessToken = useUserStore((state) => state.accessToken);
 
   const checkServiceIdMutation = useMutation(checkServiceId, {
     onSuccess: (data) => {
       setIsOnly(data);
+      if (!data) {
+        setIsErrorSeen(true);
+      }
     },
     onError: (e) => {
       console.log(e);
@@ -243,6 +245,12 @@ export default function JoinPage() {
     }
   }, [id]);
 
+  //id 변경 시, isOnly, 에러 메시지 리셋
+  useEffect(() => {
+    setIsOnly(false);
+    setIsErrorSeen(false);
+  }, [id]);
+
   return (
     <Container>
       <Header type="black" />
@@ -271,15 +279,7 @@ export default function JoinPage() {
               룩북 커뮤니티에서 사용할 아이디를 입력해주세요.
             </Account_alert_reg>
             <ErrorBox isSeen={isErrorSeen}>
-              {!isExc ? (
-                <Noto_Receipt>
-                  영어, 숫자, 특수문자만 입력할 수 있습니다. (6-12)
-                </Noto_Receipt>
-              ) : !isOnly ? (
-                <Noto_Receipt>중복된 아이디입니다.</Noto_Receipt>
-              ) : (
-                <></>
-              )}
+              {!isOnly && <Noto_Receipt>중복된 아이디입니다.</Noto_Receipt>}
             </ErrorBox>
           </InputTitleBox>
           <Input
@@ -312,13 +312,10 @@ export default function JoinPage() {
               onClick={(e) => {
                 !(isEng && isNum && isSpe && isLong)
                   ? e.preventDefault
-                  : //api연결시 조건 충족하면 data 넘기기
-                    setIsErrorSeen(true);
+                  : onCheckServiceId();
               }}
             >
-              <div onClick={onCheckServiceId}>
-                <CTA_button_med>중복확인</CTA_button_med>
-              </div>
+              <CTA_button_med>중복확인</CTA_button_med>
             </TextBtn>
           </DuplicateCheck>
         </IdInputBox>
