@@ -16,7 +16,9 @@ import InfoModal from 'components/home/InfoModal';
 import CalendarBox from 'components/home/CalendarBox';
 import Footer from 'components/Footer';
 import EditModal from 'components/home/EditModal';
+import { useMutation } from 'react-query';
 import { useUserStore } from 'store/user';
+import { home } from 'apis/home';
 
 const Container = styled.div`
   width: 360px;
@@ -48,6 +50,10 @@ const NameBox = styled.div`
 const Name = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const TextColor = styled.div`
+  color: #919191;
 `;
 
 const Nickname = styled.div`
@@ -143,6 +149,18 @@ const Btn = styled(Link)`
   }
 `;
 
+type memberBasedProps = {
+  memberServiceId: string;
+  memberNickName: string;
+  memberImage: string;
+  alias: string;
+};
+
+type memberAddProps = {
+  nextAlias: string;
+  photosUntilNextAlias: number;
+};
+
 export default function HomePage() {
   const {
     isOpen: isInfoOpen,
@@ -155,10 +173,23 @@ export default function HomePage() {
     openModal: openEditModal,
   } = useModal();
 
+  const memberId = useUserStore((state) => state.memberId);
   const accessToken = useUserStore((state) => state.accessToken);
+  const [memberBased, setMemberBased] = useState<memberBasedProps>();
+  const [memberAdd, setMemberAdd] = useState<memberAddProps>();
+
+  const homeMutation = useMutation(home, {
+    onSuccess: (data) => {
+      setMemberBased(data.result.memberBased);
+      setMemberAdd(data.result.memberAdd);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
 
   useEffect(() => {
-    console.log(accessToken);
+    homeMutation.mutate({ memberId: memberId, accessToken: accessToken });
   }, []);
 
   return (
@@ -168,18 +199,22 @@ export default function HomePage() {
         <ProfileBox>
           <NameBox>
             <Name>
-              <Main_title_med>{'Ewha03!'}</Main_title_med>
-              <Desc_120_med>{'김이화'}</Desc_120_med>
+              <Main_title_med>{memberBased?.memberServiceId}</Main_title_med>
+              <TextColor>
+                <Desc_120_med>{memberBased?.memberNickName}</Desc_120_med>
+              </TextColor>
             </Name>
             <Nickname>
-              <NicknameBox nickname="평범한 패피" />
+              <NicknameBox
+                nickname={memberBased?.alias ? memberBased?.alias : ''}
+              />
               <Icon onClick={openInfoModal}>
                 <InfoIcon />
               </Icon>
             </Nickname>
           </NameBox>
           <ImageBox>
-            <ProfileImg src="https://i.ibb.co/LNpPpWJ/image.jpg" />
+            <ProfileImg src={memberBased?.memberImage} />
             <SettingBtn onClick={openEditModal}>
               <Desc_120_med>프로필설정</Desc_120_med>
               <SettingIcon />
@@ -189,11 +224,13 @@ export default function HomePage() {
         <BtnBox>
           <Lines>
             <Line>
-              <Main_title_med>{'예사롭지 않은 패피'}</Main_title_med>
+              <Main_title_med>{memberAdd?.nextAlias}</Main_title_med>
               <Desc_120_med>가 되기까지</Desc_120_med>
             </Line>
             <Line>
-              <Main_title_med>{'7장'}</Main_title_med>
+              <Main_title_med>
+                {memberAdd?.photosUntilNextAlias + '장'}
+              </Main_title_med>
               <Desc_120_med>의 사진 업로드가 필요해요</Desc_120_med>
             </Line>
           </Lines>

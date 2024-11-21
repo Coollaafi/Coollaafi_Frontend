@@ -60,16 +60,22 @@ type ColorType = 'white' | 'trans';
 type UploadImageProps = {
   imgFile: string;
   setImgFile: React.Dispatch<React.SetStateAction<string>>;
+  setImgFileBlob: React.Dispatch<React.SetStateAction<Blob>>;
   type: ColorType;
 };
 
 export default function UploadImage({
   imgFile,
   setImgFile,
+  setImgFileBlob,
   type,
 }: UploadImageProps) {
   const fileRef = useRef<HTMLInputElement>(null);
-  const { handleClick, changeFile } = useImage({ setImgFile, fileRef });
+  const { handleClick, changeFile } = useImage({
+    setImgFileBlob,
+    setImgFile,
+    fileRef,
+  });
 
   return (
     <Box>

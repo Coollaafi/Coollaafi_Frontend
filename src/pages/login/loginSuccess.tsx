@@ -14,18 +14,20 @@ export default function loginSuccess() {
 
   const setAccessToken = useUserStore((state) => state.setAccessToken);
   const setRefreshToken = useUserStore((state) => state.setRefreshToken);
+  const setMemberId = useUserStore((state) => state.setMemberId);
 
   useEffect(() => {
-    if (refreshToken !== null && accessToken !== null) {
+    if (refreshToken && accessToken && memberId) {
       if (isMembershipRequired == 'true') {
         navigate(
           `/join?accessToken=${accessToken}&refreshToken=${refreshToken}&memberId=${memberId}`,
         );
       } else {
-        navigate('/home');
+        navigate(`/home/${memberId}`);
         //전역 상태 관리
         setAccessToken(accessToken);
         setRefreshToken(refreshToken);
+        setMemberId(memberId);
       }
     }
   }, []);

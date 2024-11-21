@@ -83,6 +83,7 @@ type BeforeModalProps = {
 };
 
 export default function BeforeModal({ setIsBeforeClicked }: BeforeModalProps) {
+  const [imgFileBlob, setImgFileBlob] = useState<Blob>(new Blob());
   const [imgFile, setImgFile] = useState<string>('');
   const [isDone, setIsDone] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean[]>([]);
@@ -117,6 +118,7 @@ export default function BeforeModal({ setIsBeforeClicked }: BeforeModalProps) {
               <UploadImage
                 imgFile={imgFile}
                 setImgFile={setImgFile}
+                setImgFileBlob={setImgFileBlob}
                 type="white"
               />
             </Result>

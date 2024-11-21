@@ -103,6 +103,7 @@ const Button = styled.div`
 `;
 
 export default function UploadImagePage() {
+  const [imgFileBlob, setImgFileBlob] = useState<Blob>(new Blob());
   const [imgFile, setImgFile] = useState<string>('');
   const [isClicked, setIsClicked] = useState<boolean[]>([]);
 
@@ -122,7 +123,12 @@ export default function UploadImagePage() {
       </TextBox>
       <SelectBox>
         <ImageBox isFile={imgFile == '' ? false : true}>
-          <UploadImage imgFile={imgFile} setImgFile={setImgFile} type="trans" />
+          <UploadImage
+            imgFile={imgFile}
+            setImgFile={setImgFile}
+            setImgFileBlob={setImgFileBlob}
+            type="trans"
+          />
         </ImageBox>
         <ButtonBox
           type="black"

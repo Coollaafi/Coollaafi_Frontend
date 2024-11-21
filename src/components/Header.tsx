@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { ReactComponent as Logo } from '../assets/icons/header-logo.svg';
 import { ReactComponent as DressIcon } from '../assets/icons/dress.svg';
 import { Link } from 'react-router-dom';
+import { useUserStore } from 'store/user';
 
 const Container = styled.div<{ type: string }>`
   width: 360px;
@@ -29,12 +30,14 @@ type HeaderProps = {
 };
 
 export default function Header({ type }: HeaderProps) {
+  const memberId = useUserStore((state) => state.memberId);
+
   return (
     <Container type={type}>
       {type == 'black' ? (
         <Logo width="85" height="30" viewBox="0 0 85 30" fill="white" />
       ) : (
-        <Link to="/home">
+        <Link to={`/home/${memberId}`}>
           <Logo width="85" height="30" viewBox="0 0 85 30" fill="black" />
         </Link>
       )}
