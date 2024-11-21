@@ -1,6 +1,5 @@
-import { refreshToken } from 'apis/auth';
+import { refreshTokenApi } from 'apis/auth';
 import { ReactNode, useEffect } from 'react';
-import { useCookies } from 'react-cookie';
 import { useMutation } from 'react-query';
 import { useUserStore } from 'store/user';
 
@@ -9,16 +8,12 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const [cookies, setCookies] = useCookies();
+  const refreshToken = useUserStore((state) => state.refreshToken);
   const setAccessToken = useUserStore((state) => state.setAccessToken);
 
-  const refreshTokenMutation = useMutation(refreshToken, {
+  const refreshTokenMutation = useMutation(refreshTokenApi, {
     onSuccess: (data) => {
       setAccessToken(data.accessToken);
-      setCookies('accessToken', data.accessToken, {
-        sameSite: 'strict',
-        path: '/',
-      });
     },
     onError: (e) => {
       console.log(e);
@@ -26,7 +21,8 @@ export default function Layout({ children }: LayoutProps) {
   });
 
   useEffect(() => {
-    refreshTokenMutation.mutate(cookies.refreshToken);
+    console.log(refreshToken);
+    refreshTokenMutation.mutate(refreshToken);
   }, []);
 
   return <>{children}</>;

@@ -9,16 +9,17 @@ export default function loginSuccess() {
   const queryParams = new URLSearchParams(location.search);
   const refreshToken = queryParams.get('refreshToken');
   const accessToken = queryParams.get('accessToken');
-  const isNewMember = queryParams.get('isNewMember');
+  const memberId = queryParams.get('memberId');
+  const isMembershipRequired = queryParams.get('isMembershipRequired');
 
   const setAccessToken = useUserStore((state) => state.setAccessToken);
   const setRefreshToken = useUserStore((state) => state.setRefreshToken);
 
   useEffect(() => {
-    if (refreshToken !== null && accessToken !== null && isNewMember !== null) {
-      if (isNewMember == 'true') {
+    if (refreshToken !== null && accessToken !== null) {
+      if (isMembershipRequired == 'true') {
         navigate(
-          `/join?accessToken=${accessToken}&refreshToken=${refreshToken}`,
+          `/join?accessToken=${accessToken}&refreshToken=${refreshToken}&memberId=${memberId}`,
         );
       } else {
         navigate('/home');

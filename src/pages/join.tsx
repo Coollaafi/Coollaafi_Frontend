@@ -183,21 +183,21 @@ export default function JoinPage() {
   const queryParams = new URLSearchParams(location.search);
   const accessToken = queryParams.get('accessToken');
   const refreshToken = queryParams.get('refreshToken');
-
+  const memberId = queryParams.get('memberId');
   const setAccessToken = useUserStore((state) => state.setAccessToken);
   const setRefreshToken = useUserStore((state) => state.setRefreshToken);
 
-  const formdata = {
-    memberId: 0,
+  const formData = new FormData();
+  const joinMemberDTO = {
+    memberId: memberId,
     serviceId: id,
     nickname: nickname,
-    profileImage: imgFile,
   };
 
   const checkServiceIdMutation = useMutation(checkServiceId, {
     onSuccess: (data) => {
-      setIsOnly(data);
-      if (!data) {
+      setIsOnly(!data.result);
+      if (data.result) {
         setIsErrorSeen(true);
       }
     },
@@ -220,13 +220,15 @@ export default function JoinPage() {
   };
 
   const onClickBtn = () => {
-    joinMutation.mutate({ formdata: formdata, accessToken: accessToken });
+    formData.append('joinMemberDTO', JSON.stringify(joinMemberDTO));
+    formData.append('profileImage', imgFile);
+    joinMutation.mutate({ formdata: formData, accessToken: accessToken });
+
     if (accessToken && refreshToken) {
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
     }
-    console.log(accessToken);
-    /*navigation('/home');*/
+    navigation('/home');
   };
 
   //닉네임 20이내로
