@@ -166,9 +166,14 @@ type EditModalProps = {
 };
 
 export default function EditModal({ closeModal }: EditModalProps) {
+  const [imgFileBlob, setImgFileBlob] = useState<Blob>(new Blob());
   const [imgFile, setImgFile] = useState<string>('');
   const fileRef = useRef<HTMLInputElement>(null);
-  const { handleClick, changeFile } = useImage({ setImgFile, fileRef });
+  const { handleClick, changeFile } = useImage({
+    setImgFileBlob,
+    setImgFile,
+    fileRef,
+  });
 
   //유효성 검사
   const [nickname, setNickname] = useState<string>('');

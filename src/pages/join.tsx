@@ -159,9 +159,14 @@ const Button = styled.div<{ isChecked: boolean }>`
 `;
 
 export default function JoinPage() {
+  const [imgFileBlob, setImgFileBlob] = useState<Blob>(new Blob());
   const [imgFile, setImgFile] = useState<string>('');
   const fileRef = useRef<HTMLInputElement>(null);
-  const { handleClick, changeFile } = useImage({ setImgFile, fileRef });
+  const { handleClick, changeFile } = useImage({
+    setImgFileBlob,
+    setImgFile,
+    fileRef,
+  });
   //유효성 검사
   const [nickname, setNickname] = useState<string>('');
   const [isNickname, setIsNickname] = useState<boolean>(false);
@@ -186,6 +191,7 @@ export default function JoinPage() {
   const memberId = queryParams.get('memberId');
   const setAccessToken = useUserStore((state) => state.setAccessToken);
   const setRefreshToken = useUserStore((state) => state.setRefreshToken);
+  const setMemberId = useUserStore((state) => state.setMemberId);
 
   const formData = new FormData();
   const joinMemberDTO = {
@@ -221,14 +227,16 @@ export default function JoinPage() {
 
   const onClickBtn = () => {
     formData.append('joinMemberDTO', JSON.stringify(joinMemberDTO));
-    formData.append('profileImage', imgFile);
+    formData.append('profileImage', imgFileBlob);
+    console.log(formData);
     joinMutation.mutate({ formdata: formData, accessToken: accessToken });
 
-    if (accessToken && refreshToken) {
+    if (accessToken && refreshToken && memberId) {
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
+      setMemberId(memberId);
     }
-    navigation('/home');
+    navigation(`/home/${memberId}`);
   };
 
   //닉네임 20이내로
@@ -355,7 +363,13 @@ export default function JoinPage() {
               <TextBtn onClick={handleClick} isChecked={true}>
                 <CTA_button_med>사진 선택하기</CTA_button_med>
               </TextBtn>
-              <TextBtn onClick={() => setImgFile('')} isChecked={true}>
+              <TextBtn
+                onClick={() => {
+                  setImgFileBlob(new Blob());
+                  setImgFile('');
+                }}
+                isChecked={true}
+              >
                 <CTA_button_med>기본이미지</CTA_button_med>
               </TextBtn>
             </BtnBox>
