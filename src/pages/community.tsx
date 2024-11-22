@@ -15,10 +15,11 @@ import Post from 'components/community/Post';
 import Footer from 'components/Footer';
 import { useEffect, useState } from 'react';
 import AddFriendModal from 'components/community/AddFriendModal';
-import data from '../data/post.json';
 import { format } from 'date-fns';
 import { useMutation } from 'react-query';
 import { getAddress } from 'apis/recommend';
+import { posts } from 'apis/community';
+import { useUserStore } from 'store/user';
 
 const Container = styled.div`
   width: 360px;
@@ -85,15 +86,15 @@ const CheckBoxs = styled.div`
   background-color: #efefef;
 `;
 
-const CheckBox = styled.div<{ isClicked: boolean }>`
+const CheckBox = styled.div<{ $isClicked: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 48px;
   height: 24px;
   border-radius: 40px;
-  background-color: ${(props) => (props.isClicked ? '#000000' : '#ffffff')};
-  color: ${(props) => (props.isClicked ? '#ffffff' : '#919191')};
+  background-color: ${({ $isClicked }) => ($isClicked ? '#000000' : '#ffffff')};
+  color: ${({ $isClicked }) => ($isClicked ? '#ffffff' : '#919191')};
   cursor: pointer;
   &:hover {
     background-color: #000;
@@ -124,6 +125,29 @@ const BlankBox = styled.div`
   text-align: center;
 `;
 
+type postListProps = {
+  member: {
+    memberServiceId: string;
+    memberNickName: string;
+    memberImage: string;
+    alias: string;
+  };
+  post: {
+    postId: number;
+    ootd_url: string;
+    lookbook_url: string;
+    address: string;
+    tmin: number;
+    tmax: number;
+    weather_icon_url: string;
+    postCondition: string;
+    createdAt: string;
+    preferCount: number;
+    commentCount: number;
+    isLikedByMember: boolean;
+  };
+};
+
 export default function CommunityPage() {
   const {
     isOpen: isUploadOpen,
@@ -137,8 +161,21 @@ export default function CommunityPage() {
   } = useModal();
   const [isAll, setIsAll] = useState<boolean>(true);
 
-  const [postList, setPostList] = useState(data.result);
+  const [postList, setPostList] = useState<postListProps[]>([]);
   const [city, setCity] = useState('');
+
+  const memberId = useUserStore((state) => state.memberId);
+  const accessToken = useUserStore((state) => state.accessToken);
+
+  const postsMutation = useMutation(posts, {
+    onSuccess: (data) => {
+      setPostList(data.result);
+      console.log(data.result);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
 
   //이용자 위치 가져오기
   const addressMutation = useMutation(getAddress, {
@@ -180,18 +217,8 @@ export default function CommunityPage() {
   }, []);
 
   useEffect(() => {
-    setPostList(
-      isAll
-        ? data.result
-        : data.result.filter(
-            (item) =>
-              item.post.location.substring(
-                0,
-                item.post.location.indexOf('시'),
-              ) == city.substring(0, city.indexOf('시')),
-          ),
-    );
-  }, [isAll]);
+    postsMutation.mutate({ memberId: memberId, accessToken: accessToken });
+  }, []);
 
   return (
     <Container>
@@ -200,10 +227,10 @@ export default function CommunityPage() {
         <Main_title_med>이번주 친구들의 룩북 구경하기</Main_title_med>
         <BarBox>
           <CheckBoxs>
-            <CheckBox isClicked={!isAll} onClick={() => setIsAll(false)}>
+            <CheckBox $isClicked={!isAll} onClick={() => setIsAll(false)}>
               <Desc_120_med>내 위치</Desc_120_med>
             </CheckBox>
-            <CheckBox isClicked={isAll} onClick={() => setIsAll(true)}>
+            <CheckBox $isClicked={isAll} onClick={() => setIsAll(true)}>
               <Desc_120_med>전체위치</Desc_120_med>
             </CheckBox>
           </CheckBoxs>
@@ -232,15 +259,15 @@ export default function CommunityPage() {
               id={member.memberServiceId}
               nickname={member.alias}
               date={format(new Date(post.createdAt), 'yyyy년 MM월 dd일')}
-              weather={post.weather}
-              ootdImage={post.ootdImage}
-              collageImage={post.lookbookImage}
-              location={post.location}
+              weather={'날씨'}
+              ootdImage={post.ootd_url}
+              collageImage={post.lookbook_url}
+              location={post.address}
               like={post.preferCount}
               comment={post.commentCount}
               postId={post.postId}
-              tempMin={post.MinTemp}
-              tempMax={post.MaxTemp}
+              tempMin={post.tmin}
+              tempMax={post.tmax}
               content={''}
               postCondition={post.postCondition}
             />
