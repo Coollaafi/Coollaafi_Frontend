@@ -8,7 +8,7 @@ import { useState, useRef, useEffect } from 'react';
 import { format } from 'date-fns';
 import { useUserStore } from 'store/user';
 import { useMutation } from 'react-query';
-import { comment, postDetail } from 'apis/community';
+import { comment, postDetail, reply } from 'apis/community';
 import { home } from 'apis/home';
 
 const Container = styled.div`
@@ -142,6 +142,7 @@ export default function CommunityDetailPage() {
   const [ClickedLa, setClickedLa] = useState<string | undefined>(); //input placeholder
   const [memberBased, setMemberBased] = useState<memberBasedProps>();
   const [postData, setPostData] = useState<postProps>();
+  const [commentId, setCommentId] = useState<number>(-1);
   const memberId = useUserStore((state) => state.memberId);
   const accessToken = useUserStore((state) => state.accessToken);
   const params = useParams();
@@ -166,7 +167,16 @@ export default function CommunityDetailPage() {
 
   const commentMutation = useMutation(comment, {
     onSuccess: (data) => {
-      console.log(data);
+      console.log(data.result);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const replyMutation = useMutation(reply, {
+    onSuccess: (data) => {
+      console.log(data.result);
     },
     onError: (e) => {
       console.log(e);
@@ -175,12 +185,21 @@ export default function CommunityDetailPage() {
 
   const onClickUpload = () => {
     if (inputRef.current && inputRef.current.value != '') {
-      commentMutation.mutate({
-        accessToken: accessToken,
-        memberId: memberId,
-        postId: params.postId,
-        content: inputRef.current.value,
-      });
+      if (commentId == -1) {
+        commentMutation.mutate({
+          accessToken: accessToken,
+          memberId: memberId,
+          postId: params.postId,
+          content: inputRef.current.value,
+        });
+      } else {
+        replyMutation.mutate({
+          accessToken: accessToken,
+          memberId: memberId,
+          commentId: commentId - 1,
+          content: inputRef.current.value,
+        });
+      }
 
       inputRef.current.value = '';
     }
@@ -236,6 +255,7 @@ export default function CommunityDetailPage() {
         isInput={isInput}
         setIsInput={setIsInput}
         setClickedLa={setClickedLa}
+        setCommentId={setCommentId}
         inputRef={inputRef}
       />
       <InputBox>

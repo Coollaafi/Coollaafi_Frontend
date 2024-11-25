@@ -93,6 +93,7 @@ type CommentBoxProps = {
   isInput: boolean;
   setIsInput: React.Dispatch<React.SetStateAction<boolean>>;
   setClickedLa: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setCommentId: React.Dispatch<React.SetStateAction<number>>;
   inputRef: React.RefObject<HTMLTextAreaElement>;
 };
 
@@ -101,6 +102,7 @@ export default function CommentBox({
   isInput,
   setIsInput,
   setClickedLa,
+  setCommentId,
   inputRef,
 }: CommentBoxProps) {
   const [isClicked, setIsClicked] = useState<boolean>(false); //isInput 활성화
@@ -136,6 +138,7 @@ export default function CommentBox({
         ? undefined
         : comments[id]?.comment.member.memberServiceId,
     );
+    setCommentId(comments == undefined ? -1 : comments[id]?.comment.commentId);
   };
 
   //댓글 더보기 버튼 이벤트

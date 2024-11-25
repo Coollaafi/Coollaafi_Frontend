@@ -42,6 +42,21 @@ export const comment = async (info: any) => {
   return response.data;
 };
 
+//게시글 대댓글
+export const reply = async (info: any) => {
+  const response = await client.post('/comment/reply/', null, {
+    params: {
+      commentId: info.commentId,
+      memberId: info.memberId,
+      content: info.content,
+    },
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
+  return response.data;
+};
+
 //게시글 업로드 시, ootd 변경
 export const ootd = async (info: any) => {
   const response = await client.post('/ootd/', info.formdata, {
