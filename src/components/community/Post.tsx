@@ -121,6 +121,11 @@ const WeatherTextBox = styled.div`
   gap: 4px;
 `;
 
+const WeatherIcon = styled.img`
+  width: 16px;
+  height: 16px;
+`;
+
 const PostImgBox = styled.div`
   display: flex;
   flex-direction: row;
@@ -172,6 +177,7 @@ type PostProps = {
   nickname: string;
   date: string;
   weather: string;
+  weatherIcon: string;
   ootdImage: string;
   collageImage: string;
   location: string;
@@ -190,6 +196,7 @@ export default function Post({
   nickname,
   date,
   weather,
+  weatherIcon,
   ootdImage,
   collageImage,
   location,
@@ -225,7 +232,6 @@ export default function Post({
         <BarBox>
           <WeatherBox>
             <WeatherTextBox>
-              <CloudsIcon />
               <Account_alert_reg>{weather}</Account_alert_reg>
             </WeatherTextBox>
             <Temp>
@@ -235,7 +241,13 @@ export default function Post({
             </Temp>
           </WeatherBox>
           <ConditionBox>
-            <Chip_button_med>{postCondition}</Chip_button_med>
+            <Chip_button_med>
+              {postCondition == 'HOT'
+                ? '더웠어요🥵'
+                : postCondition == 'COLD'
+                  ? '추웠어요🥶'
+                  : '딱 좋았어요😖'}
+            </Chip_button_med>
           </ConditionBox>
         </BarBox>
         <PostImgBox>

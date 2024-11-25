@@ -112,6 +112,7 @@ export default function CommunityDetailPage() {
           nickname={member.alias}
           date={format(new Date(post.createdAt), 'yyyy년 MM월 dd일')}
           weather={post.weather}
+          weatherIcon={'sun'}
           ootdImage={post.ootdImage}
           collageImage={post.lookbookImage}
           location={post.location}

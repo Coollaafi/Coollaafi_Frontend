@@ -2,35 +2,43 @@
   "category": [
     {
       "id": 0,
-      "name": "블라우스"
+      "name": "블라우스",
+      "key": "BLOUSE"
     },
     {
       "id": 1,
-      "name": "셔츠"
+      "name": "셔츠",
+      "key": "SHIRT"
     },
     {
       "id": 2,
-      "name": "자켓"
+      "name": "자켓",
+      "key": "JACKET"
     },
     {
       "id": 3,
-      "name": "코트"
+      "name": "코트",
+      "key": "COAT"
     },
     {
       "id": 4,
-      "name": "바지"
+      "name": "바지",
+      "key": "PANTS"
     },
     {
       "id": 5,
-      "name": "치마"
+      "name": "치마",
+      "key": "SKIRTS"
     },
     {
       "id": 6,
-      "name": "원피스"
+      "name": "원피스",
+      "key": "DRESS"
     },
     {
       "id": 7,
-      "name": "신발"
+      "name": "신발",
+      "key": "SHOES"
     }
   ]
 }

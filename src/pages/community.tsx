@@ -139,6 +139,7 @@ type postListProps = {
     address: string;
     tmin: number;
     tmax: number;
+    weather_description: string;
     weather_icon_url: string;
     postCondition: string;
     createdAt: string;
@@ -162,6 +163,7 @@ export default function CommunityPage() {
   const [isAll, setIsAll] = useState<boolean>(true);
 
   const [postList, setPostList] = useState<postListProps[]>([]);
+  const [newPostList, setNewPostList] = useState<postListProps[]>([]);
   const [city, setCity] = useState('');
 
   const memberId = useUserStore((state) => state.memberId);
@@ -170,7 +172,7 @@ export default function CommunityPage() {
   const postsMutation = useMutation(posts, {
     onSuccess: (data) => {
       setPostList(data.result);
-      console.log(data.result);
+      setNewPostList(data.result);
     },
     onError: (e) => {
       console.log(e);
@@ -220,6 +222,18 @@ export default function CommunityPage() {
     postsMutation.mutate({ memberId: memberId, accessToken: accessToken });
   }, []);
 
+  useEffect(() => {
+    if (isAll) {
+      setNewPostList(postList);
+    } else {
+      console.log(city);
+      const updatedPostList = postList.filter(
+        (item) => item.post.address == city,
+      );
+      setNewPostList(updatedPostList);
+    }
+  }, [isAll]);
+
   return (
     <Container>
       <Header type={'white'} />
@@ -247,8 +261,8 @@ export default function CommunityPage() {
           </IconBox>
         </BarBox>
       </TitleBox>
-      {postList.length != 0 && postList ? (
-        postList.map((item) => {
+      {newPostList.length != 0 && newPostList ? (
+        newPostList.map((item) => {
           const member = item.member;
           const post = item.post;
 
@@ -259,7 +273,8 @@ export default function CommunityPage() {
               id={member.memberServiceId}
               nickname={member.alias}
               date={format(new Date(post.createdAt), 'yyyy년 MM월 dd일')}
-              weather={'날씨'}
+              weather={post.weather_description}
+              weatherIcon={post.weather_icon_url}
               ootdImage={post.ootd_url}
               collageImage={post.lookbook_url}
               location={post.address}

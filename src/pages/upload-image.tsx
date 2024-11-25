@@ -106,6 +106,7 @@ export default function UploadImagePage() {
   const [imgFileBlob, setImgFileBlob] = useState<Blob>(new Blob());
   const [imgFile, setImgFile] = useState<string>('');
   const [isClicked, setIsClicked] = useState<boolean[]>([]);
+  const [categoryList, setCategoryList] = useState<string[]>([]);
 
   return (
     <Container>
@@ -134,6 +135,8 @@ export default function UploadImagePage() {
           type="black"
           isClicked={isClicked}
           setIsClicked={setIsClicked}
+          categoryList={categoryList}
+          setCategoryList={setCategoryList}
         />
       </SelectBox>
       <GuideBox>

@@ -7,6 +7,7 @@ import {
   Chip_button_med,
 } from '../../styles/typography';
 import { ReactComponent as DressIcon } from '../../assets/icons/dress.svg';
+import { useUserStore } from 'store/user';
 
 const Container = styled.div`
   width: 100%;
@@ -122,7 +123,11 @@ const Button = styled.button<{ isDone: boolean }>`
   border: none;
 `;
 
-export default function AfterModal() {
+type UploadModalProps = {
+  closeModal: () => void;
+};
+
+export default function AfterModal({ closeModal }: UploadModalProps) {
   const [imgFile, setImgFile] = useState<string>(
     'https://i.ibb.co/hZRh851/04298b43bcdfb4378a78c42880ddae55.jpg',
   );
@@ -137,6 +142,10 @@ export default function AfterModal() {
     } else if (num == 2) {
       setIsChecked([false, false, true]);
     }
+  };
+
+  const onClickBtn = () => {
+    closeModal();
   };
 
   useEffect(() => {
@@ -194,7 +203,7 @@ export default function AfterModal() {
           </CheckBox>
         </CheckBoxs>
       </SecondBox>
-      <Button isDone={isDone}>
+      <Button isDone={isDone} onClick={onClickBtn}>
         <CTA_button_med>룩북으로 공유하기</CTA_button_med>
       </Button>
     </Container>

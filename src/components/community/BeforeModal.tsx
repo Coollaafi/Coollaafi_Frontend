@@ -8,6 +8,9 @@ import {
 } from '../../styles/typography';
 import UploadImage from '../UploadImage';
 import ButtonBox from 'components/ButtonBox';
+import { useMutation } from 'react-query';
+import { ootd } from 'apis/community';
+import { useUserStore } from 'store/user';
 
 const Container = styled.div`
   width: 100%;
@@ -87,11 +90,31 @@ export default function BeforeModal({ setIsBeforeClicked }: BeforeModalProps) {
   const [imgFile, setImgFile] = useState<string>('');
   const [isDone, setIsDone] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean[]>([]);
+  const [categoryList, setCategoryList] = useState<string[]>([]);
+  const formdata = new FormData();
+
+  const memberId = useUserStore((state) => state.memberId);
+  const accessToken = useUserStore((state) => state.accessToken);
+
+  const ootdMutation = useMutation(ootd, {
+    onSuccess: (data) => {
+      setIsBeforeClicked(true);
+      console.log(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
 
   const onClickBtn = () => {
-    if (isDone) {
-      setIsBeforeClicked(true);
-    }
+    formdata.append('ootdImage', imgFileBlob);
+    ootdMutation.mutate({
+      memberId: memberId,
+      categorySet: categoryList,
+      accessToken: accessToken,
+      formdata: formdata,
+    });
+    console.log(categoryList);
   };
 
   useEffect(() => {
@@ -127,6 +150,8 @@ export default function BeforeModal({ setIsBeforeClicked }: BeforeModalProps) {
             type="white"
             isClicked={isClicked}
             setIsClicked={setIsClicked}
+            categoryList={categoryList}
+            setCategoryList={setCategoryList}
           />
         </ResultBoxs>
       </SecondBox>
@@ -149,7 +174,10 @@ export default function BeforeModal({ setIsBeforeClicked }: BeforeModalProps) {
           </Desc_120_med>
         </ThirdText>
       </SecondBox>
-      <Button isDone={isDone} onClick={onClickBtn}>
+      <Button
+        isDone={isDone}
+        onClick={(e) => (isDone ? onClickBtn() : e.preventDefault)}
+      >
         <CTA_button_med>룩북 만들기</CTA_button_med>
       </Button>
     </Container>
