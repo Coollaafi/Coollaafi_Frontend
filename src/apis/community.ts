@@ -57,6 +57,33 @@ export const reply = async (info: any) => {
   return response.data;
 };
 
+//게시글 좋아요 등록
+export const addPrefer = async (info: any) => {
+  const response = await client.post(
+    '/post/prefer',
+    { postId: info.postId, memberId: info.memberId },
+    {
+      headers: {
+        Authorization: `Bearer ${info.accessToken}`,
+      },
+    },
+  );
+  return response.data;
+};
+
+//게시글 좋아요 삭제
+export const deletePrefer = async (info: any) => {
+  const response = await client.delete(`/post/prefer/${info.postPreferId}`, {
+    params: {
+      postPreferId: info.postPreferId,
+    },
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
+  return response.data;
+};
+
 //게시글 업로드 시, ootd 변경
 export const ootd = async (info: any) => {
   const response = await client.post('/ootd/', info.formdata, {

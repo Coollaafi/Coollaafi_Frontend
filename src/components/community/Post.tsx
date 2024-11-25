@@ -5,19 +5,19 @@ import {
   Desc_150_reg,
   Main_title_med,
 } from 'styles/typography';
-import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
-import { ReactComponent as WindIcon } from '../../assets/icons/wind.svg';
-import { ReactComponent as RainIcon } from '../../assets/icons/rain.svg';
-import { ReactComponent as CloudyIcon } from '../../assets/icons/cloudy.svg';
-import { ReactComponent as CloudsIcon } from '../../assets/icons/clouds.svg';
 import { ReactComponent as LocationIcon } from '../../assets/icons/location.svg';
 import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
 import { ReactComponent as LikeIcon } from '../../assets/icons/like.svg';
+import { ReactComponent as FilledLikeIcon } from '../../assets/icons/filledLike.svg';
 import { Link } from 'react-router-dom';
 import NicknameBox from 'components/NicknameBox';
 import default_profile from '../../assets/images/default-profile.svg';
+import { useMutation } from 'react-query';
+import { addPrefer, deletePrefer } from 'apis/community';
+import { useUserStore } from 'store/user';
+import { useState } from 'react';
 
-const Container = styled(Link)`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -25,15 +25,16 @@ const Container = styled(Link)`
   padding: 24px 16px;
   background-color: #fbfbfb;
   border-bottom: 2px solid #f4f4f4;
-  cursor: pointer;
-  text-decoration: none;
-  color: black;
 `;
 
-const Box = styled.div`
+const Box = styled(Link)<{ isDetail: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  pointer-events: ${(props) => (props.isDetail ? 'none' : 'auto')};
 `;
 
 const ProfileBox = styled.div`
@@ -171,6 +172,12 @@ const ContentBox = styled.div<{ isContent: boolean }>`
   word-break: break-all;
 `;
 
+const LikeIconBox = styled.div<{ isLikedByMember: boolean }>`
+  cursor: pointer;
+  width: 16px;
+  height: 17px;
+`;
+
 type PostProps = {
   profileImage: string;
   id: string;
@@ -188,6 +195,8 @@ type PostProps = {
   tempMax: number;
   content: string;
   postCondition: string;
+  isLikedByMember: boolean;
+  isDetail: boolean;
 };
 
 export default function Post({
@@ -207,10 +216,49 @@ export default function Post({
   tempMax,
   content,
   postCondition,
+  isLikedByMember,
+  isDetail,
 }: PostProps) {
+  const [postPreferId, setPostPreferId] = useState<number>(-1);
+  const memberId = useUserStore((state) => state.memberId);
+  const accessToken = useUserStore((state) => state.accessToken);
+  const addPreferMutation = useMutation(addPrefer, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const deletePreferMutation = useMutation(deletePrefer, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const onClickLike = () => {
+    console.log(postPreferId);
+    if (!isLikedByMember) {
+      addPreferMutation.mutate({
+        postId: postId,
+        memberId: memberId,
+        accessToken: accessToken,
+      });
+    } else {
+      deletePreferMutation.mutate({
+        postPreferId: postPreferId,
+        accessToken: accessToken,
+      });
+    }
+  };
+
   return (
-    <Container to={`/community/${postId}`}>
-      <Box>
+    <Container>
+      <Box to={`/community/${postId}`} isDetail={isDetail}>
         <ProfileBox>
           <Profile>
             <ProfileImg
@@ -273,7 +321,9 @@ export default function Post({
       </Box>
       <SubBox>
         <DetailBox>
-          <LikeIcon />
+          <LikeIconBox isLikedByMember={isLikedByMember} onClick={onClickLike}>
+            {isLikedByMember ? <FilledLikeIcon /> : <LikeIcon />}
+          </LikeIconBox>
           <Account_alert_reg>{like}</Account_alert_reg>
         </DetailBox>
         <DetailBox>

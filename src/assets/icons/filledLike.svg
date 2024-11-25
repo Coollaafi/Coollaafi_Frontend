@@ -1,3 +1,3 @@
-<svg id='like' width="16" height="16" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg id='like' width="16" height="16" viewBox="0 0 26 24" fill="black" xmlns="http://www.w3.org/2000/svg">
 <path d="M13 5.25905C10.3333 -1.0002 1 -0.333537 1 7.6665C1 15.6665 13 22.3334 13 22.3334C13 22.3334 25 15.6665 25 7.6665C25 -0.333537 15.6667 -1.0002 13 5.25905Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

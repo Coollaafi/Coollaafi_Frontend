@@ -21,7 +21,6 @@ const Container = styled.div`
 `;
 
 const PostBox = styled.div`
-  pointer-events: none;
   margin-top: 70px;
 `;
 
@@ -247,6 +246,8 @@ export default function CommunityDetailPage() {
             tempMax={postData?.post.tmax}
             content={''}
             postCondition={postData?.post.postCondition}
+            isLikedByMember={postData?.post.isLikedByMember}
+            isDetail={true}
           />
         )}
       </PostBox>

@@ -285,6 +285,8 @@ export default function CommunityPage() {
               tempMax={post.tmax}
               content={''}
               postCondition={post.postCondition}
+              isLikedByMember={post.isLikedByMember}
+              isDetail={false}
             />
           );
         })
