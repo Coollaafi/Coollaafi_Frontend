@@ -8,7 +8,8 @@ import { useState, useRef, useEffect } from 'react';
 import { format } from 'date-fns';
 import { useUserStore } from 'store/user';
 import { useMutation } from 'react-query';
-import { postDetail } from 'apis/community';
+import { comment, postDetail } from 'apis/community';
+import { home } from 'apis/home';
 
 const Container = styled.div`
   width: 360px;
@@ -75,6 +76,13 @@ const Icon = styled.div`
   cursor: pointer;
 `;
 
+type memberBasedProps = {
+  memberServiceId: string;
+  memberNickName: string;
+  memberImage: string;
+  alias: string;
+};
+
 type postProps = {
   member: {
     memberServiceId: string;
@@ -132,10 +140,20 @@ export default function CommunityDetailPage() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [isInput, setIsInput] = useState<boolean>(false);
   const [ClickedLa, setClickedLa] = useState<string | undefined>(); //input placeholder
+  const [memberBased, setMemberBased] = useState<memberBasedProps>();
   const [postData, setPostData] = useState<postProps>();
   const memberId = useUserStore((state) => state.memberId);
   const accessToken = useUserStore((state) => state.accessToken);
   const params = useParams();
+
+  const homeMutation = useMutation(home, {
+    onSuccess: (data) => {
+      setMemberBased(data.result.memberBased);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
 
   const postsDetailMutation = useMutation(postDetail, {
     onSuccess: (data) => {
@@ -146,8 +164,24 @@ export default function CommunityDetailPage() {
     },
   });
 
+  const commentMutation = useMutation(comment, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
   const onClickUpload = () => {
-    if (inputRef.current) {
+    if (inputRef.current && inputRef.current.value != '') {
+      commentMutation.mutate({
+        accessToken: accessToken,
+        memberId: memberId,
+        postId: params.postId,
+        content: inputRef.current.value,
+      });
+
       inputRef.current.value = '';
     }
   };
@@ -160,6 +194,8 @@ export default function CommunityDetailPage() {
   };
 
   useEffect(() => {
+    homeMutation.mutate({ memberId: memberId, accessToken: accessToken });
+
     postsDetailMutation.mutate({
       accessToken: accessToken,
       memberId: memberId,
@@ -203,7 +239,7 @@ export default function CommunityDetailPage() {
         inputRef={inputRef}
       />
       <InputBox>
-        <ProfileImage src="https://i.ibb.co/LNpPpWJ/image.jpg" />
+        <ProfileImage src={memberBased?.memberImage} />
         <Input
           ref={inputRef}
           row={row}
