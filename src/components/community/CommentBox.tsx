@@ -62,31 +62,31 @@ const BlankBox = styled.div`
 `;
 
 type CommentBoxProps = {
-  comment:
+  comments:
     | {
-        member: {
-          memberServiceId: string;
-          memberNickName: string;
-          memberImage: string;
-          alias: string;
+        comment: {
+          member: {
+            memberServiceId: string;
+            memberNickName: string;
+            memberImage: string;
+            alias: string;
+          };
+          commentId: number;
+          content: string;
+          replyCount: number;
+          createdAt: string;
         };
-        commentId: number;
-        content: string;
-        replyCount: number;
-        createdAt: string;
-        replies:
-          | {
-              member: {
-                memberServiceId: string;
-                memberNickName: string;
-                memberImage: string;
-                alias: string;
-              };
-              replyId: number;
-              content: string;
-              createdAt: string;
-            }[]
-          | undefined;
+        replies: {
+          member: {
+            memberServiceId: string;
+            memberNickName: string;
+            memberImage: string;
+            alias: string;
+          };
+          replyId: number;
+          content: string;
+          createdAt: string;
+        }[];
       }[]
     | undefined;
 
@@ -97,7 +97,7 @@ type CommentBoxProps = {
 };
 
 export default function CommentBox({
-  comment,
+  comments,
   isInput,
   setIsInput,
   setClickedLa,
@@ -132,7 +132,9 @@ export default function CommentBox({
       timeoutComment(id);
     }, 3000);
     setClickedLa(
-      comment == undefined ? undefined : comment[id]?.member.memberServiceId,
+      comments == undefined
+        ? undefined
+        : comments[id]?.comment.member.memberServiceId,
     );
   };
 
@@ -151,19 +153,19 @@ export default function CommentBox({
 
   return (
     <Container>
-      {comment?.length != 0 && comment ? (
+      {comments?.length != 0 && comments ? (
         <>
-          {comment.map((comment) => (
-            <div key={comment.commentId}>
+          {comments.map((comment) => (
+            <div key={comment.comment.commentId}>
               <Comment
-                commentId={comment.commentId}
-                profileImg={comment.member.memberImage}
-                nickname={comment.member.alias}
-                id={comment.member.memberServiceId}
-                content={comment.content}
-                isClicked={isClickedWr[comment.commentId]}
+                commentId={comment.comment.commentId}
+                profileImg={comment.comment.member.memberImage}
+                nickname={comment.comment.member.alias}
+                id={comment.comment.member.memberServiceId}
+                content={comment.comment.content}
+                isClicked={isClickedWr[comment.comment.commentId]}
               />
-              {isClickedMo[comment.commentId] ? (
+              {isClickedMo[comment.comment.commentId] ? (
                 <ReCommentBox isBlank={comment ? false : true}>
                   <ReComments>
                     {comment.replies?.map((subComment) => {
@@ -181,7 +183,7 @@ export default function CommentBox({
                       );
                     })}
                     <ClickedCommentBtn
-                      onClick={() => onClickComment(comment.commentId)}
+                      onClick={() => onClickComment(comment.comment.commentId)}
                     >
                       <Desc_150_reg>답글 달기</Desc_150_reg>
                     </ClickedCommentBtn>
@@ -189,19 +191,23 @@ export default function CommentBox({
                 </ReCommentBox>
               ) : (
                 <BarBox
-                  isClicked={isClickedWr[comment.commentId]}
+                  isClicked={isClickedWr[comment.comment.commentId]}
                   isBlank={comment ? false : true}
                 >
-                  <CommentBtn onClick={() => onClickComment(comment.commentId)}>
+                  <CommentBtn
+                    onClick={() => onClickComment(comment.comment.commentId)}
+                  >
                     <Desc_150_reg>답글 달기</Desc_150_reg>
                   </CommentBtn>
                   {comment.replies && (
                     <CommentIconBox
-                      onClick={() => onClickMoreComment(comment.commentId)}
+                      onClick={() =>
+                        onClickMoreComment(comment.comment.commentId)
+                      }
                     >
                       <CommentIcon fill="#9F9F9F" />
                       <Account_alert_reg>
-                        {comment.replyCount}
+                        {comment.comment.replyCount}
                       </Account_alert_reg>
                     </CommentIconBox>
                   )}

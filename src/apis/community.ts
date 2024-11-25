@@ -12,6 +12,19 @@ export const posts = async (info: any) => {
   return response.data;
 };
 
+export const postDetail = async (info: any) => {
+  const reponse = await client.get(`/posts/${info.postId}`, {
+    params: {
+      memberId: info.memberId,
+      postId: info.postId,
+    },
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
+  return reponse.data;
+};
+
 export const ootd = async (info: any) => {
   const response = await client.post('/ootd/', info.formdata, {
     params: {
