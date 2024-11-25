@@ -244,7 +244,7 @@ export default function CommunityDetailPage() {
             postId={postData?.post.postId}
             tempMin={postData?.post.tmin}
             tempMax={postData?.post.tmax}
-            content={''}
+            content={postData?.postAdd.description}
             postCondition={postData?.post.postCondition}
             isLikedByMember={postData?.post.isLikedByMember}
             isDetail={true}
