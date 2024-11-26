@@ -15,7 +15,7 @@ import default_profile from '../../assets/images/default-profile.svg';
 import { useMutation } from 'react-query';
 import { addPrefer, deletePrefer } from 'apis/community';
 import { useUserStore } from 'store/user';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Container = styled.div`
   display: flex;
@@ -219,7 +219,6 @@ export default function Post({
   isLikedByMember,
   isDetail,
 }: PostProps) {
-  const [postPreferId, setPostPreferId] = useState<number>(-1);
   const memberId = useUserStore((state) => state.memberId);
   const accessToken = useUserStore((state) => state.accessToken);
   const addPreferMutation = useMutation(addPrefer, {
@@ -241,7 +240,6 @@ export default function Post({
   });
 
   const onClickLike = () => {
-    console.log(postPreferId);
     if (!isLikedByMember) {
       addPreferMutation.mutate({
         postId: postId,
@@ -250,7 +248,8 @@ export default function Post({
       });
     } else {
       deletePreferMutation.mutate({
-        postPreferId: postPreferId,
+        postId: postId,
+        memberId: memberId,
         accessToken: accessToken,
       });
     }

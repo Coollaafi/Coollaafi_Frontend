@@ -39,7 +39,6 @@ const TextBox = styled.div`
 `;
 
 type CommentProps = {
-  commentId: number;
   profileImg: string;
   nickname: string;
   id: string;
@@ -48,7 +47,6 @@ type CommentProps = {
 };
 
 export default function Comment({
-  commentId,
   profileImg,
   nickname,
   id,

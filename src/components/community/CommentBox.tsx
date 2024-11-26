@@ -97,6 +97,11 @@ type CommentBoxProps = {
   inputRef: React.RefObject<HTMLTextAreaElement>;
 };
 
+type onClickCommentProps = {
+  id: number;
+  serviceId: string;
+};
+
 export default function CommentBox({
   comments,
   isInput,
@@ -119,7 +124,8 @@ export default function CommentBox({
   };
 
   //댓글쓰기 버튼 이벤트
-  const onClickComment = (id: number) => {
+  const onClickComment = ({ id, serviceId }: onClickCommentProps) => {
+    console.log(id);
     setIsInput(true);
     setIsClicked(!isClicked);
     const updatedClicked = [];
@@ -133,12 +139,11 @@ export default function CommentBox({
     setTimeout(() => {
       timeoutComment(id);
     }, 3000);
-    setClickedLa(
-      comments == undefined
-        ? undefined
-        : comments[id]?.comment.member.memberServiceId,
-    );
-    setCommentId(comments == undefined ? -1 : comments[id]?.comment.commentId);
+
+    if (comments) {
+      setClickedLa(serviceId);
+      setCommentId(id);
+    }
   };
 
   //댓글 더보기 버튼 이벤트
@@ -161,7 +166,6 @@ export default function CommentBox({
           {comments.map((comment) => (
             <div key={comment.comment.commentId}>
               <Comment
-                commentId={comment.comment.commentId}
                 profileImg={comment.comment.member.memberImage}
                 nickname={comment.comment.member.alias}
                 id={comment.comment.member.memberServiceId}
@@ -175,7 +179,6 @@ export default function CommentBox({
                       return (
                         <div key={subComment.replyId}>
                           <Comment
-                            commentId={subComment.replyId}
                             profileImg={subComment.member.memberImage}
                             nickname={subComment.member.alias}
                             id={subComment.member.memberServiceId}
@@ -186,7 +189,12 @@ export default function CommentBox({
                       );
                     })}
                     <ClickedCommentBtn
-                      onClick={() => onClickComment(comment.comment.commentId)}
+                      onClick={() =>
+                        onClickComment({
+                          id: comment.comment.commentId,
+                          serviceId: comment.comment.member.memberServiceId,
+                        })
+                      }
                     >
                       <Desc_150_reg>답글 달기</Desc_150_reg>
                     </ClickedCommentBtn>
@@ -198,7 +206,12 @@ export default function CommentBox({
                   isBlank={comment ? false : true}
                 >
                   <CommentBtn
-                    onClick={() => onClickComment(comment.comment.commentId)}
+                    onClick={() =>
+                      onClickComment({
+                        id: comment.comment.commentId,
+                        serviceId: comment.comment.member.memberServiceId,
+                      })
+                    }
                   >
                     <Desc_150_reg>답글 달기</Desc_150_reg>
                   </CommentBtn>

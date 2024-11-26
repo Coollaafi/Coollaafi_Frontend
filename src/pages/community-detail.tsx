@@ -183,7 +183,7 @@ export default function CommunityDetailPage() {
   });
 
   const onClickUpload = () => {
-    if (inputRef.current && inputRef.current.value != '') {
+    if (inputRef.current && inputRef.current.value.trim() != '') {
       if (commentId == -1) {
         commentMutation.mutate({
           accessToken: accessToken,
@@ -195,7 +195,7 @@ export default function CommunityDetailPage() {
         replyMutation.mutate({
           accessToken: accessToken,
           memberId: memberId,
-          commentId: commentId - 1,
+          commentId: commentId,
           content: inputRef.current.value,
         });
       }
@@ -213,13 +213,15 @@ export default function CommunityDetailPage() {
 
   useEffect(() => {
     homeMutation.mutate({ memberId: memberId, accessToken: accessToken });
+  }, []);
 
+  useEffect(() => {
     postsDetailMutation.mutate({
       accessToken: accessToken,
       memberId: memberId,
       postId: params.postId,
     });
-  }, []);
+  }, [postData]);
 
   return (
     <Container>

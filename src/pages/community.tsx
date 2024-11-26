@@ -220,7 +220,7 @@ export default function CommunityPage() {
 
   useEffect(() => {
     postsMutation.mutate({ memberId: memberId, accessToken: accessToken });
-  }, []);
+  }, [postList]);
 
   useEffect(() => {
     if (isAll) {

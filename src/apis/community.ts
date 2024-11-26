@@ -20,6 +20,7 @@ export const postDetail = async (info: any) => {
       memberId: info.memberId,
       postId: info.postId,
     },
+
     headers: {
       Authorization: `Bearer ${info.accessToken}`,
     },
@@ -73,9 +74,10 @@ export const addPrefer = async (info: any) => {
 
 //게시글 좋아요 삭제
 export const deletePrefer = async (info: any) => {
-  const response = await client.delete(`/post/prefer/${info.postPreferId}`, {
-    params: {
-      postPreferId: info.postPreferId,
+  const response = await client.delete(`/post/prefer/delete`, {
+    data: {
+      postId: info.postId,
+      memberId: info.memberId,
     },
     headers: {
       Authorization: `Bearer ${info.accessToken}`,
