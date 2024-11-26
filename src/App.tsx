@@ -18,10 +18,10 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/join" element={<JoinPage />} />
           <Route path="/login/success" element={<LoginSuccessPage />} />
-          <Route path="/home/:memberId" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/community/:postId" element={<CommunityDetailPage />} />
           <Route path="/upload" element={<UploadImagePage />} />

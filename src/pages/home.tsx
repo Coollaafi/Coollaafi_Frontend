@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from 'components/Header';
 import NicknameBox from 'components/NicknameBox';
 import {
@@ -164,6 +164,7 @@ type memberAddProps = {
 };
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const {
     isOpen: isInfoOpen,
     closeModal: closeInfoModal,
@@ -187,6 +188,7 @@ export default function HomePage() {
     },
     onError: (e) => {
       console.log(e);
+      navigate('/login');
     },
   });
 
