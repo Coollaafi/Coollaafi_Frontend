@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from 'components/Header';
 import NicknameBox from 'components/NicknameBox';
 import {
@@ -126,7 +126,7 @@ const Btns = styled.div`
   gap: 16px;
 `;
 
-const Btn = styled(Link)`
+const Btn = styled.div<{ isChecked: boolean }>`
   display: flex;
   box-sizing: content-box;
   padding: 7px 15px;
@@ -134,20 +134,18 @@ const Btn = styled(Link)`
   align-items: center;
   gap: 8px;
   border-radius: 40px;
-  border: 1px solid #000;
+  border: 1px solid  ${(props) => (props.isChecked ? '#000' : '#9F9F9F')};
   cursor: pointer;
   text-decoration: none;
-  color: #000;
+  color: ${(props) => (props.isChecked ? '#000' : '#9F9F9F')};
+  background-color: ${(props) => (props.isChecked ? '#fff' : '#F4F4F4')};
   &:hover {
-    background-color: #000;
-    color: #fff;
-    .dress {
-      stroke: #fff;
-    }
+    background-color: ${(props) => props.isChecked && '#000'};
+    color:${(props) => props.isChecked && '#fff'};
     .upload {
-      stroke: #fff;
+      stroke: ${(props) => props.isChecked && '#fff'};
     }
-  }
+  }}
 `;
 
 type memberBasedProps = {
@@ -160,6 +158,12 @@ type memberBasedProps = {
 type memberAddProps = {
   nextAlias: string;
   photosUntilNextAlias: number;
+};
+
+type onClickBtnProps = {
+  type: string;
+  isChecked: boolean;
+  event: React.MouseEvent<HTMLDivElement, MouseEvent>;
 };
 
 export default function HomePage() {
@@ -178,6 +182,21 @@ export default function HomePage() {
   const accessToken = useUserStore((state) => state.accessToken);
   const [memberBased, setMemberBased] = useState<memberBasedProps>();
   const [memberAdd, setMemberAdd] = useState<memberAddProps>();
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  const onClickBtn = ({ type, isChecked, event }: onClickBtnProps) => {
+    if (type == 'ai') {
+      if (isChecked) {
+        navigate('/ai');
+      } else {
+        event.preventDefault();
+      }
+    }
+    if (type == 'upload') {
+      navigate('/upload');
+    }
+  };
 
   const homeMutation = useMutation(home, {
     onSuccess: (data) => {
@@ -192,6 +211,20 @@ export default function HomePage() {
   useEffect(() => {
     homeMutation.mutate({ memberId: memberId, accessToken: accessToken });
   }, []);
+
+  useEffect(() => {
+    if (
+      memberBased?.alias == '평범한 패피' ||
+      '예사롭지 않은 패피' ||
+      '주목받는 패피' ||
+      '독창적인 패피' ||
+      '세련된 패피'
+    ) {
+      setIsChecked(false);
+    } else {
+      setIsChecked(true);
+    }
+  }, [memberBased]);
 
   return (
     <Container>
@@ -240,11 +273,21 @@ export default function HomePage() {
             </Line>
           </Lines>
           <Btns>
-            <Btn to={'/upload'}>
+            <Btn
+              onClick={(e) =>
+                onClickBtn({ type: 'upload', isChecked: isChecked, event: e })
+              }
+              isChecked={true}
+            >
               <CTA_button_med>사진업로드</CTA_button_med>
               <UploadIcon stroke="black" />
             </Btn>
-            <Btn to={'/ai'}>
+            <Btn
+              isChecked={isChecked}
+              onClick={(e) =>
+                onClickBtn({ type: 'ai', isChecked: isChecked, event: e })
+              }
+            >
               <CTA_button_med> {`AI의 today's 옷추천`}</CTA_button_med>
             </Btn>
           </Btns>

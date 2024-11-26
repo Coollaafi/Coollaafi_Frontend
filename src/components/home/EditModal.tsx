@@ -89,8 +89,8 @@ const Btn = styled.div<{ isChecked: boolean; isError: boolean }>`
   justify-content: center;
   width: 100%;
   height: 48px;
-  background-color: ${(props) => (props.isChecked ? '#1d1d1d' : '#fbfbfb')};
-  color: ${(props) => (props.isChecked ? 'white' : '#9f9f9f')};
+  background-color: ${(props) => (props.isChecked ? '000000' : '#F4F4F4;')};
+  color: ${(props) => (props.isChecked ? 'white' : '#9F9F9F')};
   margin-top: ${(props) => (props.isError ? '-17px' : '0px')};
   cursor: pointer;
 `;
@@ -162,7 +162,7 @@ const ErrorBox = styled.div<{ isSeen: boolean }>`
 const TextBtn = styled.div<{ isChecked: boolean }>`
   text-decoration: underline;
   text-underline-offset: 2px;
-  color: ${(props) => (props.isChecked ? '#000000' : '#9f9f9f')};
+  color: ${(props) => (props.isChecked ? '#000000' : '#9F9F9F')};
   cursor: pointer;
 `;
 

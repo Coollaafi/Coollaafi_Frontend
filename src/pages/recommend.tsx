@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 import Header from 'components/Header';
 import { DTL_Date, DTL_Day, Main_title_med } from 'styles/typography';
-import { ReactComponent as SunIcon } from '../assets/icons/sun.svg';
-import { ReactComponent as RainIcon } from '../assets/icons/rain.svg';
-import { getAddress, getWeather } from 'apis/recommend';
+import { getAddress, getWeather, recommendOutfit } from 'apis/recommend';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
+import { useUserStore } from 'store/user';
 
 const Container = styled.div`
   width: 360px;
@@ -72,10 +71,20 @@ const Line = styled.div`
   background-image: linear-gradient(to right, #547bc7, #a82e2e);
 `;
 
-const Image = styled.img`
+const Outfit = styled.div`
   width: 100%;
-  height: 597.046px;
-  object-fit: contain;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 2px solid #f4f4f4;
+`;
+
+const Image = styled.img<{ type: string }>`
+  width: ${(props) =>
+    props.type == 'shoes' ? '50px' : props.type == 'top' ? '170px' : '130px'};
 `;
 
 const Location = styled.div`
@@ -85,6 +94,12 @@ const Location = styled.div`
 `;
 
 export default function RecommendPage() {
+  const [outfitListf, setOutfitListf] = useState<string[]>();
+  const [outfitLists, setOutfitLists] = useState<string[]>();
+  const [outfitListth, setOutfitListth] = useState<string[]>();
+  const [shoes, setShoes] = useState<string[]>([]);
+  const [top, setTop] = useState<string[]>([]);
+  const [bottom, setBottom] = useState<string[]>([]);
   const [city, setCity] = useState('');
   const [gu, setGu] = useState('');
   const [tempMax, setTempMax] = useState<number>();
@@ -96,6 +111,8 @@ export default function RecommendPage() {
   const month = (new Date().getMonth() + 1).toString();
   const date = new Date().getDate().toString();
   const day = dayList[new Date().getDay()];
+  const memberId = useUserStore((state) => state.memberId);
+  const accessToken = useUserStore((state) => state.accessToken);
 
   useEffect(() => {
     getLocation();
@@ -138,6 +155,12 @@ export default function RecommendPage() {
             lng: position.coords.longitude.toString(),
             lat: position.coords.latitude.toString(),
           });
+          recommendOutfitMutation.mutate({
+            memberId: memberId,
+            accessToken: accessToken,
+            longitude: position.coords.longitude.toString(),
+            latitude: position.coords.latitude.toString(),
+          });
         },
         function (error) {
           console.log(error);
@@ -153,6 +176,63 @@ export default function RecommendPage() {
     }
     return;
   }
+
+  const recommendOutfitMutation = useMutation(recommendOutfit, {
+    onSuccess: (data) => {
+      setOutfitListf(data.result.slice(0, 3));
+      setOutfitLists(data.result.slice(3, 6));
+      setOutfitListth(data.result.slice(6, 9));
+      console.log(data.result);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  useEffect(() => {
+    outfitListf?.map((outfit) => {
+      if (outfit[outfit.length - 5] == 's') {
+        shoes[0] = outfit;
+        setShoes([...shoes]);
+      }
+      if (outfit[outfit.length - 5] == 'p') {
+        top[0] = outfit;
+        setTop([...top]);
+      }
+      if (outfit[outfit.length - 5] == 'm') {
+        bottom[0] = outfit;
+        setBottom([...bottom]);
+      }
+    });
+    outfitLists?.map((outfit) => {
+      if (outfit[outfit.length - 5] == 's') {
+        shoes[1] = outfit;
+        setShoes([...shoes]);
+      }
+      if (outfit[outfit.length - 5] == 'p') {
+        top[1] = outfit;
+        setTop([...top]);
+      }
+      if (outfit[outfit.length - 5] == 'm') {
+        bottom[1] = outfit;
+        setBottom([...bottom]);
+      }
+    });
+    outfitListth?.map((outfit) => {
+      if (outfit[outfit.length - 5] == 's') {
+        shoes[2] = outfit;
+        setShoes([...shoes]);
+      }
+      if (outfit[outfit.length - 5] == 'p') {
+        top[2] = outfit;
+        setTop([...top]);
+      }
+      if (outfit[outfit.length - 5] == 'm') {
+        bottom[2] = outfit;
+        setBottom([...bottom]);
+      }
+    });
+  }, [outfitListf, outfitLists, outfitListth]);
 
   return (
     <Container>
@@ -171,7 +251,6 @@ export default function RecommendPage() {
           </Cal>
           <Weather>
             <Main_title_med>{weatherDes}</Main_title_med>
-            <RainIcon />
           </Weather>
         </FirBox>
         {/*api 연결 시, 날씨에 맞게 변화하도록*/}
@@ -187,8 +266,15 @@ export default function RecommendPage() {
           </Temp>
         </SecBox>
       </Box>
-      {/*api 연결 시, 콜라쥬 이미지 넣도록*/}
-      <Image src="https://i.ibb.co/mNYhkd5/085c5cffe3ad165f05c3bc4cb56679cb.jpg" />
+      {[0, 1, 2].map((index, id) => {
+        return (
+          <Outfit key={id}>
+            <Image src={top[index]} type="top" />
+            <Image src={bottom[index]} type="bottom" />
+            <Image src={shoes[index]} type="shoes" />
+          </Outfit>
+        );
+      })}
     </Container>
   );
 }

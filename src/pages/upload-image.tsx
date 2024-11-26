@@ -12,6 +12,10 @@ import {
 import UploadImage from 'components/UploadImage';
 import { useState } from 'react';
 import ButtonBox from 'components/ButtonBox';
+import { useUserStore } from 'store/user';
+import { useMutation } from 'react-query';
+import { ootd } from 'apis/recommend';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   width: 360px;
@@ -107,6 +111,33 @@ export default function UploadImagePage() {
   const [imgFile, setImgFile] = useState<string>('');
   const [isClicked, setIsClicked] = useState<boolean[]>([]);
   const [categoryList, setCategoryList] = useState<string[]>([]);
+  const memberId = useUserStore((state) => state.memberId);
+  const accessToken = useUserStore((state) => state.accessToken);
+  const formData = new FormData();
+  const navigation = useNavigate();
+
+  const ootdMutation = useMutation(ootd, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const onClickBtn = () => {
+    formData.append('ootdImage', imgFileBlob);
+    formData.append('memberId', memberId);
+    categoryList.forEach((category) => {
+      formData.append('categorySet', category);
+    });
+    ootdMutation.mutate({
+      accessToken: accessToken,
+      formData: formData,
+    });
+    console.log(categoryList);
+    navigation(`/home/${memberId}`);
+  };
 
   return (
     <Container>
@@ -167,7 +198,7 @@ export default function UploadImagePage() {
           </Desc_150_med>
         </Texts>
       </GuideBox>
-      <Button>
+      <Button onClick={onClickBtn}>
         <UploadIcon stroke="black" />
         <CTA_button_med>사진 업로드하기</CTA_button_med>
       </Button>
