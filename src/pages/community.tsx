@@ -182,7 +182,7 @@ export default function CommunityPage() {
   //이용자 위치 가져오기
   const addressMutation = useMutation(getAddress, {
     onSuccess: (data) => {
-      setCity(data.region_1depth_name);
+      setCity(data.region_1depth_name + ' ' + data.region_2depth_name);
     },
     onError: (error) => {
       console.log(error);
@@ -223,16 +223,17 @@ export default function CommunityPage() {
   }, [postList]);
 
   useEffect(() => {
-    if (isAll) {
-      setNewPostList(postList);
-    } else {
-      console.log(city);
-      const updatedPostList = postList.filter(
-        (item) => item.post.address == city,
+    const si = city.split(' ').filter((e) => e[e.length - 1] == '시');
+    const gu = city.split(' ').filter((e) => e[e.length - 1] == '구');
+
+    if (!isAll) {
+      setNewPostList(
+        postList.filter((item) => item.post.address == si[0] + ' ' + gu[0]),
       );
-      setNewPostList(updatedPostList);
+    } else {
+      setNewPostList(postList);
     }
-  }, [isAll]);
+  }, [isAll, postList]);
 
   return (
     <Container>
