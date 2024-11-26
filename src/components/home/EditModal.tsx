@@ -224,6 +224,7 @@ export default function EditModal({ closeModal }: EditModalProps) {
   const editNicknameIdMutation = useMutation(editNicknameId, {
     onSuccess: (data) => {
       console.log(data);
+      window.location.reload();
     },
     onError: (e) => {
       console.log(e);
