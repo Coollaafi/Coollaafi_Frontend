@@ -99,20 +99,6 @@ export const search = async (info: any) => {
   return response.data;
 };
 
-//게시글 업로드 시, ootd 변경
-export const ootd = async (info: any) => {
-  const response = await client.post('/ootd/', info.formdata, {
-    params: {
-      memberId: info.memberId,
-      categorySet: info.categorySet,
-    },
-    headers: {
-      Authorization: `Bearer ${info.accessToken}`,
-    },
-  });
-  return response.data;
-};
-
 //게시글 업로드
 export const uploadPosts = async (info: any) => {
   const response = await client.post('/posts', info.formdata, {

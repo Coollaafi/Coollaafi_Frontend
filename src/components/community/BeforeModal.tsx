@@ -9,7 +9,7 @@ import {
 import UploadImage from '../UploadImage';
 import ButtonBox from 'components/ButtonBox';
 import { useMutation } from 'react-query';
-import { ootd } from 'apis/community';
+import { ootd } from 'apis/recommend';
 import { useUserStore } from 'store/user';
 
 const Container = styled.div`
