@@ -7,8 +7,12 @@ import {
   Noto_Receipt,
 } from 'styles/typography';
 import useImage from 'hooks/useImage';
-import default_profile from '../../assets/images/default-profile.svg';
+import { ReactComponent as DefaultProfile } from '../../assets/images/default-profile.svg';
 import { ReactComponent as CheckIcon } from '../../assets/icons/circle-check.svg';
+import { useMutation } from 'react-query';
+import { editNicknameId, editProfile, home } from 'apis/home';
+import { checkServiceId } from 'apis/auth';
+import { useUserStore } from 'store/user';
 
 const Container = styled.div`
   width: 360px;
@@ -60,6 +64,7 @@ const ImageBox = styled.img`
   height: 104px;
   border: none;
   border-radius: 100%;
+  object-fit: cover;
 `;
 
 const HiddenBtn = styled.input`
@@ -78,15 +83,15 @@ const Text = styled.div`
   cursor: pointer;
 `;
 
-const Btn = styled.div<{ isError: boolean }>`
+const Btn = styled.div<{ isChecked: boolean; isError: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 48px;
-  background-color: black;
-  color: white;
-  margin-top: ${(props) => (props.isError ? '32px' : '48px')};
+  background-color: ${(props) => (props.isChecked ? '#1d1d1d' : '#fbfbfb')};
+  color: ${(props) => (props.isChecked ? 'white' : '#9f9f9f')};
+  margin-top: ${(props) => (props.isError ? '-17px' : '0px')};
   cursor: pointer;
 `;
 
@@ -177,12 +182,12 @@ export default function EditModal({ closeModal }: EditModalProps) {
 
   //유효성 검사
   const [nickname, setNickname] = useState<string>('');
-  const [isNickname, setIsNickname] = useState<boolean>(false);
   const [id, setId] = useState<string>('');
   const regEng = /[a-zA-Z]/;
   const regNum = /[0-9]/;
   const regSpe = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/;
   const resExc = /[^a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~ ]/g;
+  const [isNickname, setIsNickname] = useState<boolean>(false);
   const [isEng, setIsEng] = useState<boolean>(false);
   const [isNum, setIsNum] = useState<boolean>(false);
   const [isSpe, setIsSpe] = useState<boolean>(false);
@@ -190,6 +195,77 @@ export default function EditModal({ closeModal }: EditModalProps) {
   const [isExc, setIsExc] = useState<boolean>(false);
   const [isOnly, setIsOnly] = useState<boolean>(false);
   const [isErrorSeen, setIsErrorSeen] = useState<boolean>(false);
+  const memberId = useUserStore((state) => state.memberId);
+  const accessToken = useUserStore((state) => state.accessToken);
+  const setMemberId = useUserStore((state) => state.setMemberId);
+
+  const formData = new FormData();
+
+  const homeMutation = useMutation(home, {
+    onSuccess: (data) => {
+      setId(data.result.memberBased.memberServiceId);
+      setNickname(data.result.memberBased.memberNickName);
+      setImgFile(data.result.memberBased.memberImage);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const editProfileMutation = useMutation(editProfile, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const editNicknameIdMutation = useMutation(editNicknameId, {
+    onSuccess: (data) => {
+      console.log(data);
+      setMemberId(memberId);
+      window.location.reload();
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const onClickBtn = () => {
+    formData.append('profileImage', imgFileBlob);
+    editProfileMutation.mutate({
+      memberId: memberId,
+      formData: formData,
+      accessToken: accessToken,
+    });
+    editNicknameIdMutation.mutate({
+      memberId: memberId,
+      serviceId: id,
+      nickname: nickname,
+      accessToken: accessToken,
+    });
+  };
+
+  const checkServiceIdMutation = useMutation(checkServiceId, {
+    onSuccess: (data) => {
+      setIsOnly(!data.result);
+      if (data.result) {
+        setIsErrorSeen(true);
+      }
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const onCheckServiceId = () => {
+    checkServiceIdMutation.mutate({ serviceId: id, accessToken: accessToken });
+  };
+
+  useEffect(() => {
+    homeMutation.mutate({ memberId: memberId, accessToken: accessToken });
+  }, []);
 
   //닉네임 20이내로
   useEffect(() => {
@@ -233,6 +309,12 @@ export default function EditModal({ closeModal }: EditModalProps) {
     }
   }, [id]);
 
+  //id 변경 시, isOnly, 에러 메시지 리셋
+  useEffect(() => {
+    setIsOnly(false);
+    setIsErrorSeen(false);
+  }, [id]);
+
   return (
     <Container>
       <ModalBox>
@@ -244,7 +326,7 @@ export default function EditModal({ closeModal }: EditModalProps) {
           <Desc_120_med>다른 사용자에게 보여질 프로필이예요.</Desc_120_med>
         </TitleBox>
         <Box>
-          <ImageBox src={imgFile == '' ? default_profile : imgFile} />
+          {imgFile ? <ImageBox src={imgFile} /> : <DefaultProfile />}
           <HiddenBtn
             type="file"
             accept="image/*"
@@ -255,7 +337,12 @@ export default function EditModal({ closeModal }: EditModalProps) {
             <Text onClick={handleClick}>
               <Desc_120_med>사진 선택</Desc_120_med>
             </Text>
-            <Text onClick={() => setImgFile('')}>
+            <Text
+              onClick={() => {
+                setImgFileBlob(new Blob());
+                setImgFile('');
+              }}
+            >
               <Desc_120_med>기본이미지</Desc_120_med>
             </Text>
           </BtnBox>
@@ -281,15 +368,7 @@ export default function EditModal({ closeModal }: EditModalProps) {
               룩북 커뮤니티에서 사용할 아이디를 입력해주세요.
             </Desc_120_med>
             <ErrorBox isSeen={isErrorSeen}>
-              {!isExc ? (
-                <Noto_Receipt>
-                  영어, 숫자, 특수문자만 입력할 수 있습니다. (6-12)
-                </Noto_Receipt>
-              ) : !isOnly ? (
-                <Noto_Receipt>중복된 아이디입니다.</Noto_Receipt>
-              ) : (
-                <></>
-              )}
+              {!isOnly && <Noto_Receipt>중복된 아이디입니다.</Noto_Receipt>}
             </ErrorBox>
           </InputTitleBox>
           <Input
@@ -322,15 +401,20 @@ export default function EditModal({ closeModal }: EditModalProps) {
               onClick={(e) => {
                 !(isEng && isNum && isSpe && isLong)
                   ? e.preventDefault
-                  : //api연결시 조건 충족하면 data 넘기기
-                    setIsErrorSeen(true);
+                  : onCheckServiceId();
               }}
             >
               <Desc_120_med>중복확인</Desc_120_med>
             </TextBtn>
           </DuplicateCheck>
         </IdInputBox>
-        <Btn isError={isErrorSeen}>
+        <Btn
+          isError={isErrorSeen}
+          isChecked={isNickname && isOnly}
+          onClick={(e) =>
+            !(isNickname && isOnly) ? e.preventDefault() : onClickBtn()
+          }
+        >
           <CTA_button_med>변경하기</CTA_button_med>
         </Btn>
       </ModalBox>
