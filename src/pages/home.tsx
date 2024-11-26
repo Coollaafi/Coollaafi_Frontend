@@ -8,6 +8,7 @@ import {
   Desc_120_med,
   Main_title_med,
 } from 'styles/typography';
+import { ReactComponent as DefaultProfile } from '../assets/images/default-profile.svg';
 import { ReactComponent as SettingIcon } from '../assets/icons/setting.svg';
 import { ReactComponent as InfoIcon } from '../assets/icons/info.svg';
 import { ReactComponent as UploadIcon } from '../assets/icons/upload.svg';
@@ -214,7 +215,11 @@ export default function HomePage() {
             </Nickname>
           </NameBox>
           <ImageBox>
-            <ProfileImg src={memberBased?.memberImage} />
+            {memberBased?.memberImage ? (
+              <ProfileImg src={memberBased?.memberImage} />
+            ) : (
+              <DefaultProfile />
+            )}
             <SettingBtn onClick={openEditModal}>
               <Desc_120_med>프로필설정</Desc_120_med>
               <SettingIcon />
