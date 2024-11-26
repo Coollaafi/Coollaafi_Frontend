@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { search } from 'apis/community';
 import { useUserStore } from 'store/user';
-import { ReactComponent as DefaultProfile } from '../../assets/images/default-profile.svg';
+import default_profile from '../../assets/images/default-profile.svg';
 
 const Container = styled.div`
   width: 360px;
@@ -165,11 +165,11 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
           {friendList?.map((friend) => (
             <FriendBox key={friend.memberServiceId}>
               <ProfileBox>
-                {friend.memberImage ? (
-                  <ProfileImg src={friend.memberImage} />
-                ) : (
-                  <DefaultProfile />
-                )}
+                <ProfileImg
+                  src={
+                    friend.memberImage ? friend.memberImage : default_profile
+                  }
+                />
                 <NicknameBox>
                   <div>
                     <Desc_150_reg>{friend.memberServiceId}</Desc_150_reg>

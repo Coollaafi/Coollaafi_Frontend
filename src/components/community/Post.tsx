@@ -261,7 +261,7 @@ export default function Post({
         <ProfileBox>
           <Profile>
             <ProfileImg
-              src={profileImage == '' ? default_profile : profileImage}
+              src={profileImage ? profileImage : default_profile}
               onClick={(e) => {
                 e.stopPropagation(); //e.stopPropagation(): 상위 엘레멘트들로의 이벤트 전파 중단
                 e.preventDefault(); //e.preventDefault(): 고유 동작 멈춤
