@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { CookiesProvider } from 'react-cookie';
 import '../src/styles/globals.css';
 import Layout from 'components/Layout';
 
@@ -14,9 +13,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <CookiesProvider>
-        <App />
-      </CookiesProvider>
+      <App />
     </QueryClientProvider>
   </React.StrictMode>,
 );

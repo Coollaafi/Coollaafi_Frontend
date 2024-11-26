@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import data from '../data/category.json';
 import { CTA_button_med } from 'styles/typography';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Container = styled.div<{ type: string }>`
   display: flex;
@@ -50,23 +50,40 @@ type ButtonBoxProps = {
   type: ButtonBoxType;
   isClicked: boolean[];
   setIsClicked: React.Dispatch<React.SetStateAction<boolean[]>>;
+  categoryList: string[];
+  setCategoryList: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export default function ButtonBox({
   type,
   isClicked,
   setIsClicked,
+  categoryList,
+  setCategoryList,
 }: ButtonBoxProps) {
-  const categoryList = data.category;
+  const categories = data.category;
 
   const onClickBox = (id: number) => {
     isClicked[id] = !isClicked[id];
     setIsClicked([...isClicked]);
+
+    if (isClicked[id]) {
+      setCategoryList([...categoryList, categories[id].key]);
+    } else {
+      const updatedCategoryList = categoryList.filter(
+        (item) => item !== categories[id].key,
+      );
+      setCategoryList(updatedCategoryList);
+    }
   };
+
+  useEffect(() => {
+    setCategoryList(categoryList);
+  }, [isClicked]);
 
   return (
     <Container type={type}>
-      {categoryList.map((category) => (
+      {categories.map((category) => (
         <Box
           key={category.id}
           type={type}

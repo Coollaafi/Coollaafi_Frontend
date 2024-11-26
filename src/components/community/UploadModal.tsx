@@ -46,7 +46,7 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
           <CTA_button_med>닫기</CTA_button_med>
         </CloseBtn>
         {isBeforeClicked ? (
-          <AfterModal />
+          <AfterModal closeModal={closeModal} />
         ) : (
           <BeforeModal setIsBeforeClicked={setIsBeforeClicked} />
         )}

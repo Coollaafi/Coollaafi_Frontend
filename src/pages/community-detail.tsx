@@ -4,10 +4,12 @@ import Post from 'components/community/Post';
 import CommentBox from 'components/community/CommentBox';
 import { ReactComponent as UploadIcon } from '../assets/icons/comment-upload.svg';
 import { useParams } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { format } from 'date-fns';
-import default_profile from '../assets/images/default-profile.svg';
-import data from '../data/post.json';
+import { useUserStore } from 'store/user';
+import { useMutation } from 'react-query';
+import { comment, postDetail, reply } from 'apis/community';
+import { home } from 'apis/home';
 
 const Container = styled.div`
   width: 360px;
@@ -19,7 +21,6 @@ const Container = styled.div`
 `;
 
 const PostBox = styled.div`
-  pointer-events: none;
   margin-top: 70px;
 `;
 
@@ -74,14 +75,131 @@ const Icon = styled.div`
   cursor: pointer;
 `;
 
+type memberBasedProps = {
+  memberServiceId: string;
+  memberNickName: string;
+  memberImage: string;
+  alias: string;
+};
+
+type postProps = {
+  member: {
+    memberServiceId: string;
+    memberNickName: string;
+    memberImage: string;
+    alias: string;
+  };
+  post: {
+    postId: number;
+    ootd_url: string;
+    lookbook_url: string;
+    address: string;
+    tmin: number;
+    tmax: number;
+    weather_description: string;
+    weather_icon_url: string;
+    postCondition: string;
+    createdAt: string;
+    preferCount: number;
+    commentCount: number;
+    isLikedByMember: boolean;
+  };
+  postAdd: {
+    description: string;
+  };
+  comments: {
+    comment: {
+      member: {
+        memberServiceId: string;
+        memberNickName: string;
+        memberImage: string;
+        alias: string;
+      };
+      commentId: number;
+      content: string;
+      replyCount: number;
+      createdAt: string;
+    };
+    replies: {
+      member: {
+        memberServiceId: string;
+        memberNickName: string;
+        memberImage: string;
+        alias: string;
+      };
+      replyId: number;
+      content: string;
+      createdAt: string;
+    }[];
+  }[];
+};
+
 export default function CommunityDetailPage() {
   const [row, setRow] = useState(1);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [isInput, setIsInput] = useState<boolean>(false);
   const [ClickedLa, setClickedLa] = useState<string | undefined>(); //input placeholder
+  const [memberBased, setMemberBased] = useState<memberBasedProps>();
+  const [postData, setPostData] = useState<postProps>();
+  const [commentId, setCommentId] = useState<number>(-1);
+  const memberId = useUserStore((state) => state.memberId);
+  const accessToken = useUserStore((state) => state.accessToken);
+  const params = useParams();
+
+  const homeMutation = useMutation(home, {
+    onSuccess: (data) => {
+      setMemberBased(data.result.memberBased);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const postsDetailMutation = useMutation(postDetail, {
+    onSuccess: (data) => {
+      setPostData(data.result);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const commentMutation = useMutation(comment, {
+    onSuccess: (data) => {
+      console.log(data.result);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const replyMutation = useMutation(reply, {
+    onSuccess: (data) => {
+      console.log(data.result);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
 
   const onClickUpload = () => {
-    if (inputRef.current) {
+    if (inputRef.current && inputRef.current.value.trim() != '') {
+      if (commentId == -1) {
+        commentMutation.mutate({
+          accessToken: accessToken,
+          memberId: memberId,
+          postId: params.postId,
+          content: inputRef.current.value,
+        });
+      } else {
+        replyMutation.mutate({
+          accessToken: accessToken,
+          memberId: memberId,
+          commentId: commentId,
+          content: inputRef.current.value,
+        });
+      }
+
       inputRef.current.value = '';
     }
   };
@@ -93,46 +211,58 @@ export default function CommunityDetailPage() {
     }
   };
 
-  const params = useParams();
-  const postList = data.result;
-  const item = postList.filter(
-    (item) => item.post.postId == Number(params.postId),
-  );
-  const post = item[0].post;
-  const member = item[0].member;
-  const comment = item[0].comment;
+  useEffect(() => {
+    homeMutation.mutate({ memberId: memberId, accessToken: accessToken });
+  }, []);
+
+  useEffect(() => {
+    postsDetailMutation.mutate({
+      accessToken: accessToken,
+      memberId: memberId,
+      postId: params.postId,
+    });
+  }, [postData]);
 
   return (
     <Container>
       <Header type={'white'} />
       <PostBox>
-        <Post
-          profileImage={member.memberImage}
-          id={member.memberServiceId}
-          nickname={member.alias}
-          date={format(new Date(post.createdAt), 'yyyy년 MM월 dd일')}
-          weather={post.weather}
-          ootdImage={post.ootdImage}
-          collageImage={post.lookbookImage}
-          location={post.location}
-          like={post.preferCount}
-          comment={post.commentCount}
-          postId={post.postId}
-          tempMin={post.MinTemp}
-          tempMax={post.MaxTemp}
-          content={post.content}
-          postCondition={post.postCondition}
-        />
+        {postData && (
+          <Post
+            profileImage={postData?.member.memberImage}
+            id={postData?.member.memberServiceId}
+            nickname={postData?.member.alias}
+            date={format(
+              new Date(postData?.post.createdAt),
+              'yyyy년 MM월 dd일',
+            )}
+            weather={postData?.post.weather_description}
+            weatherIcon={postData?.post.weather_icon_url}
+            ootdImage={postData?.post.ootd_url}
+            collageImage={postData?.post.lookbook_url}
+            location={postData?.post.address}
+            like={postData?.post.preferCount}
+            comment={postData?.post.commentCount}
+            postId={postData?.post.postId}
+            tempMin={postData?.post.tmin}
+            tempMax={postData?.post.tmax}
+            content={postData?.postAdd.description}
+            postCondition={postData?.post.postCondition}
+            isLikedByMember={postData?.post.isLikedByMember}
+            isDetail={true}
+          />
+        )}
       </PostBox>
       <CommentBox
-        comment={comment}
+        comments={postData?.comments}
         isInput={isInput}
         setIsInput={setIsInput}
         setClickedLa={setClickedLa}
+        setCommentId={setCommentId}
         inputRef={inputRef}
       />
       <InputBox>
-        <ProfileImage src="https://i.ibb.co/LNpPpWJ/image.jpg" />
+        <ProfileImage src={memberBased?.memberImage} />
         <Input
           ref={inputRef}
           row={row}
