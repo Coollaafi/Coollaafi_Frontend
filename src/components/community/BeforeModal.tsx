@@ -91,7 +91,7 @@ export default function BeforeModal({ setIsBeforeClicked }: BeforeModalProps) {
   const [isDone, setIsDone] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean[]>([]);
   const [categoryList, setCategoryList] = useState<string[]>([]);
-  const formdata = new FormData();
+  const formData = new FormData();
 
   const memberId = useUserStore((state) => state.memberId);
   const accessToken = useUserStore((state) => state.accessToken);
@@ -107,12 +107,14 @@ export default function BeforeModal({ setIsBeforeClicked }: BeforeModalProps) {
   });
 
   const onClickBtn = () => {
-    formdata.append('ootdImage', imgFileBlob);
+    formData.append('ootdImage', imgFileBlob);
+    formData.append('memberId', memberId);
+    categoryList.forEach((category) => {
+      formData.append('categorySet', category);
+    });
     ootdMutation.mutate({
-      memberId: memberId,
-      categorySet: categoryList,
       accessToken: accessToken,
-      formdata: formdata,
+      formData: formData,
     });
     console.log(categoryList);
   };
