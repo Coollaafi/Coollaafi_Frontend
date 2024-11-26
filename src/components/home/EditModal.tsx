@@ -197,7 +197,6 @@ export default function EditModal({ closeModal }: EditModalProps) {
   const [isErrorSeen, setIsErrorSeen] = useState<boolean>(false);
   const memberId = useUserStore((state) => state.memberId);
   const accessToken = useUserStore((state) => state.accessToken);
-  const setMemberId = useUserStore((state) => state.setMemberId);
 
   const formData = new FormData();
 
@@ -206,6 +205,7 @@ export default function EditModal({ closeModal }: EditModalProps) {
       setId(data.result.memberBased.memberServiceId);
       setNickname(data.result.memberBased.memberNickName);
       setImgFile(data.result.memberBased.memberImage);
+      setIsOnly(true);
     },
     onError: (e) => {
       console.log(e);
@@ -224,7 +224,6 @@ export default function EditModal({ closeModal }: EditModalProps) {
   const editNicknameIdMutation = useMutation(editNicknameId, {
     onSuccess: (data) => {
       console.log(data);
-      setMemberId(memberId);
       window.location.reload();
     },
     onError: (e) => {
@@ -233,12 +232,23 @@ export default function EditModal({ closeModal }: EditModalProps) {
   });
 
   const onClickBtn = () => {
-    formData.append('profileImage', imgFileBlob);
-    editProfileMutation.mutate({
-      memberId: memberId,
-      formData: formData,
-      accessToken: accessToken,
-    });
+    //이미지를 바꾼 경우만
+    if (imgFileBlob.size > 0) {
+      formData.append('profileImage', imgFileBlob);
+      editProfileMutation.mutate({
+        memberId: memberId,
+        formData: formData,
+        accessToken: accessToken,
+      });
+    }
+    if (imgFile == '') {
+      formData.append('profileImage', new Blob());
+      editProfileMutation.mutate({
+        memberId: memberId,
+        formData: formData,
+        accessToken: accessToken,
+      });
+    }
     editNicknameIdMutation.mutate({
       memberId: memberId,
       serviceId: id,

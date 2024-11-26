@@ -158,6 +158,7 @@ type memberBasedProps = {
 type memberAddProps = {
   nextAlias: string;
   photosUntilNextAlias: number;
+  createdAt: string;
 };
 
 type onClickBtnProps = {
@@ -167,6 +168,7 @@ type onClickBtnProps = {
 };
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const {
     isOpen: isInfoOpen,
     closeModal: closeInfoModal,
@@ -205,6 +207,7 @@ export default function HomePage() {
     },
     onError: (e) => {
       console.log(e);
+      navigate('/login');
     },
   });
 
@@ -292,7 +295,7 @@ export default function HomePage() {
             </Btn>
           </Btns>
         </BtnBox>
-        <CalendarBox />
+        <CalendarBox createdDate={memberAdd?.createdAt} />
       </Content>
       {isInfoOpen && <InfoModal closeModal={closeInfoModal} />}
       {isEditOpen && <EditModal closeModal={closeEditModal} />}
