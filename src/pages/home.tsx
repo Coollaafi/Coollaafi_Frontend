@@ -160,6 +160,7 @@ type memberBasedProps = {
 type memberAddProps = {
   nextAlias: string;
   photosUntilNextAlias: number;
+  createdAt: string;
 };
 
 export default function HomePage() {
@@ -249,7 +250,7 @@ export default function HomePage() {
             </Btn>
           </Btns>
         </BtnBox>
-        <CalendarBox />
+        <CalendarBox createdDate={memberAdd?.createdAt} />
       </Content>
       {isInfoOpen && <InfoModal closeModal={closeInfoModal} />}
       {isEditOpen && <EditModal closeModal={closeEditModal} />}

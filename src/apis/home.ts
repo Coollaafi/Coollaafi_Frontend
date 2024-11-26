@@ -45,3 +45,16 @@ export const editNicknameId = async (info: any) => {
 
   return response.data;
 };
+
+//달력
+export const calendar = async (info: any) => {
+  const response = await client.get(`/posts/calendar/${info.memberId}`, {
+    params: {
+      memberId: info.memberId,
+    },
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
+  return response.data;
+};

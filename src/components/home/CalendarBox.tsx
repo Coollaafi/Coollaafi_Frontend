@@ -2,10 +2,13 @@ import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { format } from 'date-fns';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ReactComponent as LeftIcon } from '../../assets/icons/left-polygon.svg';
 import { ReactComponent as RightIcon } from '../../assets/icons/right-polygon.svg';
 import { Link } from 'react-router-dom';
+import { useUserStore } from 'store/user';
+import { useMutation } from 'react-query';
+import { calendar } from 'apis/home';
 
 const Container = styled.div`
   margin-bottom: 112px;
@@ -54,6 +57,7 @@ const StyledCalendar = styled.div`
 
   .react-calendar__tile--now {
     abbr {
+      all: unset;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -185,28 +189,46 @@ const ImageBox = styled.img`
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-export default function CalendarBox() {
-  const [value, setValue] = useState<Value>();
+type DayListProps = {
+  postId: number;
+  day: string;
+  lookbookImage: string;
+};
 
-  const dayList = [
-    {
-      date: '2024-10-20',
-      img: 'https://i.ibb.co/M9dnqXJ/3dcec87b5205df174147c9c606b77700.jpg',
-      id: 0,
+export default function CalendarBox({
+  createdDate,
+}: {
+  createdDate: string | undefined;
+}) {
+  const [value, setValue] = useState<Value>();
+  const [dayList, setDayList] = useState<DayListProps[]>();
+  const memberId = useUserStore((state) => state.memberId);
+  const accessToken = useUserStore((state) => state.accessToken);
+
+  const calendarMutation = useMutation(calendar, {
+    onSuccess: (data) => {
+      setDayList(data.result.day);
     },
-  ];
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  useEffect(() => {
+    calendarMutation.mutate({ memberId: memberId, accessToken: accessToken });
+  }, []);
 
   //image 컨텐츠 넣기 위해_
   const addImage = ({ date }: any) => {
-    const matchedDay = dayList.find(
-      (day) => day.date === format(date, 'yyyy-MM-dd'),
+    const matchedDay = dayList?.find(
+      (day) => day.day === format(date, 'yyyy-MM-dd'),
     );
     const contents = [];
 
     if (matchedDay) {
       contents.push(
-        <Box to={`/community/${matchedDay.id}`}>
-          <ImageBox src={matchedDay.img} />
+        <Box to={`/community/${matchedDay.postId}`}>
+          <ImageBox src={matchedDay.lookbookImage} />
         </Box>,
       );
     }
@@ -217,8 +239,8 @@ export default function CalendarBox() {
   //오늘 이후의 날짜 css 변경을 위해: future_date
   //image 컨텐츠 넣을 때, 날짜 abbr 안 보이게 css 주기 위해: has_content
   const tileClassName = ({ date }: { date: Date }) => {
-    const matchedDay = dayList.find(
-      (day) => day.date === format(date, 'yyyy-MM-dd'),
+    const matchedDay = dayList?.find(
+      (day) => day.day === format(date, 'yyyy-MM-dd'),
     );
 
     if (date > new Date()) {
@@ -245,7 +267,7 @@ export default function CalendarBox() {
           }
           formatDay={(locale, date) => format(date, 'd')}
           formatMonthYear={(locale, date) => format(date, 'M')}
-          minDate={new Date('2024-10-08')} //사람마다 회원가입 달 넣기
+          minDate={new Date(createdDate ? createdDate : '')} //사람마다 회원가입 달 넣기
           maxDate={new Date()}
           nextLabel={<RightIcon />}
           prevLabel={<LeftIcon />}
