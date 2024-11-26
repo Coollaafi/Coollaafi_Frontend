@@ -35,3 +35,18 @@ export const ootd = async (info: any) => {
   });
   return response.data;
 };
+
+//AI의 today's 옷추천
+export const recommendOutfit = async (info: any) => {
+  const response = await client.get('/recommend-outfit', {
+    params: {
+      memberId: info.memberId,
+      latitude: info.latitude,
+      longitude: info.longitude,
+    },
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
+  return response.data;
+};
