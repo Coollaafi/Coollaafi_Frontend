@@ -23,7 +23,7 @@ export default function loginSuccess() {
           `/join?accessToken=${accessToken}&refreshToken=${refreshToken}&memberId=${memberId}`,
         );
       } else {
-        navigate(`/home/${memberId}`);
+        navigate('/');
         //전역 상태 관리
         setAccessToken(accessToken);
         setRefreshToken(refreshToken);
