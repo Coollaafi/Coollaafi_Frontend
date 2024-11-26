@@ -113,7 +113,7 @@ export default function UploadImagePage() {
   const [categoryList, setCategoryList] = useState<string[]>([]);
   const memberId = useUserStore((state) => state.memberId);
   const accessToken = useUserStore((state) => state.accessToken);
-  const formdata = new FormData();
+  const formData = new FormData();
   const navigation = useNavigate();
 
   const ootdMutation = useMutation(ootd, {
@@ -126,12 +126,14 @@ export default function UploadImagePage() {
   });
 
   const onClickBtn = () => {
-    formdata.append('ootdImage', imgFileBlob);
+    formData.append('ootdImage', imgFileBlob);
+    formData.append('memberId', memberId);
+    categoryList.forEach((category) => {
+      formData.append('categorySet', category);
+    });
     ootdMutation.mutate({
-      memberId: memberId,
-      categorySet: categoryList,
       accessToken: accessToken,
-      formdata: formdata,
+      formData: formData,
     });
     console.log(categoryList);
     navigation(`/home/${memberId}`);

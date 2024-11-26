@@ -24,13 +24,13 @@ export const getWeather = async (address: { lng: string; lat: string }) => {
 
 //ootd 업로드
 export const ootd = async (info: any) => {
-  const response = await client.post('/ootd/', info.formdata, {
+  const response = await client.post('/ootd/', null, {
     params: {
-      memberId: info.memberId,
-      categorySet: info.categorySet,
+      formData: info.formData,
     },
     headers: {
       Authorization: `Bearer ${info.accessToken}`,
+      'Content-Type': 'multipart/form-data',
     },
   });
   return response.data;
