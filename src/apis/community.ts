@@ -146,9 +146,10 @@ export const followers = async (info: any) => {
 
 //게시글 업로드
 export const uploadPosts = async (info: any) => {
-  const response = await client.post('/posts', info.formdata, {
+  const response = await client.post('/posts', info.formData, {
     headers: {
       Authorization: `Bearer ${info.accessToken}`,
+      'Content-Type': 'multipart/form-data',
     },
   });
   return response.data;

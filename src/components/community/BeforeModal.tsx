@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   CTA_button_med,
@@ -83,9 +83,17 @@ const Button = styled.button<{ isDone: boolean }>`
 
 type BeforeModalProps = {
   setIsBeforeClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  setOotdList: React.Dispatch<React.SetStateAction<string[]>>;
+  setOotdImgId: React.Dispatch<React.SetStateAction<number>>;
+  setOotdImgUrl: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function BeforeModal({ setIsBeforeClicked }: BeforeModalProps) {
+export default function BeforeModal({
+  setIsBeforeClicked,
+  setOotdList,
+  setOotdImgId,
+  setOotdImgUrl,
+}: BeforeModalProps) {
   const [imgFileBlob, setImgFileBlob] = useState<Blob>(new Blob());
   const [imgFile, setImgFile] = useState<string>('');
   const [isDone, setIsDone] = useState<boolean>(false);
@@ -99,7 +107,8 @@ export default function BeforeModal({ setIsBeforeClicked }: BeforeModalProps) {
   const ootdMutation = useMutation(ootd, {
     onSuccess: (data) => {
       setIsBeforeClicked(true);
-      console.log(data);
+      setOotdList(data.result.collageImages);
+      setOotdImgId(data.result.ootdImageId);
     },
     onError: (e) => {
       console.log(e);
@@ -107,6 +116,7 @@ export default function BeforeModal({ setIsBeforeClicked }: BeforeModalProps) {
   });
 
   const onClickBtn = () => {
+    setOotdImgUrl(imgFile);
     formData.append('ootdImage', imgFileBlob);
     formData.append('memberId', memberId);
     categoryList.forEach((category) => {
