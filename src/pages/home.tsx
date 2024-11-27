@@ -135,7 +135,7 @@ const Btn = styled.div<{ isChecked: boolean }>`
   gap: 8px;
   border-radius: 40px;
   border: 1px solid  ${(props) => (props.isChecked ? '#000' : '#9F9F9F')};
-  cursor: pointer;
+  cursor: ${(props) => (props.isChecked ? 'pointer' : 'auto')};
   text-decoration: none;
   color: ${(props) => (props.isChecked ? '#000' : '#9F9F9F')};
   background-color: ${(props) => (props.isChecked ? '#fff' : '#F4F4F4')};

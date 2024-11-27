@@ -69,17 +69,18 @@ const LookBookBox = styled.div`
   height: 100%;
   background-color: #fbfbfb;
   position: relative;
+  overflow: hidden;
 `;
 
 const Outfit = styled.img<{ type: string }>`
   position: absolute;
   z-index: 1;
   width: ${(props) =>
-    props.type == 'shoes' ? '20px' : props.type == 'top' ? '60px' : '50px'};
+    props.type == 'shoes' ? '20px' : props.type == 'top' ? '50px' : '50px'};
   left: ${(props) =>
     props.type == 'shoes' ? '15px' : props.type == 'top' ? '50px' : '50px'};
   top: ${(props) =>
-    props.type == 'shoes' ? '160px' : props.type == 'top' ? '15px' : '100px'};
+    props.type == 'shoes' ? '160px' : props.type == 'top' ? '5px' : '100px'};
 `;
 
 const StoreBtn = styled.button`
@@ -173,7 +174,7 @@ export default function AfterModal({
   const uploadPostsMutation = useMutation(uploadPosts, {
     onSuccess: (data) => {
       console.log(data);
-      window.location.reload();
+      /*window.location.reload();*/
     },
     onError: (e) => {
       console.log(e);
@@ -196,15 +197,17 @@ export default function AfterModal({
         //html2canvas로 캡쳐
         const canvas = await html2canvas(containerRef.current, {
           useCORS: true, // 외부 리소스 허용
+          allowTaint: false,
           scale: 2, // 고해상도
         });
         //캔버스를 데이터 URL로
-        setImgUrl(canvas.toDataURL('image/png'));
+        const url = canvas.toDataURL('image/png');
+        setImgUrl(url);
         //다운로드 링크 생성
         const link = document.createElement('a');
-        link.href = imgUrl;
-        link.download = 'lookbook.png';
-        link.click();
+        link.href = url;
+        /*link.download = 'lookbook.png';
+        link.click();*/
       } catch (e) {
         console.error(e);
       }
@@ -219,12 +222,21 @@ export default function AfterModal({
   };
 
   const onClickBtn = () => {
+    // Blob 생성 (서버 전송용)
+    const base64Data = imgUrl.replace(/^data:image\/\w+;base64,/, '');
+    const binaryData = atob(base64Data); // Base64 디코딩
+    const arrayBuffer = new Uint8Array(binaryData.length);
+    for (let i = 0; i < binaryData.length; i++) {
+      arrayBuffer[i] = binaryData.charCodeAt(i);
+    }
+    const blob = new Blob([arrayBuffer], { type: 'image/png' });
     formData.append('requestDTO', JSON.stringify(requestDTO));
-    formData.append('lookbookImage', new Blob([imgUrl], { type: 'image/png' }));
+    formData.append('lookbookImage', blob);
     uploadPostsMutation.mutate({
       formData: formData,
       accessToken: accessToken,
     });
+    console.log(imgUrl);
   };
 
   useEffect(() => {
@@ -242,9 +254,7 @@ export default function AfterModal({
   }, []);
 
   useEffect(() => {
-    if (shoes != '' && top != '' && bottom != '') {
-      captureImg();
-    }
+    captureImg();
   }, [shoes, top, bottom]);
 
   return (
@@ -271,9 +281,9 @@ export default function AfterModal({
                 <CTA_button_med>룩북 저장하기</CTA_button_med>
               </StoreBtn>
               <LookBookBox ref={containerRef}>
-                <Outfit src={top} type="top" />
-                <Outfit src={bottom} type="bottom" />
-                <Outfit src={shoes} type="shoes" />
+                <Outfit src={top} type="top" crossOrigin="anonymous" />
+                <Outfit src={bottom} type="bottom" crossOrigin="anonymous" />
+                <Outfit src={shoes} type="shoes" crossOrigin="anonymous" />
               </LookBookBox>
             </Result>
           </ResultBox>

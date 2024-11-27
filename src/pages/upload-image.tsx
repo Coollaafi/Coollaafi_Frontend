@@ -118,7 +118,7 @@ export default function UploadImagePage() {
 
   const ootdMutation = useMutation(ootd, {
     onSuccess: (data) => {
-      console.log(data);
+      navigation(`/`);
     },
     onError: (e) => {
       console.log(e);
@@ -136,7 +136,6 @@ export default function UploadImagePage() {
       formData: formData,
     });
     console.log(categoryList);
-    navigation(`/home/${memberId}`);
   };
 
   return (
@@ -144,9 +143,9 @@ export default function UploadImagePage() {
       <Header type={'trans'} />
       <TextBox>
         <User>
-          <User_id_title_med>평범한 패피 김이화</User_id_title_med>
+          <User_id_title_med>김이화</User_id_title_med>
           {/*로그인 구현 시, 별명 이름으로 변경 */}
-          <Main_title_med>만의</Main_title_med>
+          <Main_title_med>님만의</Main_title_med>
         </User>
         <Main_title_med>
           AI를 발전시킬 옷이 나온
