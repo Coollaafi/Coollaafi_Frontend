@@ -185,8 +185,6 @@ export default function HomePage() {
   const [memberBased, setMemberBased] = useState<memberBasedProps>();
   const [memberAdd, setMemberAdd] = useState<memberAddProps>();
   const [isChecked, setIsChecked] = useState<boolean>(false);
-  const navigate = useNavigate();
-
   const onClickBtn = ({ type, isChecked, event }: onClickBtnProps) => {
     if (type == 'ai') {
       if (isChecked) {

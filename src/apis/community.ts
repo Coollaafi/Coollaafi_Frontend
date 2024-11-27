@@ -99,11 +99,57 @@ export const search = async (info: any) => {
   return response.data;
 };
 
-//게시글 업로드
-export const uploadPosts = async (info: any) => {
-  const response = await client.post('/posts', info.formdata, {
+//친구 팔로우
+export const followRequest = async (info: any) => {
+  const response = await client.post('/follow/request', null, {
+    params: {
+      followerId: info.followerId,
+      followeeId: info.followeeId,
+    },
     headers: {
       Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
+  return response.data;
+};
+
+//팔로우 취소
+export const followReject = async (info: any) => {
+  const response = await client.post('/follow/reject', null, {
+    params: {
+      followerId: info.followerId,
+      followeeId: info.followeeId,
+    },
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
+  return response.data;
+};
+
+//팔로우 목록
+export const followers = async (info: any) => {
+  const response = await client.post(
+    `/follow/${info.memberId}/followees`,
+    null,
+    {
+      params: {
+        memberId: info.memberId,
+      },
+      headers: {
+        Authorization: `Bearer ${info.accessToken}`,
+      },
+    },
+  );
+  return response.data;
+};
+
+//게시글 업로드
+export const uploadPosts = async (info: any) => {
+  const response = await client.post('/posts', info.formData, {
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+      'Content-Type': 'multipart/form-data',
     },
   });
   return response.data;

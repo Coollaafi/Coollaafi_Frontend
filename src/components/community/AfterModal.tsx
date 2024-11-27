@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import html2canvas from 'html2canvas';
 import styled from 'styled-components';
 import {
   CTA_button_med,
@@ -8,6 +9,8 @@ import {
 } from '../../styles/typography';
 import { ReactComponent as DressIcon } from '../../assets/icons/dress.svg';
 import { useUserStore } from 'store/user';
+import { useMutation } from 'react-query';
+import { uploadPosts } from 'apis/community';
 
 const Container = styled.div`
   width: 100%;
@@ -58,15 +61,33 @@ const ResultImg = styled.img`
   height: 100%;
   border: 1px solid #f4f4f4;
   background-color: #fbfbfb;
-  object-fit: contain;
+  object-fit: cover;
 `;
 
-const StoreBtn = styled.button<{ isFile: boolean }>`
+const LookBookBox = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #fbfbfb;
+  position: relative;
+`;
+
+const Outfit = styled.img<{ type: string }>`
+  position: absolute;
+  z-index: 1;
+  width: ${(props) =>
+    props.type == 'shoes' ? '20px' : props.type == 'top' ? '60px' : '50px'};
+  left: ${(props) =>
+    props.type == 'shoes' ? '15px' : props.type == 'top' ? '50px' : '50px'};
+  top: ${(props) =>
+    props.type == 'shoes' ? '160px' : props.type == 'top' ? '15px' : '100px'};
+`;
+
+const StoreBtn = styled.button`
   display: flex;
   flex-direction: row;
   gap: 2px;
-  color: ${(props) => (props.isFile ? '#ffffff' : '#9F9F9F')};
-  background-color: ${(props) => (props.isFile ? '#000000' : '#EDEDED')};
+  color: #ffffff;
+  background-color: #000000;
   border: none;
   border-radius: 60px;
   position: absolute;
@@ -75,7 +96,7 @@ const StoreBtn = styled.button<{ isFile: boolean }>`
   left: 13px;
   z-index: 10;
   .dress {
-    stroke: ${(props) => (props.isFile ? '#ffffff' : '#9F9F9F')};
+    stroke: #ffffff;
   }
 `;
 
@@ -125,14 +146,39 @@ const Button = styled.button<{ isDone: boolean }>`
 
 type UploadModalProps = {
   closeModal: () => void;
+  ootdList: string[];
+  ootdImgId: number;
+  ootdImgUrl: string;
 };
 
-export default function AfterModal({ closeModal }: UploadModalProps) {
-  const [imgFile, setImgFile] = useState<string>(
-    'https://i.ibb.co/hZRh851/04298b43bcdfb4378a78c42880ddae55.jpg',
-  );
-  const [isDone, setIsDone] = useState<boolean>(false);
+export default function AfterModal({
+  closeModal,
+  ootdList,
+  ootdImgId,
+  ootdImgUrl,
+}: UploadModalProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [isChecked, setIsChecked] = useState<boolean[]>([false, false, false]);
+  const [isDone, setIsDone] = useState<boolean>(false);
+  const [top, setTop] = useState<string>('');
+  const [bottom, setBottom] = useState<string>('');
+  const [shoes, setShoes] = useState<string>('');
+  const [isRendered, setIsRendered] = useState<boolean>(false);
+  const [imgUrl, setImgUrl] = useState<string>('');
+  const accessToken = useUserStore((state) => state.accessToken);
+  const memberId = useUserStore((state) => state.memberId);
+  const formData = new FormData();
+
+  const uploadPostsMutation = useMutation(uploadPosts, {
+    onSuccess: (data) => {
+      console.log(data);
+      window.location.reload();
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
 
   const handleClick = (num: number) => {
     if (num == 0) {
@@ -144,17 +190,62 @@ export default function AfterModal({ closeModal }: UploadModalProps) {
     }
   };
 
+  const captureImg = async () => {
+    if (containerRef.current) {
+      try {
+        //html2canvas로 캡쳐
+        const canvas = await html2canvas(containerRef.current, {
+          useCORS: true, // 외부 리소스 허용
+          scale: 2, // 고해상도
+        });
+        //캔버스를 데이터 URL로
+        setImgUrl(canvas.toDataURL('image/png'));
+        //다운로드 링크 생성
+        const link = document.createElement('a');
+        link.href = imgUrl;
+        link.download = 'lookbook.png';
+        link.click();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  const requestDTO = {
+    memberId: memberId,
+    ootdImageId: ootdImgId,
+    description: inputRef.current && inputRef.current.value,
+    postCondition: isChecked[0] ? 'HOT' : isChecked[1] ? 'PERFECT' : 'COLD',
+  };
+
   const onClickBtn = () => {
-    closeModal();
+    formData.append('requestDTO', JSON.stringify(requestDTO));
+    formData.append('lookbookImage', new Blob([imgUrl], { type: 'image/png' }));
+    uploadPostsMutation.mutate({
+      formData: formData,
+      accessToken: accessToken,
+    });
   };
 
   useEffect(() => {
-    if (imgFile && isChecked.includes(true)) {
-      setIsDone(true);
-    } else {
-      setIsDone(false);
+    ootdList.map((outfit) => {
+      if (outfit[outfit.length - 5] == 's') {
+        setShoes(outfit);
+      }
+      if (outfit[outfit.length - 5] == 'p') {
+        setTop(outfit);
+      }
+      if (outfit[outfit.length - 5] == 'm') {
+        setBottom(outfit);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (shoes != '' && top != '' && bottom != '') {
+      captureImg();
     }
-  }, [imgFile, isChecked]);
+  }, [shoes, top, bottom]);
 
   return (
     <Container>
@@ -169,17 +260,21 @@ export default function AfterModal({ closeModal }: UploadModalProps) {
           <ResultBox>
             <Desc_120_med>OOTD</Desc_120_med>
             <Result>
-              <ResultImg src="https://i.ibb.co/SKHYchj/2f977c88dfc2179d9f97dd54421c0428.jpg" />
+              <ResultImg src={ootdImgUrl} />
             </Result>
           </ResultBox>
           <ResultBox>
             <Desc_120_med>WOT LOOK BOOK</Desc_120_med>
             <Result>
-              <StoreBtn isFile={imgFile == '' ? false : true}>
+              <StoreBtn>
                 <DressIcon />
                 <CTA_button_med>룩북 저장하기</CTA_button_med>
               </StoreBtn>
-              <ResultImg src="https://i.ibb.co/hZRh851/04298b43bcdfb4378a78c42880ddae55.jpg" />
+              <LookBookBox ref={containerRef}>
+                <Outfit src={top} type="top" />
+                <Outfit src={bottom} type="bottom" />
+                <Outfit src={shoes} type="shoes" />
+              </LookBookBox>
             </Result>
           </ResultBox>
         </ResultBoxs>
@@ -190,7 +285,7 @@ export default function AfterModal({ closeModal }: UploadModalProps) {
             룩북 게시글에 올라갈 오늘의 착장을 설명해주세요
           </Desc_120_med>
         </SubTitle>
-        <TextArea placeholder="내용을 작성해주세요." />
+        <TextArea placeholder="내용을 작성해주세요." ref={inputRef} />
         <CheckBoxs>
           <CheckBox isChecked={isChecked[0]} onClick={() => handleClick(0)}>
             <Chip_button_med>더웠어요🥵</Chip_button_med>
@@ -203,7 +298,7 @@ export default function AfterModal({ closeModal }: UploadModalProps) {
           </CheckBox>
         </CheckBoxs>
       </SecondBox>
-      <Button isDone={isDone} onClick={onClickBtn}>
+      <Button isDone={isChecked.includes(true)} onClick={onClickBtn}>
         <CTA_button_med>룩북으로 공유하기</CTA_button_med>
       </Button>
     </Container>

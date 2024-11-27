@@ -7,9 +7,9 @@ import {
 } from 'styles/typography';
 import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
-import { search } from 'apis/community';
+import { followRequest, search } from 'apis/community';
 import { useUserStore } from 'store/user';
-import { ReactComponent as DefaultProfile } from '../../assets/images/default-profile.svg';
+import default_profile from '../../assets/images/default-profile.svg';
 
 const Container = styled.div`
   width: 360px;
@@ -106,6 +106,7 @@ const Btn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 const ProfileBox = styled.div`
@@ -129,6 +130,7 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [friendList, setFriendList] = useState<FriendListProps>();
   const accessToken = useUserStore((state) => state.accessToken);
+  const memberId = useUserStore((state) => state.memberId);
 
   const searchMutation = useMutation(search, {
     onSuccess: (data) => {
@@ -138,6 +140,22 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
       console.log(e);
     },
   });
+
+  const followRequestMutation = useMutation(followRequest, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const onClickBtn = (followeeId: number) => {
+    followRequestMutation.mutate({
+      accessToken: accessToken,
+      followerId: memberId,
+    });
+  };
 
   useEffect(() => {
     searchMutation.mutate({
@@ -165,11 +183,11 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
           {friendList?.map((friend) => (
             <FriendBox key={friend.memberServiceId}>
               <ProfileBox>
-                {friend.memberImage ? (
-                  <ProfileImg src={friend.memberImage} />
-                ) : (
-                  <DefaultProfile />
-                )}
+                <ProfileImg
+                  src={
+                    friend.memberImage ? friend.memberImage : default_profile
+                  }
+                />
                 <NicknameBox>
                   <div>
                     <Desc_150_reg>{friend.memberServiceId}</Desc_150_reg>
@@ -179,7 +197,7 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
                   </div>
                 </NicknameBox>
               </ProfileBox>
-              <Btn>
+              <Btn onClick={() => onClickBtn(0)}>
                 <Desc_120_med>추가</Desc_120_med>
               </Btn>
             </FriendBox>

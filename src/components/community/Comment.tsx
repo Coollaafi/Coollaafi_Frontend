@@ -56,7 +56,7 @@ export default function Comment({
   return (
     <Container isClicked={isClicked ? isClicked : false}>
       <Header>
-        <ProfileImg src={profileImg == '' ? default_profile : profileImg} />
+        <ProfileImg src={profileImg ? profileImg : default_profile} />
         <NameBox>
           <Main_title_med>{id}</Main_title_med>
           <NicknameBox nickname={nickname} />

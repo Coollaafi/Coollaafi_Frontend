@@ -39,6 +39,9 @@ type UploadModalProps = {
 
 export default function UploadModal({ closeModal }: UploadModalProps) {
   const [isBeforeClicked, setIsBeforeClicked] = useState<boolean>(false);
+  const [ootdList, setOotdList] = useState<string[]>([]);
+  const [ootdImgId, setOotdImgId] = useState<number>(0);
+  const [ootdImgUrl, setOotdImgUrl] = useState<string>('');
   return (
     <Container>
       <ModalBox>
@@ -46,9 +49,19 @@ export default function UploadModal({ closeModal }: UploadModalProps) {
           <CTA_button_med>닫기</CTA_button_med>
         </CloseBtn>
         {isBeforeClicked ? (
-          <AfterModal closeModal={closeModal} />
+          <AfterModal
+            closeModal={closeModal}
+            ootdList={ootdList}
+            ootdImgId={ootdImgId}
+            ootdImgUrl={ootdImgUrl}
+          />
         ) : (
-          <BeforeModal setIsBeforeClicked={setIsBeforeClicked} />
+          <BeforeModal
+            setIsBeforeClicked={setIsBeforeClicked}
+            setOotdList={setOotdList}
+            setOotdImgId={setOotdImgId}
+            setOotdImgUrl={setOotdImgUrl}
+          />
         )}
       </ModalBox>
     </Container>

@@ -89,7 +89,7 @@ const Btn = styled.div<{ isChecked: boolean; isError: boolean }>`
   justify-content: center;
   width: 100%;
   height: 48px;
-  background-color: ${(props) => (props.isChecked ? '000000' : '#F4F4F4;')};
+  background-color: ${(props) => (props.isChecked ? 'black' : '#F4F4F4;')};
   color: ${(props) => (props.isChecked ? 'white' : '#9F9F9F')};
   margin-top: ${(props) => (props.isError ? '-17px' : '0px')};
   cursor: pointer;
