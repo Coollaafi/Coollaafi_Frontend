@@ -228,15 +228,11 @@ export default function CommunityPage() {
     setGU(city.split(' ').filter((e) => e[e.length - 1] == '구')[0]);
     console.log(si, gu);
 
-    if (!isAll) {
-      const updatedPostList = postList.filter(
-        (item) => item.post.address == si + ' ' + gu,
-      );
-      setNewPostList(updatedPostList);
-    } else if (isAll) {
-      setNewPostList(postList);
-    }
-  }, [isAll]);
+    const updatedPostList = postList.filter(
+      (item) => item.post.address == si + ' ' + gu,
+    );
+    setNewPostList(updatedPostList);
+  }, []);
 
   return (
     <Container>
@@ -265,7 +261,46 @@ export default function CommunityPage() {
           </IconBox>
         </BarBox>
       </TitleBox>
-      {newPostList.length != 0 && newPostList ? (
+      {isAll ? (
+        postList.length != 0 && postList ? (
+          postList.map((item) => {
+            const member = item.member;
+            const post = item.post;
+
+            return (
+              <Post
+                key={post.postId}
+                profileImage={member.memberImage}
+                id={member.memberServiceId}
+                nickname={member.alias}
+                date={format(new Date(post.createdAt), 'yyyy년 MM월 dd일')}
+                weather={post.weather_description}
+                weatherIcon={post.weather_icon_url}
+                ootdImage={post.ootd_url}
+                collageImage={post.lookbook_url}
+                location={post.address}
+                like={post.preferCount}
+                comment={post.commentCount}
+                postId={post.postId}
+                tempMin={post.tmin}
+                tempMax={post.tmax}
+                content={''}
+                postCondition={post.postCondition}
+                isLikedByMember={post.isLikedByMember}
+                isDetail={false}
+              />
+            );
+          })
+        ) : (
+          <BlankBox>
+            <Account_alert_reg>
+              게시글을 올린 친구가 없습니다.
+              <br />
+              가장 먼저 올려보세요.
+            </Account_alert_reg>
+          </BlankBox>
+        )
+      ) : newPostList.length != 0 && newPostList ? (
         newPostList.map((item) => {
           const member = item.member;
           const post = item.post;
