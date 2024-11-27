@@ -13,7 +13,7 @@ export default function Layout({ children }: LayoutProps) {
 
   const refreshTokenMutation = useMutation(refreshTokenApi, {
     onSuccess: (data) => {
-      setAccessToken(data.accessToken);
+      setAccessToken(data.result);
     },
     onError: (e) => {
       console.log(e);
@@ -21,9 +21,8 @@ export default function Layout({ children }: LayoutProps) {
   });
 
   useEffect(() => {
-    console.log(refreshToken);
     refreshTokenMutation.mutate(refreshToken);
-  }, []);
+  }, [refreshToken]);
 
   return <>{children}</>;
 }
