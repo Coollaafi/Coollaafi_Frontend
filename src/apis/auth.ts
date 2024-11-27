@@ -1,7 +1,7 @@
 import client from './client';
 
 export const refreshTokenApi = async (refreshToken: string) => {
-  const response = await client.post('/auth/refresh', {
+  const response = await client.post('/auth/refresh', null, {
     params: {
       refreshToken: refreshToken,
     },
