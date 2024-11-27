@@ -164,7 +164,9 @@ export default function CommunityPage() {
 
   const [postList, setPostList] = useState<postListProps[]>([]);
   const [newPostList, setNewPostList] = useState<postListProps[]>([]);
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState<string>('');
+  const [si, setSi] = useState<string>('');
+  const [gu, setGU] = useState<string>('');
 
   const memberId = useUserStore((state) => state.memberId);
   const accessToken = useUserStore((state) => state.accessToken);
@@ -172,7 +174,6 @@ export default function CommunityPage() {
   const postsMutation = useMutation(posts, {
     onSuccess: (data) => {
       setPostList(data.result);
-      setNewPostList(data.result);
     },
     onError: (e) => {
       console.log(e);
@@ -223,17 +224,19 @@ export default function CommunityPage() {
   }, [postList]);
 
   useEffect(() => {
-    const si = city.split(' ').filter((e) => e[e.length - 1] == '시');
-    const gu = city.split(' ').filter((e) => e[e.length - 1] == '구');
+    setSi(city.split(' ').filter((e) => e[e.length - 1] == '시')[0]);
+    setGU(city.split(' ').filter((e) => e[e.length - 1] == '구')[0]);
+    console.log(si, gu);
 
     if (!isAll) {
-      setNewPostList(
-        postList.filter((item) => item.post.address == si[0] + ' ' + gu[0]),
+      const updatedPostList = postList.filter(
+        (item) => item.post.address == si + ' ' + gu,
       );
-    } else {
+      setNewPostList(updatedPostList);
+    } else if (isAll) {
       setNewPostList(postList);
     }
-  }, [isAll, postList]);
+  }, [isAll]);
 
   return (
     <Container>
