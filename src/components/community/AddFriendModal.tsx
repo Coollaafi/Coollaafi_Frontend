@@ -7,7 +7,15 @@ import {
 } from 'styles/typography';
 import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
-import { followRequest, search } from 'apis/community';
+import {
+  acceptFriend,
+  friend,
+  receiveFriend,
+  rejectFriend,
+  requestFriend,
+  search,
+  sendFriend,
+} from 'apis/community';
 import { useUserStore } from 'store/user';
 import default_profile from '../../assets/images/default-profile.svg';
 
@@ -67,10 +75,29 @@ const Input = styled.input`
 
 const Box = styled.div`
   width: 100%;
-  height: 240px;
+  height: 468px;
+  overflow: scroll;
+`;
+
+const RequestBox = styled.div`
+  width: 100%;
   margin-top: 15px;
   gap: 5px;
-  overflow: scroll;
+  border-bottom: 2px solid #f4f4f4;
+`;
+
+const ListBox = styled.div`
+  width: 100%;
+  gap: 5px;
+`;
+
+const BlankBox = styled.div`
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9f9f9f;
 `;
 
 const FriendBox = styled.div`
@@ -109,6 +136,12 @@ const Btn = styled.div`
   cursor: pointer;
 `;
 
+const Btns = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+`;
+
 const ProfileBox = styled.div`
   display: flex;
   flex-direction: row;
@@ -120,6 +153,7 @@ type AddFriendModalProps = {
 };
 
 type FriendListProps = {
+  memberId: number;
   memberServiceId: string;
   memberNickName: string;
   memberImage: string;
@@ -129,19 +163,40 @@ type FriendListProps = {
 export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [friendList, setFriendList] = useState<FriendListProps>();
+  const [searchFriendList, setSearchFriendList] = useState<FriendListProps>();
+  const [requestFriendList, setRequestFriendList] = useState<FriendListProps>();
+  const [sendFriendList, setSendFriendList] = useState<FriendListProps>();
   const accessToken = useUserStore((state) => state.accessToken);
   const memberId = useUserStore((state) => state.memberId);
 
   const searchMutation = useMutation(search, {
     onSuccess: (data) => {
-      setFriendList(data.result);
+      setSearchFriendList(data.result);
     },
     onError: (e) => {
       console.log(e);
     },
   });
 
-  const followRequestMutation = useMutation(followRequest, {
+  const receiveFriendMutation = useMutation(receiveFriend, {
+    onSuccess: (data) => {
+      setRequestFriendList(data.result.memberInfo);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const sendFriendMutation = useMutation(sendFriend, {
+    onSuccess: (data) => {
+      setSendFriendList(data.result.memberInfo);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const requestFriendMutation = useMutation(requestFriend, {
     onSuccess: (data) => {
       console.log(data);
     },
@@ -150,12 +205,71 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
     },
   });
 
-  const onClickBtn = (followeeId: number) => {
-    followRequestMutation.mutate({
+  const acceptFriendMutation = useMutation(acceptFriend, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const rejectFriendMutation = useMutation(rejectFriend, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const friendMutation = useMutation(friend, {
+    onSuccess: (data) => {
+      setFriendList(data.result);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const onClickRequest = (receiverId: number) => {
+    requestFriendMutation.mutate({
+      senderId: memberId,
+      receiverId: receiverId,
       accessToken: accessToken,
-      followerId: memberId,
     });
   };
+
+  const onClickAccept = (friendRequestId: number) => {
+    acceptFriendMutation.mutate({
+      friendRequestId: friendRequestId,
+      accessToken: accessToken,
+    });
+  };
+
+  const onClickReject = (friendRequestId: number) => {
+    rejectFriendMutation.mutate({
+      friendRequestId: friendRequestId,
+      accessToken: accessToken,
+    });
+  };
+
+  useEffect(() => {
+    receiveFriendMutation.mutate({
+      memberId: memberId,
+      accessToken: accessToken,
+    });
+
+    sendFriendMutation.mutate({
+      memberId: memberId,
+      accessToken: accessToken,
+    });
+
+    friendMutation.mutate({
+      memberId: memberId,
+      accessToken: accessToken,
+    });
+  }, []);
 
   useEffect(() => {
     searchMutation.mutate({
@@ -180,28 +294,79 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
           placeholder="친구 아이디/닉네임을 입력해주세요"
         />
         <Box>
-          {friendList?.map((friend) => (
-            <FriendBox key={friend.memberServiceId}>
-              <ProfileBox>
-                <ProfileImg
-                  src={
-                    friend.memberImage ? friend.memberImage : default_profile
-                  }
-                />
-                <NicknameBox>
-                  <div>
-                    <Desc_150_reg>{friend.memberServiceId}</Desc_150_reg>
-                  </div>
-                  <div>
-                    <Desc_150_reg>{friend.memberNickName}</Desc_150_reg>
-                  </div>
-                </NicknameBox>
-              </ProfileBox>
-              <Btn onClick={() => onClickBtn(0)}>
-                <Desc_120_med>추가</Desc_120_med>
-              </Btn>
-            </FriendBox>
-          ))}
+          <RequestBox>
+            <Desc_120_med>
+              요청 ({requestFriendList ? requestFriendList.length : 0})
+            </Desc_120_med>
+            {requestFriendList ? (
+              requestFriendList.map((friend) => (
+                <FriendBox key={friend.memberServiceId}>
+                  <ProfileBox>
+                    <ProfileImg
+                      src={
+                        friend.memberImage
+                          ? friend.memberImage
+                          : default_profile
+                      }
+                    />
+                    <NicknameBox>
+                      <div>
+                        <Desc_150_reg>{friend.memberServiceId}</Desc_150_reg>
+                      </div>
+                      <div>
+                        <Desc_150_reg>{friend.memberNickName}</Desc_150_reg>
+                      </div>
+                    </NicknameBox>
+                  </ProfileBox>
+                  <Btns>
+                    <Btn onClick={() => onClickAccept(friend.memberId)}>
+                      <Desc_120_med>수락</Desc_120_med>
+                    </Btn>
+                    <Btn onClick={() => onClickReject(friend.memberId)}>
+                      <Desc_120_med>거절</Desc_120_med>
+                    </Btn>
+                  </Btns>
+                </FriendBox>
+              ))
+            ) : (
+              <BlankBox>
+                <Desc_150_reg>요청이 없습니다.</Desc_150_reg>
+              </BlankBox>
+            )}
+          </RequestBox>
+          <ListBox>
+            {searchFriendList?.map((friend) => (
+              <FriendBox key={friend.memberServiceId}>
+                <ProfileBox>
+                  <ProfileImg
+                    src={
+                      friend.memberImage ? friend.memberImage : default_profile
+                    }
+                  />
+                  <NicknameBox>
+                    <div>
+                      <Desc_150_reg>{friend.memberServiceId}</Desc_150_reg>
+                    </div>
+                    <div>
+                      <Desc_150_reg>{friend.memberNickName}</Desc_150_reg>
+                    </div>
+                  </NicknameBox>
+                </ProfileBox>
+                {friend.memberId == Number(memberId) ||
+                sendFriendList?.filter(
+                  (item) => item.memberId == friend.memberId,
+                ).length == 1 ||
+                friendList?.filter((item) => item.memberId == friend.memberId)
+                  .length == 1 ? (
+                  <></>
+                ) : (
+                  <Btn onClick={() => onClickRequest(friend.memberId)}>
+                    <Desc_120_med>추가</Desc_120_med>
+                  </Btn>
+                )}
+              </FriendBox>
+            ))}
+          </ListBox>
         </Box>
       </ModalBox>
     </Container>

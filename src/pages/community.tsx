@@ -15,6 +15,7 @@ import Post from 'components/community/Post';
 import Footer from 'components/Footer';
 import { useEffect, useState } from 'react';
 import AddFriendModal from 'components/community/AddFriendModal';
+import FriendModal from 'components/community/FriendModal';
 import { format } from 'date-fns';
 import { useMutation } from 'react-query';
 import { getAddress } from 'apis/recommend';
@@ -125,6 +126,14 @@ const BlankBox = styled.div`
   text-align: center;
 `;
 
+const FriendIconBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+`;
+
 type postListProps = {
   member: {
     memberServiceId: string;
@@ -159,6 +168,11 @@ export default function CommunityPage() {
     isOpen: isAddFriendOpen,
     closeModal: closeAddFriendModal,
     openModal: openAddFriendModal,
+  } = useModal();
+  const {
+    isOpen: isFriendOpen,
+    closeModal: closeFriendModal,
+    openModal: openFriendModal,
   } = useModal();
   const [isAll, setIsAll] = useState<boolean>(true);
 
@@ -248,17 +262,19 @@ export default function CommunityPage() {
               <Desc_120_med>전체위치</Desc_120_med>
             </CheckBox>
           </CheckBoxs>
-          <IconBox onClick={openAddFriendModal}>
-            <BtnTitle>
-              <Main_title_med>친구추가하기</Main_title_med>
-            </BtnTitle>
-            <PlusFriendIcon>
-              <MarginBox>
-                <PlusIcon />
-              </MarginBox>
+          <FriendIconBox>
+            <IconBox onClick={openFriendModal}>
               <FriendIcon />
-            </PlusFriendIcon>
-          </IconBox>
+            </IconBox>
+            <IconBox onClick={openAddFriendModal}>
+              <PlusFriendIcon>
+                <MarginBox>
+                  <PlusIcon />
+                </MarginBox>
+                <FriendIcon />
+              </PlusFriendIcon>
+            </IconBox>
+          </FriendIconBox>
         </BarBox>
       </TitleBox>
       {isAll ? (
@@ -339,12 +355,19 @@ export default function CommunityPage() {
         </BlankBox>
       )}
       <Footer kind={'white'} />
-      <UploadBtn onClick={openUploadModal}>
-        <CTA_button_med>룩북 올리기</CTA_button_med>
-        <PencilIcon />
-      </UploadBtn>
+      {postList?.filter(
+        (post) =>
+          post.member.memberServiceId == memberId &&
+          post.post.createdAt == format(new Date(), 'yyyy년 MM월 dd일'),
+      ).length == 0 && (
+        <UploadBtn onClick={openUploadModal}>
+          <CTA_button_med>룩북 올리기</CTA_button_med>
+          <PencilIcon />
+        </UploadBtn>
+      )}
       {isUploadOpen && <UploadModal closeModal={closeUploadModal} />}
       {isAddFriendOpen && <AddFriendModal closeModal={closeAddFriendModal} />}
+      {isFriendOpen && <FriendModal closeModal={closeFriendModal} />}
     </Container>
   );
 }

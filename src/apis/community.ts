@@ -86,6 +86,17 @@ export const deletePrefer = async (info: any) => {
   return response.data;
 };
 
+//게시글 업로드
+export const uploadPosts = async (info: any) => {
+  const response = await client.post('/posts', info.formData, {
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+};
+
 //친구 찾기
 export const search = async (info: any) => {
   const response = await client.get('/member/search', {
@@ -99,12 +110,11 @@ export const search = async (info: any) => {
   return response.data;
 };
 
-//친구 팔로우
-export const followRequest = async (info: any) => {
-  const response = await client.post('/follow/request', null, {
+//나에게 친구요청한 친구 조회
+export const receiveFriend = async (info: any) => {
+  const response = await client.get('/friends/receive', {
     params: {
-      followerId: info.followerId,
-      followeeId: info.followeeId,
+      memberId: info.memberId,
     },
     headers: {
       Authorization: `Bearer ${info.accessToken}`,
@@ -113,12 +123,11 @@ export const followRequest = async (info: any) => {
   return response.data;
 };
 
-//팔로우 취소
-export const followReject = async (info: any) => {
-  const response = await client.post('/follow/reject', null, {
+//내가 친구요청한 친구 조회
+export const sendFriend = async (info: any) => {
+  const response = await client.get('/friends/send', {
     params: {
-      followerId: info.followerId,
-      followeeId: info.followeeId,
+      memberId: info.memberId,
     },
     headers: {
       Authorization: `Bearer ${info.accessToken}`,
@@ -127,14 +136,41 @@ export const followReject = async (info: any) => {
   return response.data;
 };
 
-//팔로우 목록
-export const followers = async (info: any) => {
+//친구요청
+export const requestFriend = async (info: any) => {
+  const response = await client.post('/friends/request', null, {
+    params: {
+      senderId: info.senderId,
+      receiverId: info.receiverId,
+    },
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
+  return response.data;
+};
+
+//친구요청 수락
+export const acceptFriend = async (info: any) => {
+  const response = await client.post('/friends/request/accept', null, {
+    params: {
+      friendRequestId: info.friendRequestId,
+    },
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
+  return response.data;
+};
+
+//친구요청 거절
+export const rejectFriend = async (info: any) => {
   const response = await client.post(
-    `/follow/${info.memberId}/followees`,
+    `/friends/request/reject/${info.friendRequestId}`,
     null,
     {
       params: {
-        memberId: info.memberId,
+        friendRequestId: info.friendRequestId,
       },
       headers: {
         Authorization: `Bearer ${info.accessToken}`,
@@ -144,12 +180,14 @@ export const followers = async (info: any) => {
   return response.data;
 };
 
-//게시글 업로드
-export const uploadPosts = async (info: any) => {
-  const response = await client.post('/posts', info.formData, {
+//친구목록
+export const friend = async (info: any) => {
+  const response = await client.get(`/member/${info.memberId}/friends`, {
+    params: {
+      memberId: info.memberId,
+    },
     headers: {
       Authorization: `Bearer ${info.accessToken}`,
-      'Content-Type': 'multipart/form-data',
     },
   });
   return response.data;
