@@ -207,7 +207,7 @@ export default function CalendarBox({
 
   const calendarMutation = useMutation(calendar, {
     onSuccess: (data) => {
-      setDayList(data.result.day);
+      setDayList(data.result.days);
     },
     onError: (e) => {
       console.log(e);
@@ -219,7 +219,7 @@ export default function CalendarBox({
   }, []);
 
   //image 컨텐츠 넣기 위해_
-  const addImage = ({ date }: any) => {
+  const addImage = ({ date }: { date: Date }) => {
     const matchedDay = dayList?.find(
       (day) => day.day === format(date, 'yyyy-MM-dd'),
     );

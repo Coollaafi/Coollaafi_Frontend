@@ -174,7 +174,7 @@ export default function AfterModal({
   const uploadPostsMutation = useMutation(uploadPosts, {
     onSuccess: (data) => {
       console.log(data);
-      /*window.location.reload();*/
+      window.location.reload();
     },
     onError: (e) => {
       console.log(e);

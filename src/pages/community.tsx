@@ -136,6 +136,7 @@ const FriendIconBox = styled.div`
 
 type postListProps = {
   member: {
+    memberId: string;
     memberServiceId: string;
     memberNickName: string;
     memberImage: string;
@@ -357,8 +358,8 @@ export default function CommunityPage() {
       <Footer kind={'white'} />
       {postList?.filter(
         (post) =>
-          post.member.memberServiceId == memberId &&
-          post.post.createdAt == format(new Date(), 'yyyy년 MM월 dd일'),
+          post.member.memberId == memberId &&
+          post.post.createdAt.split('T')[0] == format(new Date(), 'yyyy-MM-dd'),
       ).length == 0 && (
         <UploadBtn onClick={openUploadModal}>
           <CTA_button_med>룩북 올리기</CTA_button_med>
