@@ -16,6 +16,7 @@ import { useUserStore } from 'store/user';
 import { useMutation } from 'react-query';
 import { ootd } from 'apis/recommend';
 import { useNavigate } from 'react-router-dom';
+import AlertBox from 'components/AlertBox';
 
 const Container = styled.div`
   width: 360px;
@@ -152,6 +153,7 @@ export default function UploadImagePage() {
           <br /> 최근 사진들을 올려주세요
         </Main_title_med>
       </TextBox>
+      {ootdMutation.isLoading && <AlertBox type={'dark'} />}
       <SelectBox>
         <ImageBox isFile={imgFile == '' ? false : true}>
           <UploadImage

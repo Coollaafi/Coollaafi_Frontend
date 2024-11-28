@@ -11,6 +11,7 @@ import ButtonBox from 'components/ButtonBox';
 import { useMutation } from 'react-query';
 import { ootd } from 'apis/recommend';
 import { useUserStore } from 'store/user';
+import AlertBox from 'components/AlertBox';
 
 const Container = styled.div`
   width: 100%;
@@ -73,11 +74,12 @@ const ThirdText = styled.div`
   margin-bottom: 50px;
 `;
 
-const Button = styled.button<{ isDone: boolean }>`
+const Button = styled.button<{ isDone: boolean; isLoading: boolean }>`
   width: 296px;
   height: 48px;
   color: ${(props) => (props.isDone ? '#ffffff' : '#9f9f9f')};
   background-color: ${(props) => (props.isDone ? '#000000' : '#f4f4f4')};
+  margin-top: ${(props) => (props.isLoading ? '-25px' : '0px')};
   border: none;
 `;
 
@@ -145,6 +147,7 @@ export default function BeforeModal({
           업로드한 왓 룩북 이미지는 당신만의 스타일링을 학습해요
         </Desc_120_med>
       </Box>
+      {ootdMutation.isLoading && <AlertBox type={'white'} />}
       <SecondBox name="image">
         <ResultBoxs>
           <ResultBox>
@@ -187,6 +190,7 @@ export default function BeforeModal({
         </ThirdText>
       </SecondBox>
       <Button
+        isLoading={ootdMutation.isLoading}
         isDone={isDone}
         onClick={(e) => (isDone ? onClickBtn() : e.preventDefault)}
       >
