@@ -320,10 +320,16 @@ export default function CommunityPage() {
         </BlankBox>
       )}
       <Footer kind={'white'} />
-      <UploadBtn onClick={openUploadModal}>
-        <CTA_button_med>룩북 올리기</CTA_button_med>
-        <PencilIcon />
-      </UploadBtn>
+      {postList?.filter(
+        (post) =>
+          post.member.memberServiceId == memberId &&
+          post.post.createdAt == format(new Date(), 'yyyy년 MM월 dd일'),
+      ).length == 0 && (
+        <UploadBtn onClick={openUploadModal}>
+          <CTA_button_med>룩북 올리기</CTA_button_med>
+          <PencilIcon />
+        </UploadBtn>
+      )}
       {isUploadOpen && <UploadModal closeModal={closeUploadModal} />}
       {isAddFriendOpen && <AddFriendModal closeModal={closeAddFriendModal} />}
       {isFriendOpen && <FriendModal closeModal={closeFriendModal} />}
