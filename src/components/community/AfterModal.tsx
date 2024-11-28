@@ -76,11 +76,11 @@ const Outfit = styled.img<{ type: string }>`
   position: absolute;
   z-index: 1;
   width: ${(props) =>
-    props.type == 'shoes' ? '20px' : props.type == 'top' ? '50px' : '50px'};
+    props.type == 'shoes' ? '20px' : props.type == 'top' ? '50px' : '45px'};
   left: ${(props) =>
     props.type == 'shoes' ? '15px' : props.type == 'top' ? '50px' : '50px'};
   top: ${(props) =>
-    props.type == 'shoes' ? '160px' : props.type == 'top' ? '5px' : '100px'};
+    props.type == 'shoes' ? '160px' : props.type == 'top' ? '5px' : '80px'};
 `;
 
 const StoreBtn = styled.button`
