@@ -266,15 +266,16 @@ export default function RecommendPage() {
           </Temp>
         </SecBox>
       </Box>
-      {[0, 1, 2].map((index, id) => {
-        return (
-          <Outfit key={id}>
-            <Image src={top[index]} type="top" />
-            <Image src={bottom[index]} type="bottom" />
-            <Image src={shoes[index]} type="shoes" />
-          </Outfit>
-        );
-      })}
+      {recommendOutfitMutation.isSuccess &&
+        [0, 1, 2].map((index, id) => {
+          return (
+            <Outfit key={id}>
+              <Image src={top[index]} type="top" />
+              <Image src={bottom[index]} type="bottom" />
+              <Image src={shoes[index]} type="shoes" />
+            </Outfit>
+          );
+        })}
     </Container>
   );
 }

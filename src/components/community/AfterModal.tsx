@@ -78,9 +78,9 @@ const Outfit = styled.img<{ type: string }>`
   width: ${(props) =>
     props.type == 'shoes' ? '20px' : props.type == 'top' ? '50px' : '45px'};
   left: ${(props) =>
-    props.type == 'shoes' ? '15px' : props.type == 'top' ? '50px' : '50px'};
+    props.type == 'shoes' ? '15px' : props.type == 'top' ? '50px' : '60px'};
   top: ${(props) =>
-    props.type == 'shoes' ? '160px' : props.type == 'top' ? '5px' : '80px'};
+    props.type == 'shoes' ? '150px' : props.type == 'top' ? '10px' : '70px'};
 `;
 
 const StoreBtn = styled.button`
@@ -276,10 +276,11 @@ export default function AfterModal({
           <ResultBox>
             <Desc_120_med>WOT LOOK BOOK</Desc_120_med>
             <Result>
+              {/*}
               <StoreBtn>
                 <DressIcon />
                 <CTA_button_med>룩북 저장하기</CTA_button_med>
-              </StoreBtn>
+              </StoreBtn>*/}
               <LookBookBox ref={containerRef}>
                 <Outfit src={top} type="top" crossOrigin="anonymous" />
                 <Outfit src={bottom} type="bottom" crossOrigin="anonymous" />
