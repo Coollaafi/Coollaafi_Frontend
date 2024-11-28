@@ -67,7 +67,7 @@ const ResultImg = styled.img`
 const LookBookBox = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #fbfbfb;
+  background-color: #ffffff;
   position: relative;
   overflow: hidden;
 `;
