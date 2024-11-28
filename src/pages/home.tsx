@@ -216,16 +216,16 @@ export default function HomePage() {
   useEffect(() => {
     if (
       memberBased?.alias == '평범한 패피' ||
-      '예사롭지 않은 패피' ||
-      '주목받는 패피' ||
-      '독창적인 패피' ||
-      '세련된 패피'
+      memberBased?.alias == '예사롭지 않은 패피' ||
+      memberBased?.alias == '주목받는 패피' ||
+      memberBased?.alias == '독창적인 패피' ||
+      memberBased?.alias == '세련된 패피'
     ) {
       setIsChecked(false);
     } else {
       setIsChecked(true);
     }
-  }, [memberBased]);
+  }, []);
 
   return (
     <Container>
