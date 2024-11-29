@@ -1,3 +1,6 @@
+import { logout } from 'apis/auth';
+import { useMutation } from 'react-query';
+import { useUserStore } from 'store/user';
 import styled from 'styled-components';
 import { Noto_Receipt } from 'styles/typography';
 
@@ -40,16 +43,33 @@ const Button = styled.div`
 type FooterType = 'black' | 'white';
 
 export default function Footer(type: { kind: FooterType }) {
+  const accessToken = useUserStore((state) => state.accessToken);
+  const memberId = useUserStore((state) => state.memberId);
+
+  const logoutMutation = useMutation(logout, {
+    onSuccess: (data) => {
+      useUserStore.persist.clearStorage();
+      console.log(data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const onClickLogout = () => {
+    logoutMutation.mutate({ memberId: memberId, accessToken: accessToken });
+  };
+
   return (
     <Container type={type.kind}>
       <Box>
-        <Button>
+        <Button onClick={onClickLogout}>
           <Noto_Receipt>로그아웃</Noto_Receipt>
         </Button>
         <EmailBox>
           <Noto_Receipt>문의</Noto_Receipt>
           <Noto_Receipt>
-            <Email>WOT.ehwa@gmail.com</Email>
+            <Email>wot83323@gmail.com</Email>
           </Noto_Receipt>
           {/*이메일 변경 필요 */}
         </EmailBox>
