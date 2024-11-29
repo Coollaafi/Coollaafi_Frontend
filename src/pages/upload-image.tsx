@@ -10,13 +10,14 @@ import {
   CTA_button_med,
 } from 'styles/typography';
 import UploadImage from 'components/UploadImage';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ButtonBox from 'components/ButtonBox';
 import { useUserStore } from 'store/user';
 import { useMutation } from 'react-query';
 import { ootd } from 'apis/recommend';
 import { useNavigate } from 'react-router-dom';
 import AlertBox from 'components/AlertBox';
+import { home } from 'apis/home';
 
 const Container = styled.div`
   width: 360px;
@@ -107,7 +108,15 @@ const Button = styled.div`
   cursor: pointer;
 `;
 
+type memberBasedProps = {
+  memberServiceId: string;
+  memberNickName: string;
+  memberImage: string;
+  alias: string;
+};
+
 export default function UploadImagePage() {
+  const [memberBased, setMemberBased] = useState<memberBasedProps>();
   const [imgFileBlob, setImgFileBlob] = useState<Blob>(new Blob());
   const [imgFile, setImgFile] = useState<string>('');
   const [isClicked, setIsClicked] = useState<boolean[]>([]);
@@ -116,6 +125,12 @@ export default function UploadImagePage() {
   const accessToken = useUserStore((state) => state.accessToken);
   const formData = new FormData();
   const navigation = useNavigate();
+
+  const homeMutation = useMutation(home, {
+    onSuccess: (data) => {
+      setMemberBased(data.result.memberBased);
+    },
+  });
 
   const ootdMutation = useMutation(ootd, {
     onSuccess: (data) => {
@@ -139,13 +154,18 @@ export default function UploadImagePage() {
     console.log(categoryList);
   };
 
+  useEffect(() => {
+    homeMutation.mutate({ memberId: memberId, accessToken: accessToken });
+  }, []);
+
   return (
     <Container>
       <Header type={'trans'} />
       <TextBox>
         <User>
-          <User_id_title_med>김이화</User_id_title_med>
-          {/*로그인 구현 시, 별명 이름으로 변경 */}
+          <User_id_title_med>
+            {memberBased?.alias + ' ' + memberBased?.memberServiceId}
+          </User_id_title_med>
           <Main_title_med>님만의</Main_title_med>
         </User>
         <Main_title_med>

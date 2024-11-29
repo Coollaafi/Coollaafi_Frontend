@@ -5,6 +5,7 @@ import { getAddress, getWeather, recommendOutfit } from 'apis/recommend';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useUserStore } from 'store/user';
+import { PulseLoader } from 'react-spinners';
 
 const Container = styled.div`
   width: 360px;
@@ -91,6 +92,14 @@ const Location = styled.div`
   display: flex;
   flex-direction: row;
   gap: 3px;
+`;
+
+const BlankBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100vh - 225px);
 `;
 
 export default function RecommendPage() {
@@ -238,7 +247,6 @@ export default function RecommendPage() {
     <Container>
       <Header type={'white'} />
       <Box>
-        {/*api 연결 시, 날짜에 맞게 변화하도록*/}
         <FirBox>
           <DTL_Date>{year}</DTL_Date>
           <Cal>
@@ -253,7 +261,6 @@ export default function RecommendPage() {
             <Main_title_med>{weatherDes}</Main_title_med>
           </Weather>
         </FirBox>
-        {/*api 연결 시, 날씨에 맞게 변화하도록*/}
         <SecBox>
           <Location>
             <Main_title_med>{city}</Main_title_med>
@@ -266,7 +273,11 @@ export default function RecommendPage() {
           </Temp>
         </SecBox>
       </Box>
-      {recommendOutfitMutation.isSuccess &&
+      {recommendOutfitMutation.isLoading ? (
+        <BlankBox>
+          <PulseLoader color="#4d4d4d" size={12} />
+        </BlankBox>
+      ) : (
         [0, 1, 2].map((index, id) => {
           return (
             <Outfit key={id}>
@@ -275,7 +286,8 @@ export default function RecommendPage() {
               <Image src={shoes[index]} type="shoes" />
             </Outfit>
           );
-        })}
+        })
+      )}
     </Container>
   );
 }
