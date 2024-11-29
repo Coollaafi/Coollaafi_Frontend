@@ -236,7 +236,7 @@ export default function JoinPage() {
       setRefreshToken(refreshToken);
       setMemberId(memberId);
     }
-    navigation(`/home/${memberId}`);
+    navigation('/');
   };
 
   //닉네임 20이내로
