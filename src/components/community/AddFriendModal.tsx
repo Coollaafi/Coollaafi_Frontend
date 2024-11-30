@@ -226,6 +226,14 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
   const acceptFriendMutation = useMutation(acceptFriend, {
     onSuccess: (data) => {
       console.log(data);
+      receiveFriendMutation.mutate({
+        memberId: memberId,
+        accessToken: accessToken,
+      });
+      friendMutation.mutate({
+        memberId: memberId,
+        accessToken: accessToken,
+      });
     },
     onError: (e) => {
       console.log(e);
@@ -235,6 +243,14 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
   const rejectFriendMutation = useMutation(rejectFriend, {
     onSuccess: (data) => {
       console.log(data);
+      receiveFriendMutation.mutate({
+        memberId: memberId,
+        accessToken: accessToken,
+      });
+      friendMutation.mutate({
+        memberId: memberId,
+        accessToken: accessToken,
+      });
     },
     onError: (e) => {
       console.log(e);
@@ -258,18 +274,18 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
     });
   };
 
-  const onClickAccept = (receiverId: number) => {
+  const onClickAccept = (senderId: number) => {
     acceptFriendMutation.mutate({
-      senderId: memberId,
-      receiverId: receiverId,
+      senderId: senderId,
+      receiverId: memberId,
       accessToken: accessToken,
     });
   };
 
-  const onClickReject = (receiverId: number) => {
+  const onClickReject = (senderId: number) => {
     rejectFriendMutation.mutate({
-      senderId: memberId,
-      receiverId: receiverId,
+      senderId: senderId,
+      receiverId: memberId,
       accessToken: accessToken,
     });
   };
@@ -318,7 +334,7 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
             <Desc_120_med>
               요청 ({receiveFriendList ? receiveFriendList.length : 0})
             </Desc_120_med>
-            {receiveFriendList ? (
+            {receiveFriendList && receiveFriendList?.length > 0 ? (
               receiveFriendList.map((friend) => (
                 <FriendBox key={friend.memberInfo.memberServiceId}>
                   <ProfileBox>

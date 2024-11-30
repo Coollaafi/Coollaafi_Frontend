@@ -166,19 +166,15 @@ export const acceptFriend = async (info: any) => {
 
 //친구요청 거절
 export const rejectFriend = async (info: any) => {
-  const response = await client.post(
-    `/friends/request/reject/${info.friendRequestId}`,
-    null,
-    {
-      params: {
-        senderId: info.senderId,
-        receiverId: info.receiverId,
-      },
-      headers: {
-        Authorization: `Bearer ${info.accessToken}`,
-      },
+  const response = await client.delete('/friends/request/reject', {
+    params: {
+      senderId: info.senderId,
+      receiverId: info.receiverId,
     },
-  );
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
   return response.data;
 };
 
