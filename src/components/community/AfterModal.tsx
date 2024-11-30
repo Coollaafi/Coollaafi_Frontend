@@ -198,20 +198,23 @@ export default function AfterModal({
         const canvas = await html2canvas(containerRef.current, {
           useCORS: true, // 외부 리소스 허용
           allowTaint: false,
-          scale: 2, // 고해상도
+          scale: Math.min(window.devicePixelRatio, 2), // 고해상도
         });
         //캔버스를 데이터 URL로
         const url = canvas.toDataURL('image/png');
         setImgUrl(url);
-        //다운로드 링크 생성
-        const link = document.createElement('a');
-        link.href = url;
-        /*link.download = 'lookbook.png';
-        link.click();*/
       } catch (e) {
         console.error(e);
       }
     }
+  };
+
+  const onClickDownload = () => {
+    //다운로드 링크 생성
+    const link = document.createElement('a');
+    link.href = imgUrl;
+    link.download = 'lookbook.png';
+    link.click();
   };
 
   const requestDTO = {
@@ -276,11 +279,10 @@ export default function AfterModal({
           <ResultBox>
             <Desc_120_med>WOT LOOK BOOK</Desc_120_med>
             <Result>
-              {/*}
-              <StoreBtn>
+              <StoreBtn onClick={onClickDownload}>
                 <DressIcon />
                 <CTA_button_med>룩북 저장하기</CTA_button_med>
-              </StoreBtn>*/}
+              </StoreBtn>
               <LookBookBox ref={containerRef}>
                 <Outfit src={top} type="top" crossOrigin="anonymous" />
                 <Outfit src={bottom} type="bottom" crossOrigin="anonymous" />
