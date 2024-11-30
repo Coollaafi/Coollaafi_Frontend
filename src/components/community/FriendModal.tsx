@@ -7,7 +7,7 @@ import {
 } from 'styles/typography';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
-import { friend } from 'apis/community';
+import { deleteFriend, friend } from 'apis/community';
 import { useUserStore } from 'store/user';
 import default_profile from '../../assets/images/default-profile.svg';
 import { ReactComponent as CloseIcon } from '../../assets/icons/close.svg';
@@ -126,6 +126,26 @@ export default function FriendModal({ closeModal }: AddFriendModalProps) {
     },
   });
 
+  const deleteFriendMutation = useMutation(deleteFriend, {
+    onSuccess: (data) => {
+      friendMutation.mutate({
+        memberId: memberId,
+        accessToken: accessToken,
+      });
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const onClickDelete = (id: string) => {
+    deleteFriendMutation.mutate({
+      memberId1: memberId,
+      memberId2: id,
+      accessToken: accessToken,
+    });
+  };
+
   useEffect(() => {
     friendMutation.mutate({
       memberId: memberId,
@@ -164,7 +184,7 @@ export default function FriendModal({ closeModal }: AddFriendModalProps) {
                     </div>
                   </NicknameBox>
                 </ProfileBox>
-                <Btn>
+                <Btn onClick={() => onClickDelete(friend.memberId.toString())}>
                   <CloseIcon />
                 </Btn>
               </FriendBox>

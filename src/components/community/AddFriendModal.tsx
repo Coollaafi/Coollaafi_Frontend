@@ -160,12 +160,26 @@ type FriendListProps = {
   alias: string;
 }[];
 
+type FriendRequestListProps = {
+  id: number;
+  created_at: string;
+  memberInfo: {
+    memberId: number;
+    memberServiceId: string;
+    memberNickName: string;
+    memberImage: string;
+    alias: string;
+  };
+}[];
+
 export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [friendList, setFriendList] = useState<FriendListProps>();
   const [searchFriendList, setSearchFriendList] = useState<FriendListProps>();
-  const [requestFriendList, setRequestFriendList] = useState<FriendListProps>();
-  const [sendFriendList, setSendFriendList] = useState<FriendListProps>();
+  const [receiveFriendList, setReceiveFriendList] =
+    useState<FriendRequestListProps>();
+  const [sendFriendList, setSendFriendList] =
+    useState<FriendRequestListProps>();
   const accessToken = useUserStore((state) => state.accessToken);
   const memberId = useUserStore((state) => state.memberId);
 
@@ -180,7 +194,7 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
 
   const receiveFriendMutation = useMutation(receiveFriend, {
     onSuccess: (data) => {
-      setRequestFriendList(data.result.memberInfo);
+      setReceiveFriendList(data.result);
     },
     onError: (e) => {
       console.log(e);
@@ -189,7 +203,7 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
 
   const sendFriendMutation = useMutation(sendFriend, {
     onSuccess: (data) => {
-      setSendFriendList(data.result.memberInfo);
+      setSendFriendList(data.result);
     },
     onError: (e) => {
       console.log(e);
@@ -199,6 +213,10 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
   const requestFriendMutation = useMutation(requestFriend, {
     onSuccess: (data) => {
       console.log(data);
+      sendFriendMutation.mutate({
+        memberId: memberId,
+        accessToken: accessToken,
+      });
     },
     onError: (e) => {
       console.log(e);
@@ -234,22 +252,24 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
 
   const onClickRequest = (receiverId: number) => {
     requestFriendMutation.mutate({
+      senderId: Number(memberId),
+      receiverId: receiverId,
+      accessToken: accessToken,
+    });
+  };
+
+  const onClickAccept = (receiverId: number) => {
+    acceptFriendMutation.mutate({
       senderId: memberId,
       receiverId: receiverId,
       accessToken: accessToken,
     });
   };
 
-  const onClickAccept = (friendRequestId: number) => {
-    acceptFriendMutation.mutate({
-      friendRequestId: friendRequestId,
-      accessToken: accessToken,
-    });
-  };
-
-  const onClickReject = (friendRequestId: number) => {
+  const onClickReject = (receiverId: number) => {
     rejectFriendMutation.mutate({
-      friendRequestId: friendRequestId,
+      senderId: memberId,
+      receiverId: receiverId,
       accessToken: accessToken,
     });
   };
@@ -260,12 +280,12 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
       accessToken: accessToken,
     });
 
-    sendFriendMutation.mutate({
+    friendMutation.mutate({
       memberId: memberId,
       accessToken: accessToken,
     });
 
-    friendMutation.mutate({
+    sendFriendMutation.mutate({
       memberId: memberId,
       accessToken: accessToken,
     });
@@ -291,38 +311,46 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
         <Input
           type="text"
           ref={inputRef}
-          placeholder="친구 아이디/닉네임을 입력해주세요"
+          placeholder="친구 아이디를 입력해주세요"
         />
         <Box>
           <RequestBox>
             <Desc_120_med>
-              요청 ({requestFriendList ? requestFriendList.length : 0})
+              요청 ({receiveFriendList ? receiveFriendList.length : 0})
             </Desc_120_med>
-            {requestFriendList ? (
-              requestFriendList.map((friend) => (
-                <FriendBox key={friend.memberServiceId}>
+            {receiveFriendList ? (
+              receiveFriendList.map((friend) => (
+                <FriendBox key={friend.memberInfo.memberServiceId}>
                   <ProfileBox>
                     <ProfileImg
                       src={
-                        friend.memberImage
-                          ? friend.memberImage
+                        friend.memberInfo.memberImage
+                          ? friend.memberInfo.memberImage
                           : default_profile
                       }
                     />
                     <NicknameBox>
                       <div>
-                        <Desc_150_reg>{friend.memberServiceId}</Desc_150_reg>
+                        <Desc_150_reg>
+                          {friend.memberInfo.memberServiceId}
+                        </Desc_150_reg>
                       </div>
                       <div>
-                        <Desc_150_reg>{friend.memberNickName}</Desc_150_reg>
+                        <Desc_150_reg>
+                          {friend.memberInfo.memberNickName}
+                        </Desc_150_reg>
                       </div>
                     </NicknameBox>
                   </ProfileBox>
                   <Btns>
-                    <Btn onClick={() => onClickAccept(friend.memberId)}>
+                    <Btn
+                      onClick={() => onClickAccept(friend.memberInfo.memberId)}
+                    >
                       <Desc_120_med>수락</Desc_120_med>
                     </Btn>
-                    <Btn onClick={() => onClickReject(friend.memberId)}>
+                    <Btn
+                      onClick={() => onClickReject(friend.memberInfo.memberId)}
+                    >
                       <Desc_120_med>거절</Desc_120_med>
                     </Btn>
                   </Btns>
@@ -353,11 +381,13 @@ export default function AddFriendModal({ closeModal }: AddFriendModalProps) {
                   </NicknameBox>
                 </ProfileBox>
                 {friend.memberId == Number(memberId) ||
-                sendFriendList?.filter(
-                  (item) => item.memberId == friend.memberId,
-                ).length == 1 ||
-                friendList?.filter((item) => item.memberId == friend.memberId)
-                  .length == 1 ? (
+                sendFriendList?.some(
+                  (item) => item.memberInfo.memberId == friend.memberId,
+                ) ||
+                receiveFriendList?.some(
+                  (item) => item.memberInfo.memberId == friend.memberId,
+                ) ||
+                friendList?.some((item) => item.memberId == friend.memberId) ? (
                   <></>
                 ) : (
                   <Btn onClick={() => onClickRequest(friend.memberId)}>

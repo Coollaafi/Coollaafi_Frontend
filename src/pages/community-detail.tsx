@@ -3,6 +3,7 @@ import Header from 'components/Header';
 import Post from 'components/community/Post';
 import CommentBox from 'components/community/CommentBox';
 import { ReactComponent as UploadIcon } from '../assets/icons/comment-upload.svg';
+import default_profile from '../assets/images/default-profile.svg';
 import { useParams } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { format } from 'date-fns';
@@ -262,7 +263,13 @@ export default function CommunityDetailPage() {
         inputRef={inputRef}
       />
       <InputBox>
-        <ProfileImage src={memberBased?.memberImage} />
+        <ProfileImage
+          src={
+            memberBased?.memberImage
+              ? memberBased?.memberImage
+              : default_profile
+          }
+        />
         <Input
           ref={inputRef}
           row={row}
