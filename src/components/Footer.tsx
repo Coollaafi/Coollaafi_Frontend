@@ -1,3 +1,6 @@
+import { logout } from 'apis/auth';
+import { useNavigate } from 'react-router-dom';
+import { useUserStore } from 'store/user';
 import styled from 'styled-components';
 import { Noto_Receipt } from 'styles/typography';
 
@@ -40,16 +43,28 @@ const Button = styled.div`
 type FooterType = 'black' | 'white';
 
 export default function Footer(type: { kind: FooterType }) {
+  const navigate = useNavigate();
+
+  const onClickLogout = async () => {
+    try {
+      const data = await logout();
+      useUserStore.persist.clearStorage();
+      navigate('/login');
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <Container type={type.kind}>
       <Box>
-        <Button>
+        <Button onClick={onClickLogout}>
           <Noto_Receipt>로그아웃</Noto_Receipt>
         </Button>
         <EmailBox>
           <Noto_Receipt>문의</Noto_Receipt>
           <Noto_Receipt>
-            <Email>WOT.ehwa@gmail.com</Email>
+            <Email>wot83323@gmail.com</Email>
           </Noto_Receipt>
           {/*이메일 변경 필요 */}
         </EmailBox>

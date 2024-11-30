@@ -9,6 +9,7 @@ export const refreshTokenApi = async (refreshToken: string) => {
   return response.data;
 };
 
+//회원가입-아이디 중복 확인
 export const checkServiceId = async (info: any) => {
   const response = await client.get('/member/check-service-id', {
     params: {
@@ -22,6 +23,7 @@ export const checkServiceId = async (info: any) => {
   return response.data;
 };
 
+//회원가입 버튼
 export const join = async (info: any) => {
   const response = await client.post('/member/join', info.formdata, {
     headers: {
@@ -29,5 +31,11 @@ export const join = async (info: any) => {
       'Content-Type': 'multipart/form-data',
     },
   });
+  return response.data;
+};
+
+//로그아웃
+export const logout = async () => {
+  const response = await client.get('/logout');
   return response.data;
 };
