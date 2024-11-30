@@ -154,7 +154,8 @@ export const requestFriend = async (info: any) => {
 export const acceptFriend = async (info: any) => {
   const response = await client.post('/friends/request/accept', null, {
     params: {
-      friendRequestId: info.friendRequestId,
+      senderId: info.senderId,
+      receiverId: info.receiverId,
     },
     headers: {
       Authorization: `Bearer ${info.accessToken}`,
@@ -170,13 +171,28 @@ export const rejectFriend = async (info: any) => {
     null,
     {
       params: {
-        friendRequestId: info.friendRequestId,
+        senderId: info.senderId,
+        receiverId: info.receiverId,
       },
       headers: {
         Authorization: `Bearer ${info.accessToken}`,
       },
     },
   );
+  return response.data;
+};
+
+//친구삭제
+export const deleteFriend = async (info: any) => {
+  const response = await client.delete('/friends/delete', {
+    params: {
+      memberId1: info.memberId1,
+      memberId2: info.memberId2,
+    },
+    headers: {
+      Authorization: `Bearer ${info.accessToken}`,
+    },
+  });
   return response.data;
 };
 
