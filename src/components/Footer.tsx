@@ -1,6 +1,4 @@
 import { logout } from 'apis/auth';
-import { useMutation } from 'react-query';
-import { useUserStore } from 'store/user';
 import styled from 'styled-components';
 import { Noto_Receipt } from 'styles/typography';
 
@@ -43,21 +41,12 @@ const Button = styled.div`
 type FooterType = 'black' | 'white';
 
 export default function Footer(type: { kind: FooterType }) {
-  const accessToken = useUserStore((state) => state.accessToken);
-  const memberId = useUserStore((state) => state.memberId);
-
-  const logoutMutation = useMutation(logout, {
-    onSuccess: (data) => {
-      useUserStore.persist.clearStorage();
-      console.log(data);
-    },
-    onError: (e) => {
-      console.log(e);
-    },
-  });
-
-  const onClickLogout = () => {
-    logoutMutation.mutate({ memberId: memberId, accessToken: accessToken });
+  const onClickLogout = async () => {
+    try {
+      const data = await logout();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

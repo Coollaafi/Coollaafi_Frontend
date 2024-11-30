@@ -35,11 +35,7 @@ export const join = async (info: any) => {
 };
 
 //로그아웃
-export const logout = async (info: any) => {
-  const response = await client.post('/logout', info.memberId, {
-    headers: {
-      Authorization: `Bearer ${info.accessToken}`,
-    },
-  });
+export const logout = async () => {
+  const response = await client.get('/logout');
   return response.data;
 };
