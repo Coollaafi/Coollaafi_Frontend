@@ -200,12 +200,6 @@ export default function EditModal({ closeModal }: EditModalProps) {
 
   const formData = new FormData();
 
-  //id 변경 시, isOnly, 에러 메시지 리셋
-  useEffect(() => {
-    setIsOnly(false);
-    setIsErrorSeen(false);
-  }, [id]);
-
   const homeMutation = useMutation(home, {
     onSuccess: (data) => {
       setId(data.result.memberBased.memberServiceId);
@@ -281,7 +275,13 @@ export default function EditModal({ closeModal }: EditModalProps) {
 
   useEffect(() => {
     homeMutation.mutate({ memberId: memberId, accessToken: accessToken });
-  }, []);
+  }, [memberId, accessToken]);
+
+  //id 변경 시, isOnly, 에러 메시지 리셋
+  useEffect(() => {
+    setIsOnly(false);
+    setIsErrorSeen(false);
+  }, [id]);
 
   //닉네임 20이내로
   useEffect(() => {
