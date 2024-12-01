@@ -199,6 +199,7 @@ export default function AfterModal({
           useCORS: true, // 외부 리소스 허용
           allowTaint: false,
           scale: Math.min(window.devicePixelRatio, 2), // 고해상도
+          logging: true,
         });
         //캔버스를 데이터 URL로
         const url = canvas.toDataURL('image/png');
