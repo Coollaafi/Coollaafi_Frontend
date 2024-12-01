@@ -275,6 +275,7 @@ export default function EditModal({ closeModal }: EditModalProps) {
 
   useEffect(() => {
     homeMutation.mutate({ memberId: memberId, accessToken: accessToken });
+    setIsOnly(true);
   }, []);
 
   //id 변경 시, isOnly, 에러 메시지 리셋
