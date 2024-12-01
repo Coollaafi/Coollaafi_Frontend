@@ -193,7 +193,7 @@ export default function EditModal({ closeModal }: EditModalProps) {
   const [isSpe, setIsSpe] = useState<boolean>(false);
   const [isLong, setIsLong] = useState<boolean>(false);
   const [isExc, setIsExc] = useState<boolean>(false);
-  const [isOnly, setIsOnly] = useState<boolean>(true);
+  const [isOnly, setIsOnly] = useState<boolean>(false);
   const [prevId, setPrevId] = useState<string>();
   const [isErrorSeen, setIsErrorSeen] = useState<boolean>(false);
   const memberId = useUserStore((state) => state.memberId);
@@ -206,7 +206,8 @@ export default function EditModal({ closeModal }: EditModalProps) {
       setId(data.result.memberBased.memberServiceId);
       setNickname(data.result.memberBased.memberNickName);
       setImgFile(data.result.memberBased.memberImage);
-      setIsOnly(true);
+      setPrevId(data.result.memberBased.memberServiceId); // 초기 id 설정
+      setIsOnly(true); // 초기 상태를 true로 설정
     },
     onError: (e) => {
       console.log(e);
