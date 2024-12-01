@@ -193,6 +193,7 @@ export default function EditModal({ closeModal }: EditModalProps) {
   const [isSpe, setIsSpe] = useState<boolean>(false);
   const [isLong, setIsLong] = useState<boolean>(false);
   const [isExc, setIsExc] = useState<boolean>(false);
+  const [isInitialRender, setIsInitialRender] = useState(true);
   const [isOnly, setIsOnly] = useState<boolean>(false);
   const [isErrorSeen, setIsErrorSeen] = useState<boolean>(false);
   const memberId = useUserStore((state) => state.memberId);
@@ -321,6 +322,11 @@ export default function EditModal({ closeModal }: EditModalProps) {
 
   //id 변경 시, isOnly, 에러 메시지 리셋
   useEffect(() => {
+    if (isInitialRender) {
+      setIsInitialRender(false); // 초기 렌더링 이후에는 실행되지 않도록 설정
+      return;
+    }
+
     setIsOnly(false);
     setIsErrorSeen(false);
   }, [id]);
