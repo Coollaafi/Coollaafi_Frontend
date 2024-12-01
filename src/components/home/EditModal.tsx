@@ -206,7 +206,6 @@ export default function EditModal({ closeModal }: EditModalProps) {
       setId(data.result.memberBased.memberServiceId);
       setNickname(data.result.memberBased.memberNickName);
       setImgFile(data.result.memberBased.memberImage);
-      setIsOnly(true);
     },
     onError: (e) => {
       console.log(e);
@@ -278,6 +277,13 @@ export default function EditModal({ closeModal }: EditModalProps) {
     homeMutation.mutate({ memberId: memberId, accessToken: accessToken });
   }, []);
 
+  useEffect(() => {
+    // homeMutation이 성공적으로 데이터 로딩 완료된 후에만 setIsOnly(true)
+    if (homeMutation.isSuccess) {
+      setIsOnly(true);
+    }
+  }, [homeMutation.isSuccess]);
+
   //닉네임 20이내로
   useEffect(() => {
     if (nickname.length > 0 && nickname.length <= 20) {
@@ -286,6 +292,17 @@ export default function EditModal({ closeModal }: EditModalProps) {
       setIsNickname(false);
     }
   }, [nickname]);
+
+  //id 변경 시, isOnly, 에러 메시지 리셋
+  useEffect(() => {
+    if (isInitialRender) {
+      setIsInitialRender(false); // 초기 렌더링 이후에는 실행되지 않도록 설정
+      return;
+    }
+
+    setIsOnly(false);
+    setIsErrorSeen(false);
+  }, [id]);
 
   //영문, 숫자, 특수문자 포함. 6-12자
   useEffect(() => {
@@ -318,17 +335,6 @@ export default function EditModal({ closeModal }: EditModalProps) {
     } else {
       setIsExc(false);
     }
-  }, [id]);
-
-  //id 변경 시, isOnly, 에러 메시지 리셋
-  useEffect(() => {
-    if (isInitialRender) {
-      setIsInitialRender(false); // 초기 렌더링 이후에는 실행되지 않도록 설정
-      return;
-    }
-
-    setIsOnly(false);
-    setIsErrorSeen(false);
   }, [id]);
 
   return (
