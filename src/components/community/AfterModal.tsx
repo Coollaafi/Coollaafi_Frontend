@@ -284,9 +284,21 @@ export default function AfterModal({
                 <CTA_button_med>룩북 저장하기</CTA_button_med>
               </StoreBtn>
               <LookBookBox ref={containerRef}>
-                <Outfit src={top} type="top" crossOrigin="anonymous" />
-                <Outfit src={bottom} type="bottom" crossOrigin="anonymous" />
-                <Outfit src={shoes} type="shoes" crossOrigin="anonymous" />
+                <Outfit
+                  src={`${top}?v=${Date.now()}`}
+                  type="top"
+                  crossOrigin="anonymous"
+                />
+                <Outfit
+                  src={`${bottom}?v=${Date.now()}`}
+                  type="bottom"
+                  crossOrigin="anonymous"
+                />
+                <Outfit
+                  src={`${shoes}?v=${Date.now()}`}
+                  type="shoes"
+                  crossOrigin="anonymous"
+                />
               </LookBookBox>
             </Result>
           </ResultBox>
