@@ -194,6 +194,7 @@ export default function EditModal({ closeModal }: EditModalProps) {
   const [isLong, setIsLong] = useState<boolean>(false);
   const [isExc, setIsExc] = useState<boolean>(false);
   const [isOnly, setIsOnly] = useState<boolean>(false);
+  const [isRendered, setIsRendered] = useState<boolean>(false);
   const [isErrorSeen, setIsErrorSeen] = useState<boolean>(false);
   const memberId = useUserStore((state) => state.memberId);
   const accessToken = useUserStore((state) => state.accessToken);
@@ -206,6 +207,7 @@ export default function EditModal({ closeModal }: EditModalProps) {
       setNickname(data.result.memberBased.memberNickName);
       setImgFile(data.result.memberBased.memberImage);
       setIsOnly(true);
+      setIsRendered(true);
     },
     onError: (e) => {
       console.log(e);
@@ -275,12 +277,14 @@ export default function EditModal({ closeModal }: EditModalProps) {
 
   useEffect(() => {
     homeMutation.mutate({ memberId: memberId, accessToken: accessToken });
-  }, [memberId, accessToken]);
+  }, []);
 
   //id 변경 시, isOnly, 에러 메시지 리셋
   useEffect(() => {
-    setIsOnly(false);
-    setIsErrorSeen(false);
+    if (isRendered) {
+      setIsOnly(false);
+      setIsErrorSeen(false);
+    }
   }, [id]);
 
   //닉네임 20이내로
