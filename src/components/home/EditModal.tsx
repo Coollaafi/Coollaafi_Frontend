@@ -193,7 +193,7 @@ export default function EditModal({ closeModal }: EditModalProps) {
   const [isSpe, setIsSpe] = useState<boolean>(false);
   const [isLong, setIsLong] = useState<boolean>(false);
   const [isExc, setIsExc] = useState<boolean>(false);
-  const [isOnly, setIsOnly] = useState<boolean>(false);
+  const [isOnly, setIsOnly] = useState<boolean>(true);
   const [prevId, setPrevId] = useState<string>();
   const [isErrorSeen, setIsErrorSeen] = useState<boolean>(false);
   const memberId = useUserStore((state) => state.memberId);
