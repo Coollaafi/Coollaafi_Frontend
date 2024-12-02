@@ -213,6 +213,7 @@ export default function HomePage() {
     homeMutation.mutate({ memberId: memberId, accessToken: accessToken });
   }, []);
 
+  /*
   useEffect(() => {
     if (
       memberBased?.alias == '평범한 패피' ||
@@ -226,6 +227,7 @@ export default function HomePage() {
       setIsChecked(true);
     }
   }, [memberBased?.alias]);
+*/
 
   return (
     <Container>
