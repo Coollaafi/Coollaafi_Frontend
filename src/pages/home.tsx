@@ -184,7 +184,7 @@ export default function HomePage() {
   const accessToken = useUserStore((state) => state.accessToken);
   const [memberBased, setMemberBased] = useState<memberBasedProps>();
   const [memberAdd, setMemberAdd] = useState<memberAddProps>();
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(true);
   const onClickBtn = ({ type, isChecked, event }: onClickBtnProps) => {
     if (type == 'ai') {
       if (isChecked) {
