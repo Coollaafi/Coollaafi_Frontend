@@ -225,7 +225,7 @@ export default function HomePage() {
     } else {
       setIsChecked(true);
     }
-  }, []);
+  }, [memberBased?.alias]);
 
   return (
     <Container>
