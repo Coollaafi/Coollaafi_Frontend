@@ -19,37 +19,6 @@
 <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=TensorFlow&logoColor=white"><img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=PyTorch&logoColor=white"><img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=Flask&logoColor=white">
 
 <hr/>
-
-### ⚙️실행 방법
-### How to install
-- OpenWeather key 발급
-- Kakao 로그인 구현을 위한 Kakao Developer 애플리케이션 생성
-### How to build
-**1. Repository Clone**
-   ```bash
-   git clone <repository-url>
-   cd <project-directory>
-```
-**2. Install Project Dependencies**
-   ```bash
-   npm install
-```
-**3. Add Environment Variables**
-<br>**.env 파일**을 프로젝트 루트 디렉토리에 추가한 후, 아래 내용 작성  
-   ```bash
-   REACT_APP_KAKAO_API_KEY=(KaKao Developer에서 발급받은 key)
-   REACT_APP_WEATHER_API_KEY=(OpenWeather에서 발급받는 key)
-   REACT_APP_API_URL=(배포한 API URL)
-```
-### How to run
-   ```bash
-   npm start
-```
-### 사용한 오픈소스 라이브러리
-- Axios: [HTTP 요청 처리 라이브러리](https://axios-http.com/kr/docs/intro)
-- React Query: [서버 상태 관리 라이브러리](https://tanstack.com/query/v5/docs/framework/react/overview)
-
-<hr/>
   
 ### 👩‍💻팀원 소개
   <table >
