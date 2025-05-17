@@ -5,9 +5,9 @@
 이에, 저희는 개인화된 AI를 통해, 오늘의 날씨에 맞는 여러분의 옷을 추천하고,<br />
 친한 친구 20명과 함께하는 SNS를 제공하는 서비스, <b>왓(wot)</b>을 기획하였습니다.<br />
 ###### 배포사이트: https://coollaafi-frontend.vercel.app/
-<!--###### 데모 영상: https://www.youtube.com/watch?v=RDpbWE1proI&t=5s-->
-<!--<hr/>
-<div align="center"><img src="https://github.com/user-attachments/assets/a32cacb5-bb23-4893-bc99-3189098ba3b3" width="100%"></div>-->
+###### 데모 영상: https://www.youtube.com/watch?v=RDpbWE1proI&t=5s
+<hr/>
+<div align="center"><img src="https://github.com/user-attachments/assets/a32cacb5-bb23-4893-bc99-3189098ba3b3" width="100%"></div>
 <hr/>
 
 ### ⚙️기술 스택
@@ -17,7 +17,7 @@
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"><img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=Amazon%20EC2&logoColor=white"><img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white"><img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
 <br><br><b>[AI]</b><br/>
 <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=TensorFlow&logoColor=white"><img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=PyTorch&logoColor=white"><img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=Flask&logoColor=white">
-<!--
+
 <hr/>
   
 ### 👩‍💻팀원 소개
@@ -38,4 +38,3 @@
       <td align="center"><a href="https://github.com/Choi-Hanui" target="_blank">Choi-Hanui</a></td>
     </tr>
   </table>
-  -->
